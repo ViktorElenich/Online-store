@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import './Header.scss';
-import { Routes } from '../../enums';
+import { RoutesEnum } from '../../enums';
 
 const Header = () => (
   <header className='header'>
@@ -16,20 +16,20 @@ const Header = () => (
     <nav className='header__navigation'>
       <ul className='navigation_menu'>
         <li className='menu__item'>
-          <NavLink to={Routes.Home}>Home</NavLink>
+          <NavLink to={RoutesEnum.Home}>Home</NavLink>
         </li>
         <li className='menu__item'>
-          <NavLink to={Routes.About}>About Us</NavLink>
+          <NavLink to={RoutesEnum.About}>About Us</NavLink>
         </li>
       </ul>
     </nav>
     <div className='header-user'>
       <div className='header-user__cart'>
-        <NavLink to={Routes.Cart} />
+        <NavLink to={RoutesEnum.Cart} />
       </div>
       <div className='header-user__login'>
         Login
-        <NavLink to={Routes.Login} />
+        <NavLink to={RoutesEnum.Login} />
       </div>
     </div>
   </header>
