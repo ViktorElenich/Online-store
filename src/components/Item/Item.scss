@@ -7,6 +7,7 @@
 }
 
 .block-card {
+  margin: 50px;
   width: $size_block-item-width;
   height: $size_block-item-height;
   background-color: $color_standart-grey;
@@ -44,6 +45,7 @@
   width: calc(100% + 1em);
   position: absolute;
   top: 60%;
+  border-radius: 4px;
   background-color: $color_stars;
   text-align: center;
   font-family: $font-jomolhari;
