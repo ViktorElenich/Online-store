@@ -96,25 +96,40 @@
       }
     }
   }
-
-  &__login {
+  .header-user {
     display: flex;
     justify-content: space-between;
+    gap: 20px;
     align-items: center;
-    gap: 5px;
-    a {
-      background: url("../../assets/logout.png") no-repeat;
-      background-size: contain;
-      width: 1.5rem;
-      height: 1.5rem;
-      position: relative;
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -3.5rem;
-        width: 5rem;
+    &__cart {
+      display: flex;
+      a {
+        background: url("../../assets/cart.png") no-repeat;
+        background-size: contain;
+        width: 1.5rem;
         height: 1.5rem;
+      }
+    }
+
+    &__login {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 5px;
+      a {
+        background: url("../../assets/logout.png") no-repeat;
+        background-size: contain;
+        width: 1.5rem;
+        height: 1.5rem;
+        position: relative;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -3.5rem;
+          width: 5rem;
+          height: 1.5rem;
+        }
       }
     }
   }

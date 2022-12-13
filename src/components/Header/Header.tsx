@@ -23,10 +23,14 @@ const Header = () => (
         </li>
       </ul>
     </nav>
-    {/* <Cart /> */}
-    <div className='header__login'>
-      Login
-      <NavLink to={Routes.Login} />
+    <div className='header-user'>
+      <div className='header-user__cart'>
+        <NavLink to={Routes.Cart} />
+      </div>
+      <div className='header-user__login'>
+        Login
+        <NavLink to={Routes.Login} />
+      </div>
     </div>
   </header>
 );
