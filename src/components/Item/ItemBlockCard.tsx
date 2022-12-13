@@ -7,19 +7,18 @@ import cartIconEmpty from '../../assets/cart-icon_empty.png';
 import IProductItemProp from '../../interfaces/IProductItemProp';
 
 
-
-
 const ItemBlockCard: FC<IProductItemProp> = ({item, isInTheCart}) => {
     
     const [inCart, setInCart] = useState(isInTheCart);
     const changeInCart = ():void => inCart? setInCart(false): setInCart(true)
 
 return (
-    <div className="block-card">
-        <div className="block-card__description">{item.description}</div>
+    <div className="block-card list-card">
+        
         <div className="block-card__image" style={{backgroundImage:`url(${item.images[0]})`}}/>
         <div className="discount-line">Discount: {item.discountPercentage}%</div>
         <div className="block-card__details">
+        <div className="block-card__description">{item.description}</div>
             <span className="block-card__item-title">{item.title}</span>
         
             <ItemRating itemRating={item.rating}/>

@@ -7,7 +7,7 @@
 }
 
 .block-card {
-  margin: 50px;
+  margin: 30px; // для визуализации, убрать потом !
   width: $size_block-item-width;
   height: $size_block-item-height;
   background-color: $color_standart-grey;
@@ -31,6 +31,10 @@
       opacity: 1;
     }
   }
+  @media (max-width: 650px) {
+    width: calc($size_block-item-width - 50px);
+    height: calc($size_block-item-height - 50px);
+  }
 }
 
 .block-card__description {
@@ -46,6 +50,9 @@
   transition: 0.3s;
   z-index: 3;
   cursor: default;
+  @media (max-width: 650px) {
+    bottom: 55%;
+  }
 }
 
 .block-card__image {
@@ -58,6 +65,10 @@
   background-size: auto 100%;
   overflow: hidden;
   transition: 0.3s;
+  @media (max-width: 650px) {
+    width: calc($size_block-item_img-width - 50px);
+    height: calc($size_block-item_img-height - 50px);
+  }
 }
 .discount-line {
   height: 25px;
@@ -69,6 +80,9 @@
   background-color: $color_stars;
   text-align: center;
   font-family: $font-jomolhari;
+  @media (max-width: 650px) {
+    top: 55%;
+  }
 }
 .block-card__details {
   width: 100%;
@@ -80,13 +94,22 @@
   & .block-card__item-title {
     font-family: $font-inter;
     font-size: 0.9rem;
+    @media (max-width: 650px) {
+      font-size: 0.8rem;
+    }
   }
   & .block-card__item-brand {
     font-family: $font-jomolhari;
     font-size: 0.8rem;
+    @media (max-width: 650px) {
+      font-size: 0.7rem;
+    }
   }
   & .block-card__price {
     font-family: $font-inter;
+    @media (max-width: 650px) {
+      font-size: 0.8rem;
+    }
   }
   & .block-card__cart {
     width: fit-content;
@@ -108,7 +131,7 @@
     }
     &:hover {
       & img {
-        transform: scale(1.05);
+        transform: scale(1.1);
       }
     }
   }
@@ -125,5 +148,123 @@
     display: block;
     width: 15px;
     height: 15px;
+  }
+}
+
+/* -------------- list ---------------- */
+.list-card.block-card {
+  width: 90%;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+
+  &:hover {
+    background-color: $grey-color;
+    .block-card__image {
+      filter: none;
+    }
+    .block-card__description {
+      opacity: 1;
+      @media (max-width: 650px) {
+        opacity: 0;
+      }
+    }
+  }
+
+  .block-card__description {
+    position: static;
+    padding: 0.5em;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    color: $color_primary;
+    order: 3;
+    @media (max-width: 700px) {
+      font-size: 0.6rem;
+    }
+  }
+
+  .block-card__image {
+    width: $size_list-item_img-width;
+    height: $size_list-item_img-height;
+    position: absolute;
+    left: 20px;
+    border-radius: 5px;
+    z-index: 2;
+    @media (max-width: 700px) {
+      width: 60px;
+      height: 70px;
+    }
+    @media (max-width: 520px) {
+      width: 40px;
+      height: 70px;
+      left: 10px;
+    }
+  }
+  .discount-line {
+    width: fit-content;
+    top: -13px;
+    right: 10px;
+    z-index: 5;
+  }
+  .block-card__details {
+    grid-template-columns: 1.5fr 1fr 2fr 1fr 1fr 0.5fr;
+    padding-left: 100px;
+    align-content: center;
+    place-items: center;
+    @media (max-width: 700px) {
+      padding-left: 80px;
+    }
+    @media (max-width: 650px) {
+      grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr;
+    }
+
+    @media (max-width: 520px) {
+      padding-left: 50px;
+      grid-template-columns: 2fr 2fr 1fr 1fr;
+    }
+
+    & .block-card__item-title {
+      padding-left: 8px;
+      order: 1;
+      @media (max-width: 700px) {
+        font-size: 0.7rem;
+      }
+    }
+    & .block-card__item-brand {
+      order: 2;
+      @media (max-width: 700px) {
+        font-size: 0.6rem;
+      }
+    }
+    & .block-card__price {
+      grid-column: 5/6;
+      order: 4;
+      @media (max-width: 550px) {
+        font-size: 0.8rem;
+      }
+    }
+    & .block-card__cart {
+      grid-column: 6;
+      grid-row: 1;
+      justify-self: center;
+      order: 6;
+
+      cursor: pointer;
+      & img {
+        @media (max-width: 520px) {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+
+  .rating-wrapper {
+    grid-column: 4/5;
+    justify-self: center;
+    order: 3;
+    @media (max-width: 520px) {
+      display: none;
+    }
   }
 }
