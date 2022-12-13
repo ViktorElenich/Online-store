@@ -26,14 +26,14 @@ const item:IProductItem = {
     "https://i.dummyjson.com/data/products/1/thumbnail.jpg"
   ]
 }
-
+/* test item end */
 
 function App() {
   return (
     <BrowserRouter>
       <div className='App'>
         <Header />
-        <ItemBlockCard item={item} isInTheCart={false}/>
+        <ItemBlockCard item={item} isInTheCart={false}/> 
       </div>
     </BrowserRouter>
   );
