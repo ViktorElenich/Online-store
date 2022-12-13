@@ -1,0 +1,121 @@
+@import '../../styles/vars';
+@import '../../styles/mixins';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 4.5rem;
+  padding: 1rem;
+  background: $grey-color;
+  font-family: $font-jomolhari;
+  font-weight: 400;
+  font-size: 1.2rem;
+
+  &__burger {
+    display: none;
+    position: relative;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    transform: rotate(0deg);
+    transition: all 0.2s $cubic;
+    user-select: none;
+    z-index: 3;
+    @include _540 {
+      display: inline-block;
+    }
+
+    #burger {
+      width: 18px;
+      height: 8px;
+      position: relative;
+      display: block;
+      margin: -4px auto 0;
+      top: 50%;
+      .bar {
+        width: 100%;
+        height: 1px;
+        display: block;
+        position: relative;
+        background: #050505;
+        transition: all 0.2s $cubic;
+        transition-delay: 0s;
+        &.topBar {
+          transform: translateY(0px) rotate(0deg);
+        }
+        &.btmBar {
+          transform: translateY(6px) rotate(0deg);
+        }
+      }
+    }
+  }
+
+  &__logo {
+    h1 {
+      text-indent: -1234rem;
+      background: url('../../assets/logo.png') no-repeat;
+      background-size: contain;
+      width: 8rem;
+      height: 3.5rem;
+    }
+  }
+  .navigation_menu {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    .menu__item {
+      a {
+        position: relative;
+        color: black;
+        opacity: .6;
+        transition: opacity .3s cubic-bezier(.51, .92, .24, 1);
+        &.active {
+          opacity: 1;
+          font-weight: bold;
+        }
+        &::after {
+          --scale: 0;
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 100%;
+          height: 3px;
+          background: linear-gradient(135deg, rgb(59, 61, 60), rgb(33, 38, 38));
+          transform: scaleX(var(--scale));
+          transform-origin: var(--x) 50%;
+          transition: transform .3s cubic-bezier(.51, .92, .24, 1);
+        }
+        &:hover {
+          opacity: 1;
+        }
+        &:hover::after {
+          --scale: 1;
+        }
+      }
+    }
+  }
+
+  &__login {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+    a {
+      background: url("../../assets/logout.png") no-repeat;
+      background-size: contain;
+      width: 1.5rem;
+      height: 1.5rem;
+      position: relative;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -3.5rem;
+        width: 5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+}
