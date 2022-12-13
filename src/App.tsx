@@ -10,10 +10,10 @@ import IProductItem from './interfaces/IProductItem';
 const item:IProductItem = {
   id: 1,
   title: "Samsung Galaxy Book",
-  description: "An apple mobile which is nothing like apple",
+  description: "Samsung Galaxy Book S (2020) Laptop With Intel Lakefield Chip, 8GB of RAM Launched",
   price: 549,
   discountPercentage: 12.96,
-  rating: 3.6,
+  rating: 1.5,
   stock: 94,
   brand: "Apple",
   category: "smartphones",
