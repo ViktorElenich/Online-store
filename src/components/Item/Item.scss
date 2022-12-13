@@ -1,0 +1,107 @@
+@import '../../styles/vars';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.block-card {
+  width: $size_block-item-width;
+  height: $size_block-item-height;
+  background-color: $color_standart-grey;
+  color: $color_primary;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  border-radius: 5px;
+  transition: 0.3s;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+
+  &:hover {
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    transform: translate(1px, 1px);
+    .block-card__image {
+      background-size: auto 120%;
+    }
+  }
+}
+.block-card__image {
+  width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  height: $size_block-item_img-height;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  overflow: hidden;
+  transition: 0.3s;
+}
+.discount-line {
+  height: 25px;
+  padding: 5px;
+  width: calc(100% + 1em);
+  position: absolute;
+  top: 60%;
+  background-color: $color_stars;
+  text-align: center;
+  font-family: $font-jomolhari;
+}
+.block-card__details {
+  width: 100%;
+  height: calc(100% - $size_block-item_img-height);
+  padding: 0.6em;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 5px;
+  & .block-card__item-title {
+    font-family: $font-inter;
+    font-size: 0.9rem;
+  }
+  & .block-card__item-brand {
+    font-family: $font-jomolhari;
+    font-size: 0.8rem;
+  }
+  & .block-card__price {
+    font-family: $font-inter;
+  }
+  & .block-card__cart {
+    width: fit-content;
+    align-content: center;
+    justify-self: end;
+    margin: 0.5em;
+    border: none;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 2;
+    grid-row: 2/4;
+    cursor: pointer;
+    & img {
+      width: 30px;
+      height: 30px;
+      transition: 0.3s;
+    }
+    &:hover {
+      & img {
+        transform: scale(1.05);
+      }
+    }
+  }
+}
+
+.rating-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-self: end;
+  gap: 2px;
+  padding: 2px;
+  & img {
+    display: block;
+    width: 15px;
+    height: 15px;
+  }
+}
