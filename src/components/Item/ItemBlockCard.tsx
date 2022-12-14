@@ -18,7 +18,9 @@ return (
         <div className="block-card__image" style={{backgroundImage:`url(${item.images[0]})`}}/>
         <div className="discount-line">Discount: {item.discountPercentage}%</div>
         <div className="block-card__details">
-        <div className="block-card__description">{item.description}</div>
+        <div className="block-card__description"><span>
+            {item.description}
+            </span></div>
             <span className="block-card__item-title">{item.title}</span>
         
             <ItemRating itemRating={item.rating}/>
@@ -35,3 +37,5 @@ return (
 )
 }
 export default ItemBlockCard;
+
+// "list-card" - class to add/remove to ItemBlockCard element for change display from block to list and vice versa
