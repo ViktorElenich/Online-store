@@ -3,3 +3,64 @@
     @content;
   }
 }
+
+@mixin hover-style($color) {
+  &:hover {
+    background: lighten($color, 3%);
+    border-radius: 6px;
+  }
+}
+
+@mixin animation($content) {
+  animation: $content;
+  -moz-animation: $content;
+  -webkit-animation: $content;
+}
+
+@keyframes showAnimation {
+  0% {
+    transform: scaleY(0.1);
+  }
+  40% {
+    transform: scaleY(1.04);
+  }
+  60% {
+    transform: scaleY(0.98);
+  }
+  80% {
+    transform: scaleY(1.04);
+  }
+  100% {
+    transform: scaleY(0.98);
+  }
+  80% {
+    transform: scaleY(1.02);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes flipDown {
+  0% {
+    opacity: 0;
+    transform-origin: top center;
+    transform: rotateX(-90deg);
+  }
+  5% {
+    opacity: 1;
+  }
+  80% {
+    transform: rotateX(8deg);
+  }
+  83% {
+    transform: rotateX(6deg);
+  }
+  92% {
+    transform: rotateX(-3deg);
+  }
+  100%  {
+    transform-origin: top center;
+    transform: rotateX(0deg);
+  }
+}

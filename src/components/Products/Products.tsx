@@ -1,11 +1,12 @@
 import ProductItem from '../ProductItem/ProductItem';
 import { productsData } from '../../data/data';
 import './Products.scss';
+import ProductsFilter from "../ProductsFilter/ProductsFilter";
 
 const Products = () => (
   <div className='products'>
     <aside className='products-filter'>
-      <div>filter</div>
+      <ProductsFilter />
     </aside>
     <div className='products-items'>
       {productsData.products.map((product) => (
