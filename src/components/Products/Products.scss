@@ -11,10 +11,20 @@
     position: relative;
     padding: 1rem 1.5rem 1rem 1rem;
 
-    &::after {
+    &::before {
       content: '';
       position: absolute;
       top: -1.5rem;
+      left: -1rem;
+      background: $color_standart-grey;
+      width: calc(100% + 1.5rem);
+      height: 100%;
+      z-index: -1;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      top: 1.5rem;
       left: -1rem;
       background: $color_standart-grey;
       width: calc(100% + 1.5rem);
