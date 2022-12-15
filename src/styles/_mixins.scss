@@ -3,7 +3,6 @@
     @content;
   }
 }
-
 @mixin hover-style($color) {
   &:hover {
     background: lighten($color, 3%);
