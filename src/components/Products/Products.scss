@@ -1,0 +1,51 @@
+@import '../../styles/vars';
+
+.products {
+  padding: 1.5rem 1rem;
+  display: flex;
+  gap: 25px;
+
+  &-filter {
+    width: 20%;
+    background: $color_standart-grey;
+    position: relative;
+    padding: 1rem 1.5rem 1rem 1rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -1.5rem;
+      left: -1rem;
+      background: $color_standart-grey;
+      width: calc(100% + 1.5rem);
+      height: 100%;
+      z-index: -1;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      top: 1.5rem;
+      left: -1rem;
+      background: $color_standart-grey;
+      width: calc(100% + 1.5rem);
+      height: 100%;
+      z-index: -1;
+    }
+  }
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+
+    &__sortSearch {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  &-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-gap: 15px;
+    margin-top: 20px;
+  }
+}

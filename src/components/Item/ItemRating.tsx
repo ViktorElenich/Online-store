@@ -1,5 +1,3 @@
-/* eslint-disable no-plusplus */
-
 import './Item.scss';
 
 import { FC } from 'react';
