@@ -1,7 +1,7 @@
 @import '../../styles/vars';
 
 .products {
-  padding: 1.5rem 1rem 0;
+  padding: 1.5rem 1rem;
   display: flex;
   gap: 25px;
 
@@ -22,10 +22,20 @@
       z-index: -1;
     }
   }
-  &-items {
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
     width: 80%;
+
+    &__sortSearch {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  &-items {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     grid-gap: 15px;
+    margin-top: 20px;
   }
 }
