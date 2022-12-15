@@ -10,9 +10,8 @@ const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
   const [inCart, setInCart] = useState(isInTheCart);
   const changeInCart = (): void =>
     inCart ? setInCart(false) : setInCart(true);
-
   return (
-    <div className='block-card' id={item.id.toString()}>
+    <div className='block-card' id={`${item.id}`}>
       <div
         className='block-card__image'
         style={{ backgroundImage: `url(${item.images[0]})` }}
