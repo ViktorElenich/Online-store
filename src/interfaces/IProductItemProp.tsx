@@ -1,6 +1,6 @@
 import IProductItem from './IProductItem';
 
 export default interface IProductItemProp {
-    item:IProductItem,
-    isInTheCart:boolean
+  item: IProductItem;
+  isInTheCart: boolean;
 }
