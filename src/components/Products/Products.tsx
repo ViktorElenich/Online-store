@@ -1,4 +1,5 @@
 import { FC, FormEvent, useEffect, useState } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import ProductItem from '../ProductItem/ProductItem';
 import ProductsFilter from '../ProductsFilter/ProductsFilter';
 import Search from '../Search/Search';
@@ -37,9 +38,16 @@ const Products: FC<IProductsProps> = ({ products }) => {
           />
         </div>
         <div className='products-items'>
-          {filterProducts.map((product) => (
-            <ProductItem key={product.id} item={product} isInTheCart={false} />
-          ))}
+          <TransitionGroup className='products-animation'>
+            {filterProducts.map((product) => (
+              <CSSTransition key={product.id} timeout={500} classNames='item'>
+                <ProductItem
+                  item={product}
+                  isInTheCart={false}
+                />
+              </CSSTransition>
+            ))}
+          </TransitionGroup>
         </div>
       </div>
     </div>

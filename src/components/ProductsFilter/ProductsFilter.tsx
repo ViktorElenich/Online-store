@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Nouislider from 'nouislider-react';
 import 'nouislider-react/node_modules/nouislider/distribute/nouislider.css';
 import { productsData } from '../../data/data';
-import { IProductData } from '../../interfaces/index';
+import { IProductData } from '../../interfaces';
 
 const ProductsFilter = () => {
   const [categories, setCategories] = useState<string[]>([]);
