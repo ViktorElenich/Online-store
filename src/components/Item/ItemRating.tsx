@@ -10,9 +10,9 @@ const ItemRating: FC<{itemRating:number}> = (props) => {
     const starsArray = ratingVisualizationFn(itemRating)
 
     return (
-        <div className="rating-wrapper">
+        <div className = "rating-wrapper">
             {starsArray.map((imgSrc) =>
-                <img src={imgSrc} alt="Raiting" />
+                <img src = {imgSrc} alt = "Raiting" />
             )}
         </div>
     )

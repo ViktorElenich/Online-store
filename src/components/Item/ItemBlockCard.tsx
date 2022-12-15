@@ -13,24 +13,24 @@ const ItemBlockCard: FC<IProductItemProp> = ({item, isInTheCart}) => {
     const changeInCart = ():void => inCart? setInCart(false): setInCart(true)
 
 return (
-    <div className="block-card list-card">
+    <div className = "block-card list-card" id = {item.id.toString()}>
         
-        <div className="block-card__image" style={{backgroundImage:`url(${item.images[0]})`}}/>
-        <div className="discount-line">Discount: {item.discountPercentage}%</div>
-        <div className="block-card__details">
-        <div className="block-card__description"><span>
+        <div className = "block-card__image" style = {{backgroundImage:`url(${item.images[0]})`}}/>
+        <div className = "discount-line">Discount: {item.discountPercentage}%</div>
+        <div className = "block-card__details">
+        <div className = "block-card__description"><span>
             {item.description}
             </span></div>
-            <span className="block-card__item-title">{item.title}</span>
+            <span className = "block-card__item-title">{item.title}</span>
         
-            <ItemRating itemRating={item.rating}/>
+            <ItemRating itemRating = {item.rating}/>
 
-            <span className="block-card__item-brand">{item.brand}</span>
+            <span className = "block-card__item-brand">{item.brand}</span>
             
-            <button className="block-card__cart" type="button" onClick={changeInCart}>
-                <img src={inCart? cartIconFull: cartIconEmpty} alt={inCart? "Item is in the cart": "Add to cart"} />
+            <button className = "block-card__cart" type = "button" onClick = {changeInCart}>
+                <img src = {inCart? cartIconFull: cartIconEmpty} alt = {inCart? "Item is in the cart": "Add to cart"} />
             </button>
-            <span className="block-card__price">${item.price}.00</span>
+            <span className = "block-card__price">${item.price}.00</span>
 
         </div>
     </div>
