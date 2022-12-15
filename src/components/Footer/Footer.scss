@@ -13,37 +13,33 @@ footer {
   @media (max-width: 450px) {
     font-size: 0.7rem;
   }
-
-  /* for fix at the bottom of the page, could be changed later */
-  position: absolute;
-  bottom: 0;
-}
-a {
-  color: $color_secondary;
-  font-size: 0.7rem;
-  position: relative;
-  transition: 0.3s;
-  @media (max-width: 450px) {
-    font-size: 0.6rem;
-  }
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 26px;
-    height: 26px;
-    position: absolute;
-    top: -8px;
-    left: -25px;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    transition: 0.3s;
-  }
-  &:hover {
-    border-bottom: 1px solid $color_secondary;
-  }
-  &:active {
-    transform: scale(0.95);
+  a {
+    color: $color_secondary;
+    font-size: 0.7rem;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    @media (max-width: 450px) {
+      font-size: 0.6rem;
+    }
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 26px;
+      height: 26px;
+      position: absolute;
+      top: -8px;
+      left: -25px;
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+      transition: 0.3s;
+    }
+    &:hover {
+      border-bottom: 1px solid $color_secondary;
+    }
+    &:active {
+      transform: scale(0.95);
+    }
   }
 }
 .rss-link {

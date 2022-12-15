@@ -11,9 +11,12 @@ const Search = () => {
     <label
       className={focus ? 'search active' : 'search'}
       htmlFor='input_search'
-      onClick={clickLabel}
     >
-      <input id='input_search' type='text' />
+      <input
+        id='input_search'
+        type='text'
+        onClick={clickLabel}
+      />
     </label>
   );
 };
