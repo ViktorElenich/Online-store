@@ -2,7 +2,7 @@ import React, { FC, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { RoutesEnum } from '../../enums';
 import IProductItemProp from '../../interfaces/IProductItemProp';
-import ItemRating from '../Item/ItemRating';
+import ItemRating from '../ProductItem/ProductItemRating';
 import './ProductItemInformation.scss';
 
 const ProductItemInformation: FC<IProductItemProp> = ({ item, isInTheCart }) => {
