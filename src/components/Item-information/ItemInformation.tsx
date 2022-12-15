@@ -42,8 +42,8 @@ return <div className = "item-information__wrapper">
                             <div className = "images-block__main-foto">
                                 <img src = {itemImages[0]} alt = {item.title} ref = {mainImage}/>
                             </div>
-                            <div className = "images-block__alt-fotos">                           
-                                {itemImages.map(imgurl=><img src = {imgurl} alt = "Other foto" onClick = {changeFoto} />)}
+                            <div className = "images-block__alt-fotos" onClick = {changeFoto}>                           
+                                {itemImages.map(imgurl=><img src = {imgurl} alt = "Other foto" />)}
                             </div>
                         </div>
                     </div>
