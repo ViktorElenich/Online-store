@@ -1,26 +1,26 @@
-import { useEffect } from 'react';
+import { FC, FormEvent, useEffect, useState } from 'react';
 import ProductItem from '../ProductItem/ProductItem';
 import ProductsFilter from '../ProductsFilter/ProductsFilter';
 import Search from '../Search/Search';
 import Select from '../Select/Select';
-import useFetchCollection from '../../hooks/useFetchCollection';
-import Loader from '../Loader/Loader';
-import { setStoreProducts } from '../../redux/slices/productSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import './Products.scss';
+import { filterSearch } from '../../redux/slices/filterSlice';
+import { IProductsProps } from '../../interfaces';
 
-const Products = () => {
-  const { data, isLoading } = useFetchCollection('products');
-  const products = useAppSelector((state) => state.products.products);
+const Products: FC<IProductsProps> = ({ products }) => {
+  const [search, setSearch] = useState('');
+  const filterProducts = useAppSelector((state) => state.filter.filterProducts);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(
-      setStoreProducts({
-        products: data,
+      filterSearch({
+        products,
+        search,
       }),
     );
-  }, [dispatch, data]);
+  }, [dispatch, products, search]);
   return (
     <div className='products'>
       <aside className='products-filter'>
@@ -29,20 +29,17 @@ const Products = () => {
       <div className='products-wrapper'>
         <div className='products-wrapper__sortSearch'>
           <Select />
-          <Search />
+          <Search
+            value={search}
+            onChange={(e: FormEvent<HTMLInputElement>) =>
+              setSearch(e.currentTarget.value)
+            }
+          />
         </div>
         <div className='products-items'>
-          {isLoading ? (
-            <Loader />
-          ) : (
-            products.map((product) => (
-              <ProductItem
-                key={product.id}
-                item={product}
-                isInTheCart={false}
-              />
-            ))
-          )}
+          {filterProducts.map((product) => (
+            <ProductItem key={product.id} item={product} isInTheCart={false} />
+          ))}
         </div>
       </div>
     </div>

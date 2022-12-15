@@ -1,7 +1,7 @@
 import React, { FC, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { RoutesEnum } from '../../enums';
-import IProductItemProp from '../../interfaces/IProductItemProp';
+import IProductItemProp from '../../interfaces/index';
 import ItemRating from '../ProductItem/ProductItemRating';
 import './ProductItemInformation.scss';
 

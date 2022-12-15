@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from '@firebase/firestore';
 import { db } from '../firebase/config';
-import { IProductData } from '../interfaces/IProductData';
+import { IProductData } from '../interfaces/index';
 
 const useFetchCollection = (collectionName: string) => {
   const [data, setData] = useState<IProductData[]>([]);

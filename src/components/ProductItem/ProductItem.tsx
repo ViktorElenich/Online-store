@@ -4,7 +4,7 @@ import './ProductItem.scss';
 
 import cartIconFull from '../../assets/cart-icon_full.png';
 import cartIconEmpty from '../../assets/cart-icon_empty.png';
-import IProductItemProp from '../../interfaces/IProductItemProp';
+import IProductItemProp from '../../interfaces/index';
 
 const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
   const [inCart, setInCart] = useState(isInTheCart);

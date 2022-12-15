@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
 import './App.scss';
-import Products from './components/Products/Products';
 import { RoutesEnum } from './enums';
 import Footer from "./components/Footer/Footer";
+import ProductsContainer from "./components/ProductsContainer/ProductsContainer";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       <div className='App'>
         <Header />
         <Routes>
-          <Route path={RoutesEnum.Home} element={<Products />} />
+          <Route path={RoutesEnum.Home} element={<ProductsContainer />} />
         </Routes>
         <Footer />
       </div>

@@ -1,11 +1,14 @@
 @import '../../styles/vars';
 @import '../../styles/mixins';
 
+.container-products {
+  min-height: calc(100vh - 128px);
+}
+
 .products {
   padding: 1.5rem 1rem 0;
   display: flex;
   gap: 25px;
-  max-height: calc(100vh - 128px);
 
   &-filter {
     width: 20%;

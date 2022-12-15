@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import './Search.scss';
+import { ISearch } from '../../interfaces';
 
-const Search = () => {
+const Search: FC<ISearch> = ({ value, onChange }) => {
   const [focus, setFocus] = useState(false);
 
   const clickLabel = () => {
@@ -13,9 +14,11 @@ const Search = () => {
       htmlFor='input_search'
     >
       <input
+        value={value}
         id='input_search'
         type='text'
         onClick={clickLabel}
+        onChange={onChange}
       />
     </label>
   );
