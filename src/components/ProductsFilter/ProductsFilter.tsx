@@ -1,12 +1,12 @@
 import './ProductsFilter.scss';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Nouislider from 'nouislider-react';
 import 'nouislider-react/node_modules/nouislider/distribute/nouislider.css';
 import { productsData } from '../../data/data';
-import { IProductData } from '../../interfaces';
+import { IFilterBrand, IProductData } from '../../interfaces';
 
-const ProductsFilter = () => {
+const ProductsFilter:FC<IFilterBrand> = ({onClick}) => {
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
   const [showMenuButton1, setShowMenuButton1] = useState(false);
@@ -97,7 +97,7 @@ const ProductsFilter = () => {
             {brands.map((brand) => (
               <li key={uuidv4()}>
                 <label htmlFor={brand}>{brand}</label>
-                <input id={brand} type='checkbox' />
+                <input id={brand} type='checkbox' onClick={onClick} />
               </li>
             ))}
           </ul>

@@ -39,3 +39,6 @@ export interface ISelect {
   value: string;
   onChange: (e: FormEvent<HTMLSelectElement>) => void;
 }
+export interface IFilterBrand {
+  onClick: (e: FormEvent<HTMLInputElement>) => void
+}

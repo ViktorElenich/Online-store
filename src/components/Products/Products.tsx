@@ -19,6 +19,9 @@ const Products: FC<IProductsProps> = ({ products }) => {
   const [sortSelect, setSortSelect] = useState(
     getLocalStorage(SORT_SELECT) || '',
   );
+
+  const[brandFilter, setBrandFilter] = useState("");
+
   const filterProducts = useAppSelector((state) => state.filter.filterProducts);
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
@@ -34,16 +37,21 @@ const Products: FC<IProductsProps> = ({ products }) => {
     setLocalStorage(SORT_SELECT, e.currentTarget.value);
     setSearchParams({ sort: sortSelect });
   };
+  const handleFilterBrandParams=(e: FormEvent<HTMLInputElement>)=>{
+    setBrandFilter(e.currentTarget.checked ? e.currentTarget.id : "" );
+    setSearchParams({ brand: brandFilter });
+  }
 
   useEffect(() => {
     dispatch(
       filtersProducts({
         products,
         search: searchInput,
-        sort: sortSelect
+        sort: sortSelect,
+        brand: brandFilter
       }),
     );
-  }, [dispatch, products, searchInput, sortSelect]);
+  }, [dispatch, products, searchInput, sortSelect, brandFilter]);
 
   useEffect(() => {
     setSearchParams({ search: searchInput, sort: sortSelect });
@@ -51,7 +59,7 @@ const Products: FC<IProductsProps> = ({ products }) => {
   return (
     <div className='products'>
       <aside className='products-filter'>
-        <ProductsFilter />
+        <ProductsFilter onClick={handleFilterBrandParams} />
       </aside>
       <div className='products-wrapper'>
         <div className='products-wrapper__sortSearch'>

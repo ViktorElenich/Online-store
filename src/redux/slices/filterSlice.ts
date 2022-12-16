@@ -10,7 +10,7 @@ const filterSlice = createSlice({
   initialState,
   reducers: {
     filtersProducts: (state, action) => {
-      const { products, search, sort } = action.payload;
+      const { products, search, sort, brand } = action.payload;
       let tempProducts = products;
       tempProducts = tempProducts.filter(
         (product: IProductData) =>
@@ -60,6 +60,8 @@ const filterSlice = createSlice({
           ) => b.discountPercentage - a.discountPercentage,
         );
       }
+
+      tempProducts = tempProducts.filter((product: IProductData) => product.brand === brand)
 
       state.filterProducts = tempProducts;
     },
