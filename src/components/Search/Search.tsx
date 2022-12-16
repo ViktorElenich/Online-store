@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
-import './Search.scss';
 import { ISearch } from '../../interfaces';
+import './Search.scss';
 
 const Search: FC<ISearch> = ({ value, onChange }) => {
   const [focus, setFocus] = useState(false);
@@ -10,7 +10,7 @@ const Search: FC<ISearch> = ({ value, onChange }) => {
   };
   return (
     <label
-      className={focus ? 'search active' : 'search'}
+      className={focus || value ? 'search active' : 'search'}
       htmlFor='input_search'
     >
       <input
