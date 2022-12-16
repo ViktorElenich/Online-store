@@ -4,5 +4,5 @@ export enum RoutesEnum {
   Login = '/login',
   Cart = '/cart',
   Products = '/products',
-  Error404 = '/error-404',
+  Error404 = '*',
 }
