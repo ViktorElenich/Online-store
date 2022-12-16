@@ -17,7 +17,7 @@ const Search: FC<ISearch> = ({ value, onChange }) => {
         value={value}
         id='input_search'
         type='text'
-        onClick={clickLabel}
+        onFocus={clickLabel}
         onChange={onChange}
       />
     </label>

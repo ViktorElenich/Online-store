@@ -34,7 +34,7 @@ const ProductsFilter = () => {
   return (
     <>
       <div className='filter__priceStock'>
-        <div className="stock">
+        <div className='stock'>
           <span>Stock</span>
           <Nouislider
             range={{ min: 0, max: 100 }}
@@ -42,12 +42,12 @@ const ProductsFilter = () => {
             step={1}
             tooltips
             format={{
-              to: value => value,
-              from: value => value as number
+              to: (value) => value,
+              from: (value) => value as number,
             }}
           />
         </div>
-        <div className="price">
+        <div className='price'>
           <span>Price</span>
           <Nouislider
             range={{ min: 0, max: 1800 }}
@@ -103,9 +103,13 @@ const ProductsFilter = () => {
           </ul>
         </li>
       </ul>
-      <div className="filter__buttons">
-        <button className='filter__btn' type='button'>Reset</button>
-        <button className='filter__btn' type='button'>Copy Link</button>
+      <div className='filter__buttons'>
+        <button className='filter__btn' type='button'>
+          Reset
+        </button>
+        <button className='filter__btn' type='button'>
+          Copy Link
+        </button>
       </div>
     </>
   );

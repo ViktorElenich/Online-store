@@ -8,7 +8,6 @@ import Loader from '../Loader/Loader';
 const ProductsContainer = () => {
   const { data, isLoading } = useFetchCollection('products');
   const products = useAppSelector((state) => state.products.products);
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
