@@ -6,15 +6,18 @@ import ProductItem from '../ProductItem/ProductItem';
 import ProductsFilter from '../ProductsFilter/ProductsFilter';
 import Search from '../Search/Search';
 import Select from '../Select/Select';
-import { filterSearch } from '../../redux/slices/filterSlice';
+import { filtersProducts } from '../../redux/slices/filterSlice';
 import { IProductsProps } from '../../interfaces';
 import { getLocalStorage, setLocalStorage } from '../../utils';
-import { SEARCH_INPUT } from '../../constants';
+import { SEARCH_INPUT, SORT_SELECT } from '../../constants';
 import './Products.scss';
 
 const Products: FC<IProductsProps> = ({ products }) => {
   const [searchInput, setSearchInput] = useState(
     getLocalStorage(SEARCH_INPUT) || '',
+  );
+  const [sortSelect, setSortSelect] = useState(
+    getLocalStorage(SORT_SELECT) || '',
   );
   const filterProducts = useAppSelector((state) => state.filter.filterProducts);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -26,17 +29,24 @@ const Products: FC<IProductsProps> = ({ products }) => {
     setSearchParams({ search: searchInput });
   };
 
-  useEffect(() => {
-    dispatch(
-      filterSearch({
-        products,
-        search: searchInput,
-      }),
-    );
-  }, [dispatch, products, searchInput]);
+  const handleSortParams = (e: FormEvent<HTMLSelectElement>) => {
+    setSortSelect(e.currentTarget.value);
+    setLocalStorage(SORT_SELECT, e.currentTarget.value);
+    setSearchParams({ sort: sortSelect });
+  };
 
   useEffect(() => {
-    setSearchParams({ search: searchInput });
+    dispatch(
+      filtersProducts({
+        products,
+        search: searchInput,
+        sort: sortSelect
+      }),
+    );
+  }, [dispatch, products, searchInput, sortSelect]);
+
+  useEffect(() => {
+    setSearchParams({ search: searchInput, sort: sortSelect });
   }, [searchParams]);
   return (
     <div className='products'>
@@ -45,7 +55,7 @@ const Products: FC<IProductsProps> = ({ products }) => {
       </aside>
       <div className='products-wrapper'>
         <div className='products-wrapper__sortSearch'>
-          <Select />
+          <Select value={sortSelect} onChange={handleSortParams} />
           <Search value={searchInput} onChange={handleSearchParams} />
         </div>
         <div className='products-items'>

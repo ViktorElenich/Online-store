@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {IProductData, IStateFilter } from '../../interfaces';
+import { IProductData, IStateFilter } from '../../interfaces';
 
 const initialState: IStateFilter = {
   filterProducts: [],
@@ -9,9 +9,10 @@ const filterSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    filterSearch: (state, action) => {
-      const { products, search } = action.payload;
-      const tempProducts = products.filter(
+    filtersProducts: (state, action) => {
+      const { products, search, sort } = action.payload;
+      let tempProducts = products;
+      tempProducts = tempProducts.filter(
         (product: IProductData) =>
           product.title.toLowerCase().includes(search.toLowerCase()) ||
           product.category.toLowerCase().includes(search.toLowerCase()) ||
@@ -23,12 +24,48 @@ const filterSlice = createSlice({
           product.description.toLowerCase().includes(search.toLowerCase()) ||
           product.stock.toString().toLowerCase().includes(search.toLowerCase()),
       );
+      if (sort === 'lowest-price') {
+        tempProducts.sort(
+          (a: { price: number }, b: { price: number }) => a.price - b.price,
+        );
+      }
+      if (sort === 'highest-price') {
+        tempProducts.sort(
+          (a: { price: number }, b: { price: number }) => b.price - a.price,
+        );
+      }
+      if (sort === 'lowest-rating') {
+        tempProducts.sort(
+          (a: { rating: number }, b: { rating: number }) => a.rating - b.rating,
+        );
+      }
+      if (sort === 'highest-rating') {
+        tempProducts.sort(
+          (a: { rating: number }, b: { rating: number }) => b.rating - a.rating,
+        );
+      }
+      if (sort === 'lowest-discount') {
+        tempProducts.sort(
+          (
+            a: { discountPercentage: number },
+            b: { discountPercentage: number },
+          ) => a.discountPercentage - b.discountPercentage,
+        );
+      }
+      if (sort === 'highest-discount') {
+        tempProducts.sort(
+          (
+            a: { discountPercentage: number },
+            b: { discountPercentage: number },
+          ) => b.discountPercentage - a.discountPercentage,
+        );
+      }
 
       state.filterProducts = tempProducts;
     },
   },
 });
 
-export const { filterSearch } = filterSlice.actions;
+export const { filtersProducts } = filterSlice.actions;
 
 export default filterSlice.reducer;

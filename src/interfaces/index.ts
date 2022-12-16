@@ -34,3 +34,8 @@ export interface ISearch {
   value: string;
   onChange: (e: FormEvent<HTMLInputElement>) => void;
 }
+
+export interface ISelect {
+  value: string;
+  onChange: (e: FormEvent<HTMLSelectElement>) => void;
+}
