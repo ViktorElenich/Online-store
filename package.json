@@ -17,6 +17,7 @@
     "@types/react-dom": "^18.0.9",
     "@types/uuid": "^9.0.0",
     "firebase": "^9.15.0",
+    "font-awesome": "^4.7.0",
     "nouislider-react": "^3.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -74,8 +74,8 @@ const ProductsFilter = () => {
           >
             {categories.map((cat) => (
               <li key={uuidv4()}>
-                <label htmlFor='check'>{cat}</label>
-                <input id='check' type='checkbox' />
+                <label htmlFor={cat}>{cat}</label>
+                <input id={cat} type='checkbox' />
               </li>
             ))}
           </ul>
@@ -96,8 +96,8 @@ const ProductsFilter = () => {
           >
             {brands.map((brand) => (
               <li key={uuidv4()}>
-                <label htmlFor='check'>{brand}</label>
-                <input id='check' type='checkbox' />
+                <label htmlFor={brand}>{brand}</label>
+                <input id={brand} type='checkbox' />
               </li>
             ))}
           </ul>
