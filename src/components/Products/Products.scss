@@ -1,11 +1,14 @@
 @import '../../styles/vars';
 @import '../../styles/mixins';
 
+.container-products {
+  min-height: calc(100vh - 128px);
+}
+
 .products {
   padding: 1.5rem 1rem 0;
   display: flex;
   gap: 25px;
-  max-height: calc(100vh - 128px);
 
   &-filter {
     width: 20%;
@@ -45,23 +48,26 @@
     }
   }
   &-items {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    justify-items: center;
-    grid-gap: 15px;
-    margin-top: 20px;
-    overflow-x: hidden;
-    position: relative;
-    &::-webkit-scrollbar {
-      width: 5px;
-      height: 10px;
-    }
-    &::-webkit-scrollbar-track {
-      background-color: transparent;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: $color_darker-grey;
-      border-radius: 1rem;
+    .products-animation {
+      max-height: calc(100vh - 204px);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      justify-items: center;
+      grid-gap: 15px;
+      margin-top: 20px;
+      overflow-x: hidden;
+      position: relative;
+      &::-webkit-scrollbar {
+        width: 5px;
+        height: 10px;
+      }
+      &::-webkit-scrollbar-track {
+        background-color: transparent;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: $color_darker-grey;
+        border-radius: 1rem;
+      }
     }
   }
 }

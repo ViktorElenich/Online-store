@@ -1,13 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import {IProductData} from "../../interfaces/IProductData";
+import { createSlice } from '@reduxjs/toolkit';
+import { IStateProducts } from '../../interfaces/index';
 
-interface IState {
-  products: IProductData[]
-}
-
-const initialState: IState = {
+const initialState: IStateProducts = {
   products: [],
-}
+};
 
 const productSlice = createSlice({
   name: 'product',
@@ -16,8 +12,8 @@ const productSlice = createSlice({
     setStoreProducts: (state, action) => {
       state.products = action.payload.products;
     },
-  }
-})
+  },
+});
 
 export const { setStoreProducts } = productSlice.actions;
 
