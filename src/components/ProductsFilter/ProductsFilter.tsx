@@ -15,16 +15,20 @@ import { BRAND_FILTERS, CATEGORY_FILTERS } from '../../constants';
 import { setLocalStorage } from '../../utils';
 
 const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
-  const [categories, setCategories] = useState<string[]>([]);
-  const [brands, setBrands] = useState<string[]>([]);
+
   const [showMenuButton1, setShowMenuButton1] = useState(false);
   const [showMenuButton2, setShowMenuButton2] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const[brandFilter, setBrandFilter] = useState<string[]>([]);
-  const[categoryFilter, setCategoryFilter] = useState<string[]>([]);
   const {products, sort, search} = searchSort;
+  const categoriesChecked = Array.from(new Set(products.map(item => item.category))).sort();
+  const brandsChecked = Array.from(new Set(products.map(item => item.brand))).sort();
 
+  const[brandFilter, setBrandFilter] = useState<string[]>(brandsChecked);
+  const[categoryFilter, setCategoryFilter] = useState<string[]>(categoriesChecked);
+  const [categoryShowAllChecked, setCategoryShowAllChecked] = useState(true)
+  const [brandsShowAllChecked, setBrandsShowAllChecked] = useState(true)
+ 
   const dispatch = useAppDispatch();
 
   const toggleButton1 = () => {
@@ -57,6 +61,39 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
     setLocalStorage(CATEGORY_FILTERS,  JSON.stringify([...categoryFilter, id]));
   }
   const isChecked = (arr:string[], name:string) =>arr.includes(name)
+
+  const handleShowAllCategories = (e: ChangeEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement;
+    const {checked} = target; 
+    if(checked){
+      setCategoryShowAllChecked(true)
+      setCategoryFilter(categoriesChecked)
+      setSearchParams({categories:"all"})
+      setLocalStorage(CATEGORY_FILTERS,  JSON.stringify(categoriesChecked))
+    }
+    else {
+      setCategoryShowAllChecked(false)
+      setCategoryFilter([])
+      setSearchParams({categories:""})
+      setLocalStorage(CATEGORY_FILTERS,  "")
+    }
+  }
+  const handleShowAllbrands = (e: ChangeEvent<HTMLInputElement>) =>{
+    const target = e.target as HTMLInputElement;
+    const {checked} = target; 
+    if(checked){
+      setBrandsShowAllChecked(true)
+      setBrandFilter(brandsChecked)
+      setSearchParams({Brands:"all"})
+      setLocalStorage(BRAND_FILTERS,  JSON.stringify(brandsChecked))
+    }
+    else {
+      setBrandsShowAllChecked(false)
+      setBrandFilter([])
+      setSearchParams({Brands:""})
+      setLocalStorage(BRAND_FILTERS,  "")
+    }
+  }
   
   useEffect(()=>{
     dispatch(
@@ -73,19 +110,7 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
   setSearchParams({  search, sort, brands:  JSON.stringify(brandFilter), categories: JSON.stringify(categoryFilter) });
 }, [searchParams]);
 
-
-  useEffect(() => {
-    const arrCategory: string[] = [];
-    const arrBrand: string[] = [];
-    productsData.products.forEach((product: IProductData) => {
-      arrCategory.push(product.category);
-      arrBrand.push(product.brand);
-    });
-    setCategories(
-      arrCategory.filter((el, idx, self) => idx === self.indexOf(el)),
-    );
-    setBrands(arrBrand.filter((el, idx, self) => idx === self.indexOf(el)));
-  }, []);
+ 
   return (
     <>
       <div className='filter__priceStock'>
@@ -128,7 +153,13 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
               showMenuButton1 ? 'dropdown-menu show' : 'dropdown-menu hide'
             }
           >
-            {categories.map((cat) => (
+                 <li key={uuidv4()} className="additional-checkbox">
+                  
+                      <label htmlFor="categoryShowAll">Show all
+                      <input type="checkbox" id="categoryShowAll" checked={categoryShowAllChecked} onChange={handleShowAllCategories}/></label>
+                 </li>
+                  
+            {categoriesChecked.map((cat) => (             
               <li key={uuidv4()}>
                 <label htmlFor={cat}>{cat}</label>
                 <input id={cat} type='checkbox' checked = {isChecked(categoryFilter, cat)} onChange={handleCategoryFilter}/>
@@ -150,7 +181,13 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
               showMenuButton2 ? 'dropdown-menu show' : 'dropdown-menu hide'
             }          
           >
-            {brands.map((brand) => (
+
+              <li key={uuidv4()} className="additional-checkbox">                  
+                  <label htmlFor="brandsShowAll">Show all
+                  <input type="checkbox" id="brandsShowAll" checked={brandsShowAllChecked} onChange={handleShowAllbrands}/></label>
+             </li>
+
+            {brandsChecked.map((brand) => (
               <li key={uuidv4()}>
                 <label htmlFor={brand} >{brand}</label>
                 <input id={brand} type='checkbox' checked={isChecked(brandFilter, brand)} onChange={handleBrandFilter} />

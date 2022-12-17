@@ -64,9 +64,9 @@ const filterSlice = createSlice({
       if (brands.length > 0) {
         tempProducts = tempProducts.filter((x: IProductData) => brands.includes(x.brand))
       }
-      if (categories.length > 0) {
-        tempProducts = tempProducts.filter((x: IProductData) => categories.includes(x.category))
-      }
+
+      tempProducts = tempProducts.filter((x: IProductData) => categories.includes(x.category))
+
 
       state.filterProducts = tempProducts;
     },

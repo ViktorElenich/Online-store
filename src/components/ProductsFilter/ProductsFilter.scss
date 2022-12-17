@@ -12,7 +12,8 @@
   gap: 40px;
   margin-bottom: 20px;
 
-  .stock, .price {
+  .stock,
+  .price {
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -50,10 +51,11 @@
     border-radius: 50%;
     box-shadow: unset;
     cursor: pointer;
-    transition: transform .1s;
+    transition: transform 0.1s;
 
-    &:before, &:after {
-      content: none
+    &:before,
+    &:after {
+      content: none;
     }
 
     &:hover {
@@ -82,8 +84,8 @@
       position: relative;
       display: block;
       @include hover-style(grey);
-      text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
-      transition: all .2s ease-in-out;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+      transition: all 0.2s ease-in-out;
       padding: 10px;
       font-size: 20px;
       font-weight: bold;
@@ -107,8 +109,9 @@
           width: 100%;
         }
       }
-      &.show, &.hide {
-        transform-origin: 50% 0%;;
+      &.show,
+      &.hide {
+        transform-origin: 50% 0%;
       }
 
       &.show {
@@ -116,7 +119,7 @@
         max-height: 200px;
         overflow-y: auto;
         transform: scaleY(1);
-        @include animation(showAnimation .5s ease-in-out);
+        @include animation(showAnimation 0.5s ease-in-out);
         transition: max-height 1s ease-in-out;
 
         &::-webkit-scrollbar {
@@ -135,11 +138,10 @@
       &.hide {
         max-height: 0;
         transform: scaleY(0);
-        @include animation(hideAnimation .4s ease-out);
-        transition: max-height .6s ease-out;
+        @include animation(hideAnimation 0.4s ease-out);
+        transition: max-height 0.6s ease-out;
       }
     }
-
 
     button {
       position: absolute;
@@ -156,8 +158,9 @@
         transform: translate(-6px, 0);
         margin-top: 5px;
         right: 5px;
-        &::before , &::after {
-          content: "";
+        &::before,
+        &::after {
+          content: '';
           position: absolute;
           background-color: black;
           width: 3px;
@@ -183,7 +186,6 @@
         }
       }
     }
-
   }
 }
 
@@ -202,6 +204,19 @@
     transition: all 0.3s ease-in-out;
     &:hover {
       background: $color_middle-grey;
+    }
+  }
+}
+.additional-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  & label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    & input {
+      margin-left: 15px;
     }
   }
 }
