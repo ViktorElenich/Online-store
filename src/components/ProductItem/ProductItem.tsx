@@ -7,7 +7,7 @@ import cartIconEmpty from '../../assets/cart-icon_empty.png';
 import IProductItemProp from '../../interfaces/index';
 
 const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
-  const [inCart, setInCart] = useState(isInTheCart);
+  const [inCart, setInCart] = useState(false);
   const changeInCart = (): void =>
     inCart ? setInCart(false) : setInCart(true);
   return (
@@ -32,8 +32,8 @@ const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
           onClick={changeInCart}
         >
           <img
-            src={isInTheCart ? cartIconFull : cartIconEmpty}
-            alt={isInTheCart ? 'Item is in the cart' : 'Add to cart'}
+            src={inCart ? cartIconFull : cartIconEmpty}
+            alt={inCart ? 'Item is in the cart' : 'Add to cart'}
           />
         </button>
         <span className='block-card__price'>${item.price}.00</span>
