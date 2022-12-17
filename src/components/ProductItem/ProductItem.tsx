@@ -7,11 +7,11 @@ import cartIconEmpty from '../../assets/cart-icon_empty.png';
 import IProductItemProp from '../../interfaces/index';
 
 const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
-  const [inCart, setInCart] = useState(isInTheCart);
+  const [inCart, setInCart] = useState(false);
   const changeInCart = (): void =>
     inCart ? setInCart(false) : setInCart(true);
   return (
-    <div className='block-card' id={`${item.id}`}>
+    <div className={isInTheCart ? 'list-card block-card' : 'block-card'} id={`${item.id}`}>
       <div
         className='block-card__image'
         style={{ backgroundImage: `url(${item.images[0]})` }}

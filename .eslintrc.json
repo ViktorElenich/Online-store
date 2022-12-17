@@ -50,5 +50,8 @@
         "moduleDirectory": ["node_modules", "src/"]
       }
     }
+  },
+  "globals": {
+    "NodeJS": true
   }
 }

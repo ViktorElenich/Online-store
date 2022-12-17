@@ -9,14 +9,22 @@ import ProductItem from '../ProductItem/ProductItem';
 import ProductsFilter from '../ProductsFilter/ProductsFilter';
 import Search from '../Search/Search';
 import Select from '../Select/Select';
-
+import Switch from '../Switch/Switch';
 import { IProductsProps } from '../../interfaces';
 import { getLocalStorage, setLocalStorage } from '../../utils';
-import { SEARCH_INPUT, SORT_SELECT } from '../../constants';
+import { GRID_STYLE, SEARCH_INPUT, SORT_SELECT } from '../../constants';
 import './Products.scss';
 
 
 const Products: FC<IProductsProps> = ({ products }) => {
+  let gridStatus: string | null | boolean = getLocalStorage(GRID_STYLE);
+  if (gridStatus === null) {
+    gridStatus = false;
+  } else {
+    gridStatus = JSON.parse(gridStatus);
+  }
+  // @ts-ignore
+  const [grid, setGrid] = useState<boolean>(gridStatus || false);
   const [searchInput, setSearchInput] = useState(
     getLocalStorage(SEARCH_INPUT) || '',
   );
@@ -40,6 +48,13 @@ const Products: FC<IProductsProps> = ({ products }) => {
     setSearchParams({ sort: sortSelect });
   };
 
+  useEffect(() => {
+    setSearchParams({
+      search: searchInput,
+      sort: sortSelect,
+      list: JSON.stringify(grid),
+    });
+  }, [searchParams, search, sort, grid]);
   return (
     <div className='products'>
       <aside className='products-filter'>
@@ -49,13 +64,16 @@ const Products: FC<IProductsProps> = ({ products }) => {
       <div className='products-wrapper'>
         <div className='products-wrapper__sortSearch'>
           <Select value={sortSelect} onChange={handleSortParams} />
+          <Switch products={filterProducts} changeStyle={setGrid} />
           <Search value={searchInput} onChange={handleSearchParams} />
         </div>
         <div className='products-items'>
-          <TransitionGroup className='products-animation'>
+          <TransitionGroup
+            className={grid ? 'products-animation list' : 'products-animation'}
+          >
             {filterProducts.map((product) => (
               <CSSTransition key={product.id} timeout={500} classNames='item'>
-                <ProductItem item={product} isInTheCart={false} />
+                <ProductItem item={product} isInTheCart={grid} />
               </CSSTransition>
             ))}
           </TransitionGroup>

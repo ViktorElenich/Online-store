@@ -94,3 +94,13 @@
     transform: rotate(360deg);
   }
 }
+@keyframes slide-up {
+  0% {
+    visibility: visible;
+    top: 65%;
+  }
+  100% {
+    visibility: visible;
+    top: 50%;
+  }
+}

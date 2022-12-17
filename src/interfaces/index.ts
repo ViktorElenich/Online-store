@@ -1,6 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Nouislider, { NouisliderProps } from 'nouislider-react';
 import { FormEvent } from 'react';
+import {Dispatch, FormEvent} from 'react';
+
 
 export interface IProductData {
   id: number;
@@ -41,6 +43,12 @@ export interface ISelect {
   value: string;
   onChange: (e: FormEvent<HTMLSelectElement>) => void;
 }
+
 export interface IFilterBrand {
   searchSort: { products: IProductData[], search: string, sort: string }
+}
+
+export interface ISwitch {
+  products: IProductData[];
+  changeStyle: Dispatch<boolean>;
 }
