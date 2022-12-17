@@ -9,8 +9,10 @@
   padding: 1.5rem 1rem 0;
   display: flex;
   gap: 25px;
+  height: calc(100vh - 128px);
 
   &-filter {
+    min-width: 13.6rem;
     width: 20%;
     background: $color_standart-grey;
     position: relative;
