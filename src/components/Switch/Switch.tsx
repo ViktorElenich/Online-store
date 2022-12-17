@@ -13,7 +13,7 @@ const Switch: FC<ISwitch> = ({ products, changeStyle }) => (
       color='#424242'
       onClick={() => {
         changeStyle(false);
-        setLocalStorage(GRID_STYLE, JSON.stringify(false));
+        setLocalStorage(GRID_STYLE, '0');
       }}
     />
     <FaListAlt
@@ -21,7 +21,7 @@ const Switch: FC<ISwitch> = ({ products, changeStyle }) => (
       color='#424242'
       onClick={() => {
         changeStyle(true);
-        setLocalStorage(GRID_STYLE, JSON.stringify(true));
+        setLocalStorage(GRID_STYLE, '1');
       }}
     />
     <p>

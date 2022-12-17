@@ -8,8 +8,8 @@ import { useAppSelector } from '../../hooks';
 import ProductItem from '../ProductItem/ProductItem';
 import ProductsFilter from '../ProductsFilter/ProductsFilter';
 import Search from '../Search/Search';
+import Switch from "../Switch/Switch";
 import Select from '../Select/Select';
-import Switch from '../Switch/Switch';
 import { IProductsProps } from '../../interfaces';
 import { getLocalStorage, setLocalStorage } from '../../utils';
 import { GRID_STYLE, SEARCH_INPUT, SORT_SELECT } from '../../constants';
@@ -17,13 +17,12 @@ import './Products.scss';
 
 
 const Products: FC<IProductsProps> = ({ products }) => {
-  let gridStatus: string | null | boolean = getLocalStorage(GRID_STYLE);
-  if (gridStatus === null) {
+  let gridStatus: string | boolean = getLocalStorage(GRID_STYLE);
+  if (gridStatus === '0') {
     gridStatus = false;
   } else {
-    gridStatus = JSON.parse(gridStatus);
+    gridStatus = true;
   }
-  // @ts-ignore
   const [grid, setGrid] = useState<boolean>(gridStatus || false);
   const [searchInput, setSearchInput] = useState(
     getLocalStorage(SEARCH_INPUT) || '',
@@ -34,7 +33,6 @@ const Products: FC<IProductsProps> = ({ products }) => {
 
   const filterProducts = useAppSelector((state) => state.filter.filterProducts);
   const [searchParams, setSearchParams] = useSearchParams();
- 
 
   const handleSearchParams = (e: FormEvent<HTMLInputElement>) => {
     setSearchInput(e.currentTarget.value);
@@ -54,7 +52,7 @@ const Products: FC<IProductsProps> = ({ products }) => {
       sort: sortSelect,
       list: JSON.stringify(grid),
     });
-  }, [searchParams, search, sort, grid]);
+  }, [searchParams, searchInput, sortSelect, grid]);
   return (
     <div className='products'>
       <aside className='products-filter'>

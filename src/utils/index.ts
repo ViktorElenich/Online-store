@@ -12,5 +12,5 @@ export const getLocalStorage = (name: string) => {
     }
     return savedData;
   }
-  return ""
+  return false;
 };
