@@ -69,5 +69,11 @@
         border-radius: 1rem;
       }
     }
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 35px;
+      padding: 0 10px 0 5px;
+    }
   }
 }

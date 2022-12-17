@@ -11,7 +11,7 @@ const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
   const changeInCart = (): void =>
     inCart ? setInCart(false) : setInCart(true);
   return (
-    <div className='block-card' id={`${item.id}`}>
+    <div className={isInTheCart ? 'list-card block-card' : 'block-card'} id={`${item.id}`}>
       <div
         className='block-card__image'
         style={{ backgroundImage: `url(${item.images[0]})` }}
@@ -32,8 +32,8 @@ const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
           onClick={changeInCart}
         >
           <img
-            src={inCart ? cartIconFull : cartIconEmpty}
-            alt={inCart ? 'Item is in the cart' : 'Add to cart'}
+            src={isInTheCart ? cartIconFull : cartIconEmpty}
+            alt={isInTheCart ? 'Item is in the cart' : 'Add to cart'}
           />
         </button>
         <span className='block-card__price'>${item.price}.00</span>
