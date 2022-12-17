@@ -1,16 +1,20 @@
-import { FC, FormEvent, useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import {FC, FormEvent, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+
+import { useAppSelector } from '../../hooks';
 import ProductItem from '../ProductItem/ProductItem';
 import ProductsFilter from '../ProductsFilter/ProductsFilter';
 import Search from '../Search/Search';
 import Select from '../Select/Select';
-import { filtersProducts } from '../../redux/slices/filterSlice';
+
 import { IProductsProps } from '../../interfaces';
 import { getLocalStorage, setLocalStorage } from '../../utils';
 import { SEARCH_INPUT, SORT_SELECT } from '../../constants';
 import './Products.scss';
+
 
 const Products: FC<IProductsProps> = ({ products }) => {
   const [searchInput, setSearchInput] = useState(
@@ -20,11 +24,9 @@ const Products: FC<IProductsProps> = ({ products }) => {
     getLocalStorage(SORT_SELECT) || '',
   );
 
-  const[brandFilter, setBrandFilter] = useState("");
-
   const filterProducts = useAppSelector((state) => state.filter.filterProducts);
   const [searchParams, setSearchParams] = useSearchParams();
-  const dispatch = useAppDispatch();
+ 
 
   const handleSearchParams = (e: FormEvent<HTMLInputElement>) => {
     setSearchInput(e.currentTarget.value);
@@ -37,29 +39,12 @@ const Products: FC<IProductsProps> = ({ products }) => {
     setLocalStorage(SORT_SELECT, e.currentTarget.value);
     setSearchParams({ sort: sortSelect });
   };
-  const handleFilterBrandParams=(e: FormEvent<HTMLInputElement>)=>{
-    setBrandFilter(e.currentTarget.checked ? e.currentTarget.id : "" );
-    setSearchParams({ brand: brandFilter });
-  }
 
-  useEffect(() => {
-    dispatch(
-      filtersProducts({
-        products,
-        search: searchInput,
-        sort: sortSelect,
-        brand: brandFilter
-      }),
-    );
-  }, [dispatch, products, searchInput, sortSelect, brandFilter]);
-
-  useEffect(() => {
-    setSearchParams({ search: searchInput, sort: sortSelect });
-  }, [searchParams]);
   return (
     <div className='products'>
       <aside className='products-filter'>
-        <ProductsFilter onClick={handleFilterBrandParams} />
+        <ProductsFilter  searchSort={{products, search: searchInput,
+        sort: sortSelect}} />
       </aside>
       <div className='products-wrapper'>
         <div className='products-wrapper__sortSearch'>

@@ -10,7 +10,8 @@ const filterSlice = createSlice({
   initialState,
   reducers: {
     filtersProducts: (state, action) => {
-      const { products, search, sort, brand } = action.payload;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { products, search, sort, brands, categories } = action.payload;
       let tempProducts = products;
       tempProducts = tempProducts.filter(
         (product: IProductData) =>
@@ -60,8 +61,12 @@ const filterSlice = createSlice({
           ) => b.discountPercentage - a.discountPercentage,
         );
       }
-
-      tempProducts = tempProducts.filter((product: IProductData) => product.brand === brand)
+      if (brands.length > 0) {
+        tempProducts = tempProducts.filter((x: IProductData) => brands.includes(x.brand))
+      }
+      if (categories.length > 0) {
+        tempProducts = tempProducts.filter((x: IProductData) => categories.includes(x.category))
+      }
 
       state.filterProducts = tempProducts;
     },
