@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Dispatch, FormEvent } from 'react';
 
 export interface IProductData {
@@ -16,7 +15,7 @@ export interface IProductData {
 }
 
 export interface IProductsProps {
-  products: IProductData[]
+  products: IProductData[];
 }
 
 export interface IStateProducts {
@@ -42,7 +41,22 @@ export interface ISelect {
 }
 
 export interface IFilterBrand {
-  searchSort: { products: IProductData[], search: string, sort: string }
+  searchSort: {
+    brandFilter: string[],
+    categoryFilter: string[],
+    categoriesChecked: string[],
+    brandsChecked: string[],
+    minStockQuantity: number,
+    maxStockQuantity: number,
+    minPriceQuantity: number,
+    maxPriceQuantity: number,
+    setMinStockQuantity: Dispatch<number>;
+    setMaxStockQuantity: Dispatch<number>;
+    setMinPriceQuantity: Dispatch<number>;
+    setMaxPriceQuantity: Dispatch<number>;
+    setBrandFilter: Dispatch<string[]>;
+    setCategoryFilter: Dispatch<string[]>;
+  };
 }
 
 export interface ISwitch {
