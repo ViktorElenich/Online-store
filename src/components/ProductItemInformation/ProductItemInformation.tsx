@@ -5,7 +5,10 @@ import IProductItemProp from '../../interfaces/index';
 import ItemRating from '../ProductItem/ProductItemRating';
 import './ProductItemInformation.scss';
 
-const ProductItemInformation: FC<IProductItemProp> = ({ item, isInTheCart }) => {
+const ProductItemInformation: FC<IProductItemProp> = ({
+  item,
+  isInTheCart,
+}) => {
   const itemImages = item.images.filter((x) => !x.includes('thumbnail'));
 
   const [inCart, setInCart] = useState(isInTheCart);
