@@ -63,3 +63,10 @@ export interface ISwitch {
   products: IProductData[];
   changeStyle: Dispatch<boolean>;
 }
+
+export interface IPagination {
+  currentPage: number;
+  setCurrentPage: Dispatch<number>;
+  productsPerPage: number;
+  totalProducts: number;
+}

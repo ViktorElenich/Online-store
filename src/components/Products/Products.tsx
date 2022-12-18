@@ -28,6 +28,7 @@ import {
 import './Products.scss';
 import Loader from '../Loader/Loader';
 import { filtersProducts } from '../../redux/slices/filterSlice';
+import Pagination from '../Pagination/Pagination';
 
 const Products: FC<IProductsProps> = ({ products }) => {
   let gridStatus: string | boolean = getLocalStorage(GRID_STYLE);
@@ -37,6 +38,8 @@ const Products: FC<IProductsProps> = ({ products }) => {
     gridStatus = true;
   }
   const [grid, setGrid] = useState<boolean>(gridStatus || false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(8);
   const [searchInput, setSearchInput] = useState(
     getLocalStorage(SEARCH_INPUT) || '',
   );
@@ -91,6 +94,12 @@ const Products: FC<IProductsProps> = ({ products }) => {
     setLocalStorage(SORT_SELECT, e.currentTarget.value);
     setSearchQuery({ sort: sortSelect }, 'pushIn');
   };
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filterProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
 
   useEffect(() => {
     dispatch(
@@ -179,13 +188,19 @@ const Products: FC<IProductsProps> = ({ products }) => {
           <TransitionGroup
             className={grid ? 'products-animation list' : 'products-animation'}
           >
-            {filterProducts.map((product) => (
+            {currentProducts.map((product) => (
               <CSSTransition key={product.id} timeout={500} classNames='item'>
                 <ProductItem item={product} isInTheCart={grid} />
               </CSSTransition>
             ))}
           </TransitionGroup>
         </div>
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          productsPerPage={productsPerPage}
+          totalProducts={filterProducts.length}
+        />
       </div>
     </div>
   );

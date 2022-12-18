@@ -51,12 +51,12 @@
   }
   &-items {
     .products-animation {
-      max-height: calc(100vh - 204px);
+      max-height: calc(100vh - 250px);
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       justify-items: center;
       grid-gap: 15px;
-      margin-top: 20px;
+      margin-top: 15px;
       overflow-x: hidden;
       position: relative;
       &::-webkit-scrollbar {

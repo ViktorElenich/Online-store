@@ -29,6 +29,14 @@
       1,
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
     ],
+    "jsx-a11y/no-noninteractive-element-interactions": [
+      "error",
+      {
+        "handlers": [
+          "onClick"
+        ]
+      }
+    ],
     "no-param-reassign": [2, { "props": false }],
     "react/function-component-definition": [0],
     "import/prefer-default-export": "off",
