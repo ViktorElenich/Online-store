@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Nouislider, { NouisliderProps } from 'nouislider-react';
-import { FormEvent } from 'react';
-import {Dispatch, FormEvent} from 'react';
+
+import { Dispatch, FormEvent } from 'react';
 
 
 export interface IProductData {
