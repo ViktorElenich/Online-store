@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {Dispatch, FormEvent} from 'react';
+import { Dispatch, FormEvent } from 'react';
 
 export interface IProductData {
   id: number;

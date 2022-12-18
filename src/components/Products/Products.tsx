@@ -14,6 +14,8 @@ import { IProductsProps } from '../../interfaces';
 import { getLocalStorage, setLocalStorage } from '../../utils';
 import { GRID_STYLE, SEARCH_INPUT, SORT_SELECT } from '../../constants';
 import './Products.scss';
+import Loader from '../Loader/Loader';
+
 
 
 const Products: FC<IProductsProps> = ({ products }) => {
@@ -30,6 +32,12 @@ const Products: FC<IProductsProps> = ({ products }) => {
   const [sortSelect, setSortSelect] = useState(
     getLocalStorage(SORT_SELECT) || '',
   );
+
+  const [isLoading, setIsLoading] = useState(true);
+
+useEffect(()=>{
+if(products.length>0)setIsLoading(false)
+},[products])
 
   const filterProducts = useAppSelector((state) => state.filter.filterProducts);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -56,8 +64,9 @@ const Products: FC<IProductsProps> = ({ products }) => {
   return (
     <div className='products'>
       <aside className='products-filter'>
+      {isLoading ? <Loader /> : 
         <ProductsFilter  searchSort={{products, search: searchInput,
-        sort: sortSelect}} />
+        sort: sortSelect}} />}
       </aside>
       <div className='products-wrapper'>
         <div className='products-wrapper__sortSearch'>

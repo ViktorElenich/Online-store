@@ -2,21 +2,22 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import './ProductsFilter.scss';
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import React,{ ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Nouislider, { NouisliderProps } from 'nouislider-react';
 import 'nouislider-react/node_modules/nouislider/distribute/nouislider.css';
 import { useSearchParams } from 'react-router-dom';
-import { productsData } from '../../data/data';
-import { IFilterBrand, IProductData } from '../../interfaces';
+
+import { IFilterBrand } from '../../interfaces';
 import { useAppDispatch } from '../../hooks';
 import { filtersProducts } from '../../redux/slices/filterSlice';
-import { BRAND_FILTERS, CATEGORY_FILTERS } from '../../constants';
-import { setLocalStorage } from '../../utils';
+import { BRAND_ALL_FILTERS, BRAND_FILTERS, CATEGORY_ALL_FILTERS, CATEGORY_FILTERS, SHOW_BRANDS, SHOW_CATEGORIES } from '../../constants';
+import { getLocalStorage, setLocalStorage } from '../../utils';
 
-const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
-  const [showMenuButton1, setShowMenuButton1] = useState(false);
-  const [showMenuButton2, setShowMenuButton2] = useState(false);
+const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => { 
+
+  const [showMenuButton1, setShowMenuButton1] = useState(getLocalStorage(SHOW_CATEGORIES)?  getLocalStorage(SHOW_CATEGORIES)==="1": false);
+  const [showMenuButton2, setShowMenuButton2] = useState(getLocalStorage(SHOW_BRANDS)? getLocalStorage(SHOW_BRANDS)==="1":false);
   const [minStockQuantity, setMinStockQuantity] = useState(0);
   const [maxStockQuantity, setMaxStockQuantity] = useState(0);
   const [minPriceQuantity, setMinPriceQuantity] = useState(0);
@@ -31,11 +32,11 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     new Set(products.map((item) => item.brand)),
   ).sort();
 
-  const [brandFilter, setBrandFilter] = useState<string[]>(brandsChecked);
-  const [categoryFilter, setCategoryFilter] =
-    useState<string[]>(categoriesChecked);
-  const [categoryShowAllChecked, setCategoryShowAllChecked] = useState(true);
-  const [brandsShowAllChecked, setBrandsShowAllChecked] = useState(true);
+  const[brandFilter, setBrandFilter] = useState<string[]>(getLocalStorage(BRAND_FILTERS)|| brandsChecked);
+  const[categoryFilter, setCategoryFilter] = useState<string[]>(getLocalStorage(CATEGORY_FILTERS)||categoriesChecked);
+  const [categoryShowAllChecked, setCategoryShowAllChecked] = useState(getLocalStorage(CATEGORY_ALL_FILTERS)? (getLocalStorage(CATEGORY_ALL_FILTERS)==="1") : true)
+  const [brandsShowAllChecked, setBrandsShowAllChecked] = useState(getLocalStorage(BRAND_ALL_FILTERS)?(getLocalStorage(BRAND_ALL_FILTERS)==="1"):true)
+  
 
   const dispatch = useAppDispatch();
 
@@ -47,58 +48,64 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
   };
 
   const handleBrandFilter = (e: ChangeEvent<HTMLInputElement>) => {
+    
     const target = e.target as HTMLInputElement;
-    const { id, checked } = target;
-    if (checked) {
-      setBrandFilter([...brandFilter, id]);
-    } else {
-      setBrandFilter(brandFilter.filter((x) => x !== id));
+    const {id, checked} = target;     
+    if(checked){
+      setBrandFilter([...brandFilter, id]); 
+    } else{
+      setBrandFilter(brandFilter.filter((x)=> x!==id));  
+      setBrandsShowAllChecked(false)
     }
-    setSearchParams({ brands: brandFilter });
-    setLocalStorage(BRAND_FILTERS, JSON.stringify([...brandFilter, id]));
-  };
-  const handleCategoryFilter = (e: ChangeEvent<HTMLInputElement>) => {
+    if(brandFilter.length === 0) setBrandsShowAllChecked(false)
+    setSearchParams({brands:brandFilter})
+   
+  }
+  const handleCategoryFilter = (e: ChangeEvent<HTMLInputElement>)=>{
     const target = e.target as HTMLInputElement;
-    const { id, checked } = target;
-    if (checked) {
+    const {id, checked} = target;     
+    if(checked){
       setCategoryFilter([...categoryFilter, id]);
-    } else {
-      setCategoryFilter(categoryFilter.filter((x) => x !== id));
+      
+    } else{
+      setCategoryFilter(categoryFilter.filter((x)=> x!==id));  
+      setCategoryShowAllChecked(false)
+      
     }
-    setSearchParams({ categories: categoryFilter });
-    setLocalStorage(CATEGORY_FILTERS, JSON.stringify([...categoryFilter, id]));
-  };
-  const isChecked = (arr: string[], name: string) => arr.includes(name);
+    if(categoryFilter.length === 0) setCategoryShowAllChecked(false)
+    setSearchParams({categories:categoryFilter})
+    
+  }
+  const isChecked = (arr:string[], name:string) =>arr.includes(name)
 
   const handleShowAllCategories = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
-    const { checked } = target;
-    if (checked) {
-      setCategoryShowAllChecked(true);
-      setCategoryFilter(categoriesChecked);
-      setSearchParams({ categories: 'all' });
-      setLocalStorage(CATEGORY_FILTERS, JSON.stringify(categoriesChecked));
-    } else {
-      setCategoryShowAllChecked(false);
-      setCategoryFilter([]);
-      setSearchParams({ categories: '' });
-      setLocalStorage(CATEGORY_FILTERS, '');
+    const {checked} = target;    
+    
+    if(checked){
+      setCategoryShowAllChecked(true)
+      setCategoryFilter(categoriesChecked)
+      setSearchParams({categories:categoriesChecked.join(",")})      
     }
-  };
-  const handleShowAllBrands = (e: ChangeEvent<HTMLInputElement>) => {
+    else {
+      setCategoryShowAllChecked(false)
+      setCategoryFilter([])
+      setSearchParams({categories:""})    
+    }
+  }
+  const handleShowAllbrands = (e: ChangeEvent<HTMLInputElement>) =>{
     const target = e.target as HTMLInputElement;
-    const { checked } = target;
-    if (checked) {
-      setBrandsShowAllChecked(true);
-      setBrandFilter(brandsChecked);
-      setSearchParams({ Brands: 'all' });
-      setLocalStorage(BRAND_FILTERS, JSON.stringify(brandsChecked));
-    } else {
-      setBrandsShowAllChecked(false);
-      setBrandFilter([]);
-      setSearchParams({ Brands: '' });
-      setLocalStorage(BRAND_FILTERS, '');
+    const {checked} = target; 
+    if(checked){
+      setBrandsShowAllChecked(true)
+      setBrandFilter(brandsChecked)
+      setSearchParams({brands:brandsChecked.join(",")}) 
     }
+    else {
+      setBrandsShowAllChecked(false)
+      setBrandFilter([])
+      setSearchParams({brands:""})
+    }    
   };
 
   const changeStockRange = (event: Array<number>) => {
@@ -110,7 +117,27 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     setMaxPriceQuantity(event[1]);
   }
 
-  useEffect(() => {
+/*   window.addEventListener("beforeunload", ()=>{
+    setLocalStorage(CATEGORY_ALL_FILTERS, categoryShowAllChecked?"1":"0");
+    setLocalStorage(BRAND_ALL_FILTERS, brandsShowAllChecked? "1":"0");    
+    setLocalStorage(CATEGORY_FILTERS,  categoryShowAllChecked? JSON.stringify(categoriesChecked):JSON.stringify(categoryFilter)); 
+    setLocalStorage(BRAND_FILTERS, brandsShowAllChecked? JSON.stringify(brandsChecked): JSON.stringify(brandFilter)); 
+  }) */
+
+  useEffect(()=>{
+    setLocalStorage(CATEGORY_ALL_FILTERS, categoryShowAllChecked?"1":"0");
+    setLocalStorage(BRAND_ALL_FILTERS, brandsShowAllChecked? "1":"0");    
+    setLocalStorage(CATEGORY_FILTERS,  categoryShowAllChecked? JSON.stringify(categoriesChecked):JSON.stringify(categoryFilter)); 
+    setLocalStorage(BRAND_FILTERS, brandsShowAllChecked? JSON.stringify(brandsChecked): JSON.stringify(brandFilter)); 
+
+  },[categoryShowAllChecked,brandsShowAllChecked, categoryFilter, brandFilter])
+
+  useEffect(()=>{
+    setLocalStorage(SHOW_CATEGORIES, showMenuButton1? "1": "0");
+    setLocalStorage(SHOW_BRANDS, showMenuButton2? "1": "0");
+  }, [showMenuButton1, showMenuButton2])
+
+  useEffect(()=>{
     dispatch(
       filtersProducts({
         products,
@@ -137,15 +164,16 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     maxPriceQuantity
   ]);
 
-  useEffect(() => {
-    setSearchParams({
-      search,
-      sort,
-      brands: JSON.stringify(brandFilter),
-      categories: JSON.stringify(categoryFilter),
-    });
-  }, [searchParams]);
 
+ useEffect(() => {
+  setSearchParams({ 
+     search, 
+     sort,
+     brands: JSON.stringify(brandFilter),
+     categories: JSON.stringify(categoryFilter) });
+}, [searchParams]);
+
+ 
   return (
     <>
       <div className='filter__priceStock'>
@@ -204,12 +232,9 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
             {categoriesChecked.map((cat) => (
               <li key={uuidv4()}>
                 <label htmlFor={cat}>{cat}</label>
-                <input
-                  id={cat}
-                  type='checkbox'
-                  checked={isChecked(categoryFilter, cat)}
-                  onChange={handleCategoryFilter}
-                />
+                <input id={cat} type='checkbox' checked = {categoryShowAllChecked || isChecked(categoryFilter, cat)}
+                 onChange={handleCategoryFilter}                
+                 />
               </li>
             ))}
           </ul>
@@ -235,20 +260,15 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
                   type='checkbox'
                   id='brandsShowAll'
                   checked={brandsShowAllChecked}
-                  onChange={handleShowAllBrands}
+                  onChange={handleShowAllbrands}
                 />
               </label>
             </li>
 
             {brandsChecked.map((brand) => (
               <li key={uuidv4()}>
-                <label htmlFor={brand}>{brand}</label>
-                <input
-                  id={brand}
-                  type='checkbox'
-                  checked={isChecked(brandFilter, brand)}
-                  onChange={handleBrandFilter}
-                />
+                <label htmlFor={brand} >{brand}</label>
+                <input id={brand} type='checkbox' checked={brandsShowAllChecked || isChecked(brandFilter, brand)} onChange={handleBrandFilter} />
               </li>
             ))}
           </ul>
