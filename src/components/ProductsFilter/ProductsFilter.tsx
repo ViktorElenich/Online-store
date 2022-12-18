@@ -11,7 +11,7 @@ import { useSearchParams } from 'react-router-dom';
 import { IFilterBrand } from '../../interfaces';
 import { useAppDispatch } from '../../hooks';
 import { filtersProducts } from '../../redux/slices/filterSlice';
-import { BRAND_ALL_FILTERS, BRAND_FILTERS, CATEGORY_ALL_FILTERS, CATEGORY_FILTERS } from '../../constants';
+import { BRAND_ALL_FILTERS, BRAND_FILTERS, CATEGORY_ALL_FILTERS, CATEGORY_FILTERS, SHOW_BRANDS, SHOW_CATEGORIES } from '../../constants';
 import { getLocalStorage, setLocalStorage } from '../../utils';
 
 
@@ -19,8 +19,8 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
 
   
 
-  const [showMenuButton1, setShowMenuButton1] = useState(false);
-  const [showMenuButton2, setShowMenuButton2] = useState(false);
+  const [showMenuButton1, setShowMenuButton1] = useState(getLocalStorage(SHOW_CATEGORIES)?  getLocalStorage(SHOW_CATEGORIES)==="1": false);
+  const [showMenuButton2, setShowMenuButton2] = useState(getLocalStorage(SHOW_BRANDS)? getLocalStorage(SHOW_BRANDS)==="1":false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const {products, sort, search} = searchSort;
@@ -119,6 +119,11 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
     setLocalStorage(BRAND_FILTERS, brandsShowAllChecked? JSON.stringify(brandsChecked): JSON.stringify(brandFilter)); 
 
   },[categoryShowAllChecked,brandsShowAllChecked, categoryFilter, brandFilter])
+
+  useEffect(()=>{
+    setLocalStorage(SHOW_CATEGORIES, showMenuButton1? "1": "0");
+    setLocalStorage(SHOW_BRANDS, showMenuButton2? "1": "0");
+  }, [showMenuButton1, showMenuButton2])
 
   useEffect(()=>{
     dispatch(
