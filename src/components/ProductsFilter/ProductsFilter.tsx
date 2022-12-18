@@ -14,19 +14,23 @@ import { filtersProducts } from '../../redux/slices/filterSlice';
 import { BRAND_ALL_FILTERS, BRAND_FILTERS, CATEGORY_ALL_FILTERS, CATEGORY_FILTERS, SHOW_BRANDS, SHOW_CATEGORIES } from '../../constants';
 import { getLocalStorage, setLocalStorage } from '../../utils';
 
-
-const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
-
-  
+const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => { 
 
   const [showMenuButton1, setShowMenuButton1] = useState(getLocalStorage(SHOW_CATEGORIES)?  getLocalStorage(SHOW_CATEGORIES)==="1": false);
   const [showMenuButton2, setShowMenuButton2] = useState(getLocalStorage(SHOW_BRANDS)? getLocalStorage(SHOW_BRANDS)==="1":false);
+  const [minStockQuantity, setMinStockQuantity] = useState(0);
+  const [maxStockQuantity, setMaxStockQuantity] = useState(0);
+  const [minPriceQuantity, setMinPriceQuantity] = useState(0);
+  const [maxPriceQuantity, setMaxPriceQuantity] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const {products, sort, search} = searchSort;
-  const categoriesChecked = Array.from(new Set(products.map(item => item.category))).sort();
-  const brandsChecked = Array.from(new Set(products.map(item => item.brand))).sort();
-
+  const { products, sort, search } = searchSort;
+  const categoriesChecked = Array.from(
+    new Set(products.map((item) => item.category)),
+  ).sort();
+  const brandsChecked = Array.from(
+    new Set(products.map((item) => item.brand)),
+  ).sort();
 
   const[brandFilter, setBrandFilter] = useState<string[]>(getLocalStorage(BRAND_FILTERS)|| brandsChecked);
   const[categoryFilter, setCategoryFilter] = useState<string[]>(getLocalStorage(CATEGORY_FILTERS)||categoriesChecked);
@@ -36,7 +40,6 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
 
   const dispatch = useAppDispatch();
 
-
   const toggleButton1 = () => {
     setShowMenuButton1(!showMenuButton1);
   };
@@ -44,7 +47,7 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
     setShowMenuButton2(!showMenuButton2);
   };
 
-  const handleBrandFilter = (e: ChangeEvent<HTMLInputElement>)=>{
+  const handleBrandFilter = (e: ChangeEvent<HTMLInputElement>) => {
     
     const target = e.target as HTMLInputElement;
     const {id, checked} = target;     
@@ -103,6 +106,15 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
       setBrandFilter([])
       setSearchParams({brands:""})
     }    
+  };
+
+  const changeStockRange = (event: Array<number>) => {
+    setMinStockQuantity(event[0]);
+    setMaxStockQuantity(event[1]);
+  };
+  const changePriceRange = (event: Array<number>) => {
+    setMinPriceQuantity(event[0]);
+    setMaxPriceQuantity(event[1]);
   }
 
 /*   window.addEventListener("beforeunload", ()=>{
@@ -128,22 +140,43 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
   useEffect(()=>{
     dispatch(
       filtersProducts({
-      products,
-      search,
-      sort,
-      brands:brandFilter,
-      categories:categoryFilter
-      }))
- } , [dispatch,products, search, sort, brandFilter,categoryFilter]);
+        products,
+        search,
+        sort,
+        brands: brandFilter,
+        categories: categoryFilter,
+        minStock: minStockQuantity,
+        maxStock: maxStockQuantity,
+        minPrice: minPriceQuantity,
+        maxPrice: maxPriceQuantity
+      }),
+    );
+  }, [
+    dispatch,
+    products,
+    search,
+    sort,
+    brandFilter,
+    categoryFilter,
+    minStockQuantity,
+    maxStockQuantity,
+    minPriceQuantity,
+    maxPriceQuantity
+  ]);
+
 
  useEffect(() => {
-  setSearchParams({  search, sort, brands: JSON.stringify(brandFilter), categories: JSON.stringify(categoryFilter) });
+  setSearchParams({ 
+     search, 
+     sort,
+     brands: JSON.stringify(brandFilter),
+     categories: JSON.stringify(categoryFilter) });
 }, [searchParams]);
 
  
   return (
-    <>   
-      <div className='filter__priceStock'>      
+    <>
+      <div className='filter__priceStock'>
         <div className='stock'>
           <span>Stock</span>
           <Nouislider
@@ -155,7 +188,7 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
               to: (value) => value,
               from: (value) => value as number,
             }}
-           // onUpdate={changePriceRange}
+            onUpdate={changeStockRange}
           />
         </div>
         <div className='price'>
@@ -164,10 +197,10 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
             range={{ min: 0, max: 1800 }}
             start={[0, 1800]}
             tooltips
+            onUpdate={changePriceRange}
           />
         </div>
       </div>
-     
       <ul className='filter-dropdown'>
         <li className='dropdown'>
           <button
@@ -182,16 +215,21 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
           <ul
             className={
               showMenuButton1 ? 'dropdown-menu show' : 'dropdown-menu hide'
-            } 
+            }
           >
-                 <li key={uuidv4()} className="additional-checkbox">
-                  
-                      <label htmlFor="categoryShowAll">Show all
-                      <input type="checkbox" id="categoryShowAll" checked={categoryShowAllChecked} 
-                       onChange={handleShowAllCategories} /></label>
-                 </li>
-                  
-            {categoriesChecked.map((cat) => (             
+            <li key={uuidv4()} className='additional-checkbox'>
+              <label htmlFor='categoryShowAll'>
+                Show all
+                <input
+                  type='checkbox'
+                  id='categoryShowAll'
+                  checked={categoryShowAllChecked}
+                  onChange={handleShowAllCategories}
+                />
+              </label>
+            </li>
+
+            {categoriesChecked.map((cat) => (
               <li key={uuidv4()}>
                 <label htmlFor={cat}>{cat}</label>
                 <input id={cat} type='checkbox' checked = {categoryShowAllChecked || isChecked(categoryFilter, cat)}
@@ -213,13 +251,19 @@ const ProductsFilter:FC<IFilterBrand> = ({searchSort}) => {
           <ul
             className={
               showMenuButton2 ? 'dropdown-menu show' : 'dropdown-menu hide'
-            }          
+            }
           >
-
-              <li key={uuidv4()} className="additional-checkbox">                  
-                  <label htmlFor="brandsShowAll">Show all
-                  <input type="checkbox" id="brandsShowAll" checked={brandsShowAllChecked} onChange={handleShowAllbrands}/></label>
-             </li>
+            <li key={uuidv4()} className='additional-checkbox'>
+              <label htmlFor='brandsShowAll'>
+                Show all
+                <input
+                  type='checkbox'
+                  id='brandsShowAll'
+                  checked={brandsShowAllChecked}
+                  onChange={handleShowAllbrands}
+                />
+              </label>
+            </li>
 
             {brandsChecked.map((brand) => (
               <li key={uuidv4()}>

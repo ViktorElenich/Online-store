@@ -116,7 +116,7 @@
 
       &.show {
         display: block;
-        max-height: 200px;
+        max-height: 11rem;
         overflow-y: auto;
         transform: scaleY(1);
         @include animation(showAnimation 0.5s ease-in-out);
