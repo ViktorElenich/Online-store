@@ -39,7 +39,7 @@ const ProductItemInformation: FC<IProductItemProp> = ({
             <div className='images-block__main-foto'>
               <img src={itemImages[0]} alt={item.title} ref={mainImage} />
             </div>
-            <div className='images-block__alt-fotos' onClick={changePhoto}>
+            <div role='presentation' className='images-block__alt-fotos' onClick={changePhoto}>
               {itemImages.map((imgUrl) => (
                 <img src={imgUrl} alt='Other foto' />
               ))}

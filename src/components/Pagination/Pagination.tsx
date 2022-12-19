@@ -39,6 +39,7 @@ const Pagination: FC<IPagination> = ({
   return (
     <ul className='pagination'>
       <li
+        role='menuitem'
         onClick={paginatePrev}
         onKeyDown={paginatePrev}
         className={currentPage === pageNumbers[0] ? 'hidden' : ''}
@@ -49,6 +50,7 @@ const Pagination: FC<IPagination> = ({
         if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
           return (
             <li
+              role='menuitem'
               key={number}
               onClick={() => paginate(number)}
               onKeyDown={() => paginate(number)}
@@ -58,8 +60,10 @@ const Pagination: FC<IPagination> = ({
             </li>
           );
         }
+        return null
       })}
       <li
+        role='menuitem'
         onClick={paginateNext}
         onKeyDown={paginateNext}
         className={
