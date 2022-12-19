@@ -1,87 +1,36 @@
-import {FC, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
-import ItemRating from '../ProductItem/ProductItemRating';
+import { FC, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import './ProductItemInformation.scss';
-import useFetchCollection from '../../hooks/useFetchCollection';
 import Loader from '../Loader/Loader';
-import { useAppSelector } from '../../hooks';
-import { RoutesEnum } from '../../enums';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import useFetchProductItem from '../../hooks/useFetchProductItem';
+import { setStoreProduct } from '../../redux/slices/productSlice';
+import ProductInfo from './ProductInfo/ProductInfo';
 
 const ProductItemInformation: FC = () => {
-  const { isLoading } = useFetchCollection('products');
-  const products = useAppSelector((state) => state.products.products);
-  const dataID = window.location.pathname.split('/').pop();
-  const item = products.filter((x) => x.id === Number(dataID))[0];
-  const itemImages = item.images.filter((x) => !x.includes('thumbnail'));
+  const { id } = useParams();
+  const { data, isLoading } = useFetchProductItem('products', id as string);
+  const [showInfo, setShowInfo] = useState(false);
+  const dispatch = useAppDispatch();
+  const product = useAppSelector((state) => state.products.product);
 
-  //const [inCart, setInCart] = useState(isInTheCart);
-  const mainImage = useRef<null | HTMLImageElement>(null);
-  const changePhoto = (event: React.MouseEvent) => {
-    const { target } = event;
-    if (mainImage.current) {
-      mainImage.current.src = (target as HTMLImageElement).src;
-    }
-  };
+  setTimeout(() => {
+    setShowInfo(true);
+  }, 2000);
+
+  useEffect(() => {
+    dispatch(
+      setStoreProduct({
+        product: data,
+      }),
+    );
+  }, [dispatch, data]);
+
   return isLoading ? (
     <Loader />
   ) : (
     <div className='item-information__wrapper'>
-      <div className='breadcrumbs'>
-        <span>
-          <NavLink to={RoutesEnum.Home}>store</NavLink>
-        </span>
-        <div className='arrow-right' />
-        <span>{item.category}</span>
-        <div className='arrow-right' />
-        <span>{item.brand}</span>
-        <div className='arrow-right' />
-        <span>{item.title}</span>
-      </div>
-      <div className='item-information'>
-        <div className='item-information__main'>
-          <h2 className='item-information__title'>{item.title}</h2>
-          <div className='item-information__images-block'>
-            <div className='images-block__main-foto'>
-              <img src={itemImages[0]} alt={item.title} ref={mainImage} />
-            </div>
-            <div className='images-block__alt-fotos' onClick={changePhoto}>
-              <div
-                role='presentation'
-                className='images-block__alt-fotos'
-                onClick={changePhoto}
-              >
-                {itemImages.map((imgUrl) => (
-                  <img src={imgUrl} alt='Other foto' />
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className='item-information__details'>
-            <ItemRating itemRating={item.rating} />
-            <h3 className='item-information__brand'>{item.brand}</h3>
-            <p className='item-information__category'>{item.category}</p>
-            <p className='item-information__description'>{item.description}</p>
-            <p className='item-information__stock'>Stock: {item.stock}</p>
-            <p className='item-information__discount'>
-              Discount: {item.discountPercentage}%
-            </p>
-            <p className='item-information__price'>Price: ${item.price}.00</p>
-            <div className='colored-bg' />
-            <div className='item-information__btns'>
-              <button
-                className='item-information__cartBtn btn'
-                type='button'
-                onClick={() => {}}
-              >
-                {true ? 'Add to cart' : 'Added to cart'}
-              </button>
-              <button className='item-information__buyNow btn' type='button'>
-                Buy now
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      {showInfo ? <ProductInfo product={product} /> : <Loader />}
     </div>
   );
 };

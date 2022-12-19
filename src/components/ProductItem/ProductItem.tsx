@@ -1,24 +1,27 @@
 import { FC, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import ItemRating from './ProductItemRating';
-
 import './ProductItem.scss';
 import cartIconFull from '../../assets/cart-icon_full.png';
 import cartIconEmpty from '../../assets/cart-icon_empty.png';
 import IProductItemProp from '../../interfaces/index';
+import { RoutesEnum } from '../../enums';
 
 const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
   const [inCart, setInCart] = useState(false);
   const changeInCart = (): void =>
     inCart ? setInCart(false) : setInCart(true);
   return (
-    <div className={isInTheCart ? 'list-card block-card' : 'block-card'} id={`${item.id}`}>
+    <NavLink
+      to={`${RoutesEnum.Products}/${item.id}`}
+      className={isInTheCart ? 'list-card block-card' : 'block-card'}
+      id={`${item.id}`}
+    >
       <div
         className='block-card__image'
         style={{ backgroundImage: `url(${item.images[0]})` }}
       />
-      <div className='discount-line'>
-        Discount: {item.discountPercentage}%
-      </div>
+      <div className='discount-line'>Discount: {item.discountPercentage}%</div>
       <div className='block-card__details'>
         <div className='block-card__description'>
           <span>{item.description}</span>
@@ -38,7 +41,7 @@ const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
         </button>
         <span className='block-card__price'>${item.price}.00</span>
       </div>
-    </div>
+    </NavLink>
   );
 };
 export default ItemBlockCard;

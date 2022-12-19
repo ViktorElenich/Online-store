@@ -3,6 +3,7 @@ import { IStateProducts } from '../../interfaces/index';
 
 const initialState: IStateProducts = {
   products: [],
+  product: [],
 };
 
 const productSlice = createSlice({
@@ -12,9 +13,12 @@ const productSlice = createSlice({
     setStoreProducts: (state, action) => {
       state.products = action.payload.products;
     },
+    setStoreProduct: (state, action) => {
+      state.product = action.payload.product;
+    },
   },
 });
 
-export const { setStoreProducts } = productSlice.actions;
+export const { setStoreProducts, setStoreProduct } = productSlice.actions;
 
 export default productSlice.reducer;
