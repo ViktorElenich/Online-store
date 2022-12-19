@@ -14,7 +14,11 @@ import {
   BRAND_ALL_FILTERS,
   BRAND_FILTERS,
   CATEGORY_ALL_FILTERS,
-  CATEGORY_FILTERS, MAX_PRICE, MAX_STOCK, MIN_PRICE, MIN_STOCK,
+  CATEGORY_FILTERS,
+  MAX_PRICE,
+  MAX_STOCK,
+  MIN_PRICE,
+  MIN_STOCK,
   SHOW_BRANDS,
   SHOW_CATEGORIES,
 } from '../../constants';
@@ -29,6 +33,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     minStock: NumberParam,
     maxStock: NumberParam,
   });
+  const [copied, setCopied] = useState(false);
   const [showMenuButton1, setShowMenuButton1] = useState(
     getLocalStorage(SHOW_CATEGORIES)
       ? getLocalStorage(SHOW_CATEGORIES) === '1'
@@ -52,7 +57,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     setMinPriceQuantity,
     setMaxPriceQuantity,
     setBrandFilter,
-    setCategoryFilter
+    setCategoryFilter,
   } = searchSort;
 
   const [categoryShowAllChecked, setCategoryShowAllChecked] = useState(
@@ -137,6 +142,27 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     setLocalStorage(MIN_PRICE, JSON.stringify(event[0]));
     setMaxPriceQuantity(event[1]);
     setLocalStorage(MAX_PRICE, JSON.stringify(event[1]));
+  };
+
+  const handleResetFilters = () => {
+    setMinStockQuantity(2);
+    setMaxStockQuantity(150);
+    setMinPriceQuantity(10.0);
+    setMaxPriceQuantity(1749.0);
+    setCategoryShowAllChecked(true);
+    setBrandsShowAllChecked(true);
+    setBrandFilter(brandsChecked);
+    setCategoryFilter(categoriesChecked);
+  };
+
+  const handleCopyLink = () => {
+    const el = document.createElement('input');
+    el.value = window.location.href;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    setCopied(true);
   };
 
   useEffect(() => {
@@ -291,11 +317,15 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
         </li>
       </ul>
       <div className='filter__buttons'>
-        <button className='filter__btn' type='button'>
+        <button
+          className='filter__btn'
+          type='button'
+          onClick={handleResetFilters}
+        >
           Reset
         </button>
-        <button className='filter__btn' type='button'>
-          Copy Link
+        <button className='filter__btn' type='button' onClick={handleCopyLink}>
+          {!copied ? 'Copy Link' : 'Copied'}
         </button>
       </div>
     </>
