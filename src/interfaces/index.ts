@@ -18,8 +18,13 @@ export interface IProductsProps {
   products: IProductData[];
 }
 
+export interface IPropItem {
+  product: IProductData[]
+}
+
 export interface IStateProducts {
   products: IProductData[];
+  product: IProductData[];
 }
 export interface IStateFilter {
   filterProducts: IProductData[];

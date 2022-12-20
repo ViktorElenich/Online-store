@@ -153,6 +153,10 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     setBrandsShowAllChecked(true);
     setBrandFilter(brandsChecked);
     setCategoryFilter(categoriesChecked);
+    setSearchQuery({
+      brands: brandFilter,
+      categories: categoryFilter,
+    }, 'pushIn');
   };
 
   const handleCopyLink = () => {
@@ -197,7 +201,9 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
       brands: brandFilter,
       categories: categoryFilter,
     });
-  }, [searchQuery]);
+    if (brandFilter.length === brandsChecked.length) setBrandsShowAllChecked(true);
+    if (categoryFilter.length === categoriesChecked.length) setCategoryShowAllChecked(true);
+  }, [searchQuery, brandFilter, categoryFilter]);
 
   return (
     <>
