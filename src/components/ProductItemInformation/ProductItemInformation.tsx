@@ -9,7 +9,7 @@ import ProductInfo from './ProductInfo/ProductInfo';
 
 const ProductItemInformation: FC = () => {
   const { id } = useParams();
-  const { data, isLoading } = useFetchProductItem('products', id as string);
+  const { data } = useFetchProductItem('products', id as string);
   const [showInfo, setShowInfo] = useState(false);
   const dispatch = useAppDispatch();
   const product = useAppSelector((state) => state.products.product);
@@ -26,11 +26,11 @@ const ProductItemInformation: FC = () => {
     );
   }, [dispatch, data]);
 
-  return isLoading ? (
+  return !showInfo ? (
     <Loader />
   ) : (
     <div className='item-information__wrapper'>
-      {showInfo ? <ProductInfo product={product} /> : <Loader />}
+      <ProductInfo product={product} />
     </div>
   );
 };
