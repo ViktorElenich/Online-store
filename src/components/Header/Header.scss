@@ -104,11 +104,26 @@
     align-items: center;
     &__cart {
       display: flex;
+      position: relative;
       a {
         background: url('../../assets/cart.png') no-repeat;
         background-size: contain;
         width: 1.5rem;
         height: 1.5rem;
+      }
+      span {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 17px;
+        height: 17px;
+        top: -8px;
+        left: 5px;
+        background-color: red;
+        color: #fff;
+        border-radius: 50%;
+        font-size: 14px;
       }
     }
 

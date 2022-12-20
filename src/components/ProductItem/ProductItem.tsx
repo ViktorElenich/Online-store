@@ -6,10 +6,13 @@ import cartIconFull from '../../assets/cart-icon_full.png';
 import cartIconEmpty from '../../assets/cart-icon_empty.png';
 import IProductItemProp from '../../interfaces/index';
 import { RoutesEnum } from '../../enums';
+import {useAppDispatch} from "../../hooks";
+import {calculatePrice, calculateTotalQuantity, setCartProducts} from "../../redux/slices/cartSlice";
 
 const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
   const [inCart, setInCart] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const changeInCart = (): void =>
     inCart ? setInCart(false) : setInCart(true);
 
@@ -21,6 +24,9 @@ const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
       navigate(`${RoutesEnum.Products}/${id}`);
     } else {
       changeInCart()
+      dispatch(setCartProducts(item));
+      dispatch(calculateTotalQuantity());
+      dispatch(calculatePrice());
     }
   };
   return (

@@ -2,11 +2,14 @@ import React, { FC, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { RoutesEnum } from '../../../enums';
-import { IPropItem } from '../../../interfaces';
+import {IProductData, IPropItem} from '../../../interfaces';
 import ModalPurchasePage from '../../ModalPurchase/ModalPurchasePage';
 import ItemRating from '../../ProductItem/ProductItemRating';
+import {useAppDispatch} from "../../../hooks";
+import {calculatePrice, setCartProducts} from "../../../redux/slices/cartSlice";
 
 const ProductInfo: FC<IPropItem> = ({ product }) => {
+  const dispatch = useAppDispatch();
   const item = product[0];
   const itemImages = item.images.filter((x) => !x.includes('thumbnail'));
 
@@ -19,6 +22,10 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
       mainImage.current.src = (target as HTMLImageElement).src;
     }
   };
+  const addToCart = (productItem: IProductData) => {
+    dispatch(setCartProducts(productItem))
+    dispatch(calculatePrice())
+  }
 
   return (
     <>
@@ -66,7 +73,7 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
             <button
               className='item-information__cartBtn btn'
               type='button'
-              onClick={() => {}}
+              onClick={() => addToCart(item)}
             >
               {true ? 'Add to cart' : 'Added to cart'}
             </button>
