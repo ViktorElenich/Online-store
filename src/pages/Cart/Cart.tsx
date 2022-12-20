@@ -3,8 +3,14 @@ import { Link } from 'react-router-dom';
 import './Cart.scss';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import {calculatePrice, calculateTotalQuantity, setCartProducts} from '../../redux/slices/cartSlice';
+import {
+  calculatePrice,
+  calculateTotalQuantity,
+  removeCartProduct,
+  setCartProducts,
+} from '../../redux/slices/cartSlice';
 import { IProductData } from '../../interfaces';
+import { TH } from '../../constants';
 
 const Cart = () => {
   const cartItems = useAppSelector((state) => state.cart.products);
@@ -16,6 +22,10 @@ const Cart = () => {
 
   const increaseCountProduct = (cart: IProductData) => {
     dispatch(setCartProducts(cart));
+  };
+
+  const removeItemFromCart = (cart: IProductData) => {
+    dispatch(removeCartProduct(cart));
   };
   useEffect(() => {
     dispatch(calculatePrice());
@@ -29,12 +39,9 @@ const Cart = () => {
         <table>
           <thead>
             <tr>
-              <th>s/n</th>
-              <th>Product</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Total</th>
-              <th>Action</th>
+              {TH.map((item) => (
+                <th>{item}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
@@ -70,7 +77,11 @@ const Cart = () => {
                   </td>
                   <td>{(price * productQuantity).toFixed(2)}</td>
                   <td className='table__icons'>
-                    <FaTrashAlt size={19} color='red' />
+                    <FaTrashAlt
+                      size={19}
+                      color='red'
+                      onClick={() => removeItemFromCart(item.product)}
+                    />
                   </td>
                 </tr>
               );

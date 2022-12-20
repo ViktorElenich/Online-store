@@ -51,8 +51,18 @@ const cartSlice = createSlice({
       const totalAmount = res.reduce((a, b) => a + b, 0);
       state.cartTotalAmount = totalAmount;
     },
+    removeCartProduct: (state, action) => {
+      const newCartItem = state.products.filter(
+        (item) => item.product.id !== action.payload.id,
+      );
+      state.products = newCartItem;
+      toast.success(`${action.payload.title} remove from cart`, {
+        position: 'top-left'
+      })
+    },
   },
 });
 
-export const { setCartProducts, calculateTotalQuantity, calculatePrice } = cartSlice.actions;
+export const { setCartProducts, calculateTotalQuantity, calculatePrice, removeCartProduct } =
+  cartSlice.actions;
 export default cartSlice.reducer;
