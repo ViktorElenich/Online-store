@@ -3,6 +3,25 @@
     @content;
   }
 }
+
+@mixin btn-standart {
+  width: 100%;
+  height: 40px;
+  font-family: $font-inter;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  background-color: $color_standart-grey;
+  cursor: pointer;
+  border: 3px solid $color_primary;
+  transition: 0.3s;
+  &:hover {
+    background-color: $color_secondary;
+  }
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
 @mixin hover-style($color) {
   &:hover {
     background: lighten($color, 3%);

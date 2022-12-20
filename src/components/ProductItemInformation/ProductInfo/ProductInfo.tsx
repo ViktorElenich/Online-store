@@ -1,13 +1,16 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { RoutesEnum } from '../../../enums';
 import { IPropItem } from '../../../interfaces';
+import ModalPurchasePage from '../../ModalPurchase/ModalPurchasePage';
 import ItemRating from '../../ProductItem/ProductItemRating';
 
 const ProductInfo: FC<IPropItem> = ({ product }) => {
   const item = product[0];
   const itemImages = item.images.filter((x) => !x.includes('thumbnail'));
+
+  const [openPaymentModal, setOpenPaymentModal] = useState(false);
 
   const mainImage = useRef<null | HTMLImageElement>(null);
   const changePhoto = (event: React.MouseEvent) => {
@@ -16,6 +19,7 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
       mainImage.current.src = (target as HTMLImageElement).src;
     }
   };
+
   return (
     <>
       <div className='breadcrumbs'>
@@ -66,9 +70,19 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
             >
               {true ? 'Add to cart' : 'Added to cart'}
             </button>
-            <button className='item-information__buyNow btn' type='button'>
+            <button
+              className='item-information__buyNow btn'
+              type='button'
+              onClick={() => setOpenPaymentModal(true)}
+            >
               Buy now
             </button>
+            <ModalPurchasePage
+              handleClose={() => {
+                setOpenPaymentModal(false);
+              }}
+              show={openPaymentModal}
+            />
           </div>
         </div>
       </div>

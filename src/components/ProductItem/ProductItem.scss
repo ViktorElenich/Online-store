@@ -39,7 +39,7 @@
 .block-card__description {
   opacity: 0;
   position: absolute;
-  bottom: 65%;
+  top: 10%;
   left: 1em;
   padding: 1em;
   color: $color_secondary;
@@ -51,7 +51,7 @@
 
   cursor: default;
   @media (max-width: 650px) {
-    bottom: 55%;
+    bottom: 10%;
   }
 }
 
@@ -163,7 +163,7 @@
   flex-direction: row;
 
   &:hover {
-    background-color: $grey-color;
+    background-color: $color_secondary;
     .block-card__image {
       filter: none;
     }

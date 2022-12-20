@@ -75,3 +75,8 @@ export interface IPagination {
   productsPerPage: number;
   totalProducts: number;
 }
+export interface IOpenHideModal {
+  handleClose: () => void;
+  show: boolean;
+  children?: HTMLElement[];
+}

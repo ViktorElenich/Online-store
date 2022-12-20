@@ -1,11 +1,12 @@
 import { FC, FormEvent, useEffect, useState } from 'react';
+
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {
   StringParam,
   BooleanParam,
   useQueryParams,
   NumberParam,
 } from 'use-query-params';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import ProductItem from '../ProductItem/ProductItem';
 import ProductsFilter from '../ProductsFilter/ProductsFilter';

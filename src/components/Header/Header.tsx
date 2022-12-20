@@ -24,6 +24,7 @@ const Header = () => (
       </ul>
     </nav>
     <div className='header-user'>
+      <span className="total-payment">$0</span>
       <div className='header-user__cart'>
         <NavLink to={RoutesEnum.Cart} />
       </div>
