@@ -1,5 +1,5 @@
-import { FC, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ItemRating from './ProductItemRating';
 import './ProductItem.scss';
 import cartIconFull from '../../assets/cart-icon_full.png';
@@ -9,13 +9,26 @@ import { RoutesEnum } from '../../enums';
 
 const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
   const [inCart, setInCart] = useState(false);
+  const navigate = useNavigate();
   const changeInCart = (): void =>
     inCart ? setInCart(false) : setInCart(true);
+
+  const openProductDetails = (event: React.MouseEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLImageElement;
+    const btn = target.closest('.block-card__cart');
+    if (!btn) {
+      const { id } = event.currentTarget;
+      navigate(`${RoutesEnum.Products}/${id}`);
+    } else {
+      changeInCart()
+    }
+  };
   return (
-    <NavLink
-      to={`${RoutesEnum.Products}/${item.id}`}
+    <div
+      role='presentation'
       className={isInTheCart ? 'list-card block-card' : 'block-card'}
       id={`${item.id}`}
+      onClick={openProductDetails}
     >
       <div
         className='block-card__image'
@@ -41,7 +54,7 @@ const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
         </button>
         <span className='block-card__price'>${item.price}.00</span>
       </div>
-    </NavLink>
+    </div>
   );
 };
 export default ItemBlockCard;
