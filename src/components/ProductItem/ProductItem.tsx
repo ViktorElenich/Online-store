@@ -6,21 +6,27 @@ import cartIconFull from '../../assets/cart-icon_full.png';
 import cartIconEmpty from '../../assets/cart-icon_empty.png';
 import IProductItemProp from '../../interfaces/index';
 import { RoutesEnum } from '../../enums';
+import {useAppDispatch} from "../../hooks";
+import {setCartProducts} from "../../redux/slices/cartSlice";
 
 const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
   const [inCart, setInCart] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const changeInCart = (): void =>
     inCart ? setInCart(false) : setInCart(true);
 
   const openProductDetails = (event: React.MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLImageElement;
     const btn = target.closest('.block-card__cart');
+    const { id } = event.currentTarget;
     if (!btn) {
-      const { id } = event.currentTarget;
       navigate(`${RoutesEnum.Products}/${id}`);
     } else {
-      changeInCart()
+      changeInCart();
+      dispatch(setCartProducts({
+        products: item
+      }))
     }
   };
   return (
