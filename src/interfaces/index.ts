@@ -80,3 +80,14 @@ export interface IOpenHideModal {
   show: boolean;
   children?: HTMLElement[];
 }
+
+export interface ICart {
+  products: ICartProducts[],
+  cartTotalQuantity: number,
+  cartTotalAmount: number
+}
+
+export interface ICartProducts {
+  product: IProductData,
+  productQuantity: number
+}
