@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Cart.scss';
 import { FaTrashAlt } from 'react-icons/fa';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import {calculatePrice, calculateTotalQuantity, setCartProducts} from '../../redux/slices/cartSlice';
+import { IProductData } from '../../interfaces';
 
 const Cart = () => {
   const cartItems = useAppSelector((state) => state.cart.products);
@@ -9,7 +12,16 @@ const Cart = () => {
     (state) => state.cart.cartTotalQuantity,
   );
   const cartTotalAmount = useAppSelector((state) => state.cart.cartTotalAmount);
-  console.log(cartItems);
+  const dispatch = useAppDispatch();
+
+  const increaseCountProduct = (cart: IProductData) => {
+    dispatch(setCartProducts(cart));
+  };
+  useEffect(() => {
+    dispatch(calculatePrice());
+    dispatch(calculateTotalQuantity());
+  }, [dispatch, cartItems]);
+
   return (
     <div className='cart'>
       <h2>Shopping Cart</h2>
@@ -47,7 +59,11 @@ const Cart = () => {
                       <p>
                         <b>{productQuantity}</b>
                       </p>
-                      <button className='btn cart__btn' type='button'>
+                      <button
+                        className='btn cart__btn'
+                        type='button'
+                        onClick={() => increaseCountProduct(item.product)}
+                      >
                         +
                       </button>
                     </div>
@@ -80,7 +96,9 @@ const Cart = () => {
               <h3>{`$${cartTotalAmount.toFixed(2)}`}</h3>
             </div>
             <p>Tax an shipping calculated at checkout</p>
-            <button className='btn btn_check' type='button'>Checkout</button>
+            <button className='btn btn_check' type='button'>
+              Checkout
+            </button>
           </div>
         </div>
       </div>
