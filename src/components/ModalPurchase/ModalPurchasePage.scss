@@ -1,0 +1,268 @@
+@import '../../styles/vars';
+@import '../../styles/mixins';
+
+.modal-darkbg,
+.modal-darkbg-redirect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  justify-content: center;
+  padding-top: 5%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 7;
+  display: none;
+}
+.modal-show {
+  display: flex;
+}
+.modal-wrapper {
+  width: 500px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  & .personal-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    & .credit-card {
+      width: 300px;
+      height: 191px;
+      background: url('../../assets/creditcard-bg.png') no-repeat center;
+      background-size: cover;
+      border-radius: 8px;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 10px;
+      gap: 10px;
+      position: relative;
+      top: 15%;
+
+      & .credit-card__bankname {
+        color: $color_middle-grey;
+        text-transform: uppercase;
+        font-family: $font-inter;
+        position: absolute;
+        top: 25px;
+        left: 15px;
+      }
+
+      & .credit-card__card-logo {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        filter: invert(100%) drop-shadow(-1px -1px 3px black);
+        background-image: url('../../assets/othercard-icon.png');
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      & input {
+        padding: 5px 5px;
+        margin: 0 1%;
+        font-size: 18px;
+        color: $color_standart-grey;
+        text-shadow: 0 2px 1px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        width: 23%;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        border: 0;
+        transition: 0.2s;
+        &:focus {
+          background: rgba(255, 255, 255, 0.05);
+          outline: none;
+        }
+
+        &:invalid {
+          background: rgba(135, 30, 30, 0.33);
+          animation: 0.5s 1 shake linear;
+          transition: 0.1s;
+        }
+      }
+      .credit-card__number {
+        text-align: center;
+        font-size: 0;
+      }
+
+      & .credit-card__more {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1%;
+        .credit-card__valid {
+          width: 100%;
+          flex-basis: 60%;
+          color: $color_secondary;
+          input {
+            font-size: 1.2em;
+            padding: 5px 5px;
+            margin: 0;
+            width: 23%;
+            height: 20px;
+            color: $color_standart-grey;
+          }
+          span {
+            display: inline-block;
+            font-size: 11px;
+            color: $color_middle-grey;
+            letter-spacing: -1px;
+            vertical-align: text-bottom;
+            text-transform: uppercase;
+            line-height: 12px;
+            margin-bottom: 2.5px;
+            &:after {
+              content: '▶';
+              float: right;
+              margin: 0px 5px 0 5px;
+            }
+          }
+        }
+      }
+      & .credit-card__cvv {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: flex-end;
+        flex-basis: 40%;
+
+        & span {
+          display: inline-block;
+          font-size: 11px;
+          color: $color_middle-grey;
+          letter-spacing: -1px;
+          vertical-align: text-bottom;
+          text-transform: uppercase;
+          line-height: 12px;
+        }
+        & input {
+          font-size: 1.2em;
+          padding: 5px 5px;
+          margin: 0;
+          width: 50%;
+          height: 20px;
+          color: $color_standart-grey;
+        }
+      }
+    }
+    @keyframes shake {
+      20% {
+        transform: translateX(-10px);
+      }
+      40% {
+        transform: translateX(9px);
+      }
+      60% {
+        transform: translateX(-5px);
+      }
+      80% {
+        transform: translateX(4px);
+      }
+    }
+
+    .personal-data {
+      width: 400px;
+      background: $color_gradient;
+      padding: 24% 7% 20px 7%;
+      border-radius: 9px;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      display: grid;
+      @media (max-width: 360px) {
+        width: 350px;
+      }
+
+      & label {
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        margin-top: 5px;
+        font-family: $font-inter;
+        color: $color_darker-grey;
+        position: relative;
+
+        & input {
+          width: 100%;
+          padding: 1px 10px;
+          margin: 1%;
+          font-size: 16px;
+          color: $color_primary;
+          font-family: $font-jomolhari;
+          line-height: 1.5;
+          background: rgba(255, 255, 255, 0.5);
+          border-radius: 5px;
+
+          border: none;
+          outline: none;
+          caret-color: $color_middle-grey;
+          transition: 0.2s;
+          &:focus {
+            background: $color_secondary;
+            outline: none;
+          }
+          &:invalid {
+            border: 1px solid $color_heart;
+          }
+
+          &::placeholder {
+            color: $color_middle-grey;
+          }
+        }
+      }
+
+      .personal-data__control-btns {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .btn {
+        @include btn-standart;
+      }
+    }
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  p {
+    font-size: 9px;
+    color: $color_heart;
+    position: absolute;
+    right: 5px;
+    top: 0;
+  }
+}
+
+.processing-wrapper {
+  margin: auto;
+  margin-top: 20%;
+  width: 80%;
+  height: 60px;
+  padding: 20px;
+  background: $color_standart-grey;
+  color: $color_darker-grey;
+  font-family: $font-inter;
+  font-size: 1rem;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
