@@ -4,10 +4,12 @@ import './ModalPurchasePage.scss';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { FC, useEffect, useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
 import { IOpenHideModal } from '../../interfaces';
 
 const ProcessingModal: FC<IOpenHideModal> = ({ handleClose, show }) => {
   const [countSec, setCountSec] = useState(3);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -15,8 +17,10 @@ const ProcessingModal: FC<IOpenHideModal> = ({ handleClose, show }) => {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-  if (countSec === 0) {
+
+  if (countSec < 0) {
     handleClose();
+    navigate('/');
   }
 
   return (
