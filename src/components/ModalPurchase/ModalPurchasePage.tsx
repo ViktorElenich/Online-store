@@ -52,15 +52,15 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
       }
     }
   };
+  const resetAllFields = () => {
+    reset();
+    clearErrors();
+  };
 
   const onSubmit = () => {
     handleClose();
     setOpenRedirect(true);
-  };
-
-  const resetAllFields = () => {
-    reset();
-    clearErrors();
+    resetAllFields();
   };
 
   return (
