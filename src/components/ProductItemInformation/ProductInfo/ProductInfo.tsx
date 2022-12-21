@@ -2,11 +2,14 @@ import React, { FC, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { RoutesEnum } from '../../../enums';
-import {IProductData, IPropItem} from '../../../interfaces';
+import { IProductData, IPropItem } from '../../../interfaces';
 import ModalPurchasePage from '../../ModalPurchase/ModalPurchasePage';
 import ItemRating from '../../ProductItem/ProductItemRating';
-import {useAppDispatch} from "../../../hooks";
-import {calculatePrice, setCartProducts} from "../../../redux/slices/cartSlice";
+import { useAppDispatch } from '../../../hooks';
+import {
+  calculatePrice,
+  setCartProducts,
+} from '../../../redux/slices/cartSlice';
 
 const ProductInfo: FC<IPropItem> = ({ product }) => {
   const dispatch = useAppDispatch();
@@ -23,9 +26,9 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
     }
   };
   const addToCart = (productItem: IProductData) => {
-    dispatch(setCartProducts(productItem))
-    dispatch(calculatePrice())
-  }
+    dispatch(setCartProducts(productItem));
+    dispatch(calculatePrice());
+  };
 
   return (
     <>

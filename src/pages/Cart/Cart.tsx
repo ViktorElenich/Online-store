@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import './Cart.scss';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   calculatePrice,
   calculateTotalQuantity,
+  decreaseCartProduct,
   removeCartProduct,
   setCartProducts,
 } from '../../redux/slices/cartSlice';
@@ -24,6 +26,10 @@ const Cart = () => {
     dispatch(setCartProducts(cart));
   };
 
+  const decreaseCountProduct = (cart: IProductData) => {
+    dispatch(decreaseCartProduct(cart));
+  };
+
   const removeItemFromCart = (cart: IProductData) => {
     dispatch(removeCartProduct(cart));
   };
@@ -40,7 +46,7 @@ const Cart = () => {
           <thead>
             <tr>
               {TH.map((item) => (
-                <th>{item}</th>
+                <th key={uuidv4()}>{item}</th>
               ))}
             </tr>
           </thead>
@@ -60,7 +66,11 @@ const Cart = () => {
                   <td>{price}</td>
                   <td>
                     <div className='table__count'>
-                      <button className='btn cart__btn' type='button'>
+                      <button
+                        className='btn cart__btn'
+                        type='button'
+                        onClick={() => decreaseCountProduct(item.product)}
+                      >
                         -
                       </button>
                       <p>
