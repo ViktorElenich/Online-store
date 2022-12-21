@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { setStoreProducts } from '../../redux/slices/productSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import useFetchCollection from '../../hooks/useFetchCollection';
@@ -6,9 +6,11 @@ import Products from '../Products/Products';
 import Loader from '../Loader/Loader';
 
 const ProductsContainer = () => {
-  const { data, isLoading } = useFetchCollection('products');
+  const { data } = useFetchCollection('products');
   const products = useAppSelector((state) => state.products.products);
   const dispatch = useAppDispatch();
+
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     dispatch(
@@ -17,9 +19,13 @@ const ProductsContainer = () => {
       }),
     );
   }, [dispatch, data]);
+
+  useEffect(() => {
+    if (products.length > 0) setReady(true);
+  }, [products]);
   return (
     <div className='container-products'>
-      {isLoading ? <Loader /> : <Products products={products} />}
+      {!ready ? <Loader /> : <Products products={products} />}
     </div>
   );
 };
