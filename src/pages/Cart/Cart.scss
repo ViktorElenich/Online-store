@@ -9,8 +9,18 @@
     margin: 15px 0 25px;
   }
 
+  &-items__limit {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    input {
+      width: 2rem;
+      text-align: center;
+    }
+  }
+
   &__table {
-    max-height: calc(100vh - 29rem);
+    max-height: calc(100vh - 31.6rem);
     overflow-x: hidden;
     &::-webkit-scrollbar {
       width: 5px;
@@ -38,7 +48,7 @@
       td {
         vertical-align: top;
         text-align: left;
-        padding: 8px;
+        padding: 4px;
         &.table__icons {
           > * {
             margin-right: 5px;
@@ -119,5 +129,13 @@
         border-radius: 10px;
       }
     }
+  }
+}
+
+.cart__empty {
+  font-size: 1.5rem;
+
+  a {
+    color: $color_primary;
   }
 }

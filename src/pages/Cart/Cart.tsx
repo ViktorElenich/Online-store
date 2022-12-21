@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import './Cart.scss';
@@ -13,6 +13,8 @@ import {
 } from '../../redux/slices/cartSlice';
 import { IProductData } from '../../interfaces';
 import { TH } from '../../constants';
+import { RoutesEnum } from '../../enums';
+import Pagination from '../../components/Pagination/Pagination';
 
 const Cart = () => {
   const cartItems = useAppSelector((state) => state.cart.products);
@@ -21,6 +23,8 @@ const Cart = () => {
   );
   const cartTotalAmount = useAppSelector((state) => state.cart.cartTotalAmount);
   const dispatch = useAppDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage, setProductPerPage] = useState(3);
 
   const increaseCountProduct = (cart: IProductData) => {
     dispatch(setCartProducts(cart));
@@ -33,6 +37,21 @@ const Cart = () => {
   const removeItemFromCart = (cart: IProductData) => {
     dispatch(removeCartProduct(cart));
   };
+  const changeShowItems = (event: ChangeEvent) => {
+    event.preventDefault();
+    const { value } = event.currentTarget as HTMLInputElement;
+    if (!value) {
+      setProductPerPage(productsPerPage)
+    }
+    setProductPerPage(Number(value));
+  };
+
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = cartItems.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct,
+  );
   useEffect(() => {
     dispatch(calculatePrice());
     dispatch(calculateTotalQuantity());
@@ -41,88 +60,118 @@ const Cart = () => {
   return (
     <div className='cart'>
       <h2>Shopping Cart</h2>
-      <div className='cart__table'>
-        <table>
-          <thead>
-            <tr>
-              {TH.map((item) => (
-                <th key={uuidv4()}>{item}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {cartItems.map((item, index) => {
-              const { id, title, thumbnail, price } = item.product;
-              const { productQuantity } = item;
-              return (
-                <tr key={id}>
-                  <td>{index + 1}</td>
-                  <td>
-                    <p>
-                      <b>{title}</b>
-                    </p>
-                    <img className='cart__img' src={thumbnail} alt={title} />
-                  </td>
-                  <td>{price}</td>
-                  <td>
-                    <div className='table__count'>
-                      <button
-                        className='btn cart__btn'
-                        type='button'
-                        onClick={() => decreaseCountProduct(item.product)}
-                      >
-                        -
-                      </button>
-                      <p>
-                        <b>{productQuantity}</b>
-                      </p>
-                      <button
-                        className='btn cart__btn'
-                        type='button'
-                        onClick={() => increaseCountProduct(item.product)}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </td>
-                  <td>{(price * productQuantity).toFixed(2)}</td>
-                  <td className='table__icons'>
-                    <FaTrashAlt
-                      size={19}
-                      color='red'
-                      onClick={() => removeItemFromCart(item.product)}
-                    />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div className='cart__summary'>
-        <button className='btn btn__clear' type='button'>
-          Clear Cart
-        </button>
-        <div className='cart__checkout'>
-          <div>
-            <Link to='/'>&larr; Continue shopping</Link>
-          </div>
+      {currentProducts.length === 0 ? (
+        <div className='cart__empty'>
+          <p>Your cart is currently empty.</p>
           <br />
-          <div className='cart__card'>
-            <p>
-              <b> {`Cart item(s): ${cartTotalQuantity}`}</b>
-            </p>
-            <div className='cart__text'>
-              <h4>Subtotal:</h4>
-              <h3>{`$${cartTotalAmount.toFixed(2)}`}</h3>
-            </div>
-            <p>Tax an shipping calculated at checkout</p>
-            <button className='btn btn_check' type='button'>
-              Checkout
-            </button>
+          <div>
+            <Link to={RoutesEnum.Home}>&larr; Continue shopping</Link>
           </div>
         </div>
-      </div>
+      ) : (
+        <>
+          <div className='cart-items__limit'>
+            <p>Items</p>
+            <input
+              type='text'
+              value={productsPerPage}
+              onChange={changeShowItems}
+            />
+          </div>
+          <div className='cart__table'>
+            <table>
+              <thead>
+                <tr>
+                  {TH.map((item) => (
+                    <th key={uuidv4()}>{item}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {currentProducts.map((item, index) => {
+                  const { id, title, thumbnail, price } = item.product;
+                  const { productQuantity } = item;
+                  return (
+                    <tr key={id}>
+                      <td>{index + 1}</td>
+                      <td>
+                        <p>
+                          <b>{title}</b>
+                        </p>
+                        <img
+                          className='cart__img'
+                          src={thumbnail}
+                          alt={title}
+                        />
+                      </td>
+                      <td>{price}</td>
+                      <td>
+                        <div className='table__count'>
+                          <button
+                            className='btn cart__btn'
+                            type='button'
+                            onClick={() => decreaseCountProduct(item.product)}
+                          >
+                            -
+                          </button>
+                          <p>
+                            <b>{productQuantity}</b>
+                          </p>
+                          <button
+                            className='btn cart__btn'
+                            type='button'
+                            onClick={() => increaseCountProduct(item.product)}
+                          >
+                            +
+                          </button>
+                        </div>
+                      </td>
+                      <td>{(price * productQuantity).toFixed(2)}</td>
+                      <td className='table__icons'>
+                        <FaTrashAlt
+                          size={19}
+                          color='red'
+                          onClick={() => removeItemFromCart(item.product)}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            productsPerPage={productsPerPage}
+            totalProducts={cartItems.length}
+          />
+          <div className='cart__summary'>
+            <button className='btn btn__clear' type='button'>
+              Clear Cart
+            </button>
+            <div className='cart__checkout'>
+              <div>
+                <Link to={RoutesEnum.Home}>&larr; Continue shopping</Link>
+              </div>
+              <br />
+              <div className='cart__card'>
+                <p>
+                  <b> {`Cart item(s): ${cartTotalQuantity}`}</b>
+                </p>
+                <div className='cart__text'>
+                  <h4>Subtotal:</h4>
+                  <h3>{`$${cartTotalAmount.toFixed(2)}`}</h3>
+                </div>
+                <p>Tax an shipping calculated at checkout</p>
+                <button className='btn btn_check' type='button'>
+                  Checkout
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
