@@ -6,7 +6,7 @@ import cartIconFull from '../../assets/cart-icon_full.png';
 import cartIconEmpty from '../../assets/cart-icon_empty.png';
 import IProductItemProp, { IProductData } from '../../interfaces/index';
 import { RoutesEnum } from '../../enums';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   calculatePrice,
   calculateTotalQuantity,
@@ -15,9 +15,12 @@ import {
 } from '../../redux/slices/cartSlice';
 
 const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
-  const [inCart, setInCart] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const productsInCart = useAppSelector((state) => state.cart.products);
+  const [inCart, setInCart] = useState(
+    productsInCart.some((x) => x.product.id === item.id),
+  );
   const changeInCart = (): void =>
     inCart ? setInCart(false) : setInCart(true);
 

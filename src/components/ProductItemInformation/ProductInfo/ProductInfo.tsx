@@ -1,22 +1,32 @@
-import React, { FC, useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { FC, useEffect, useRef, useState } from 'react';
+
 import { v4 as uuidv4 } from 'uuid';
-import { RoutesEnum } from '../../../enums';
+
+import { useNavigate } from 'react-router-dom';
 import { IProductData, IPropItem } from '../../../interfaces';
 import ModalPurchasePage from '../../ModalPurchase/ModalPurchasePage';
 import ItemRating from '../../ProductItem/ProductItemRating';
-import { useAppDispatch } from '../../../hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
 import {
   calculatePrice,
+  calculateTotalQuantity,
+  removeCartProduct,
   setCartProducts,
 } from '../../../redux/slices/cartSlice';
 
 const ProductInfo: FC<IPropItem> = ({ product }) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const item = product[0];
   const itemImages = item.images.filter((x) => !x.includes('thumbnail'));
 
+  const productsInCart = useAppSelector((state) => state.cart.products);
+
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  const [isInTheCart, setIsInTheCart] = useState(
+    productsInCart.some((x) => x.product.id === item.id),
+  );
 
   const mainImage = useRef<null | HTMLImageElement>(null);
   const changePhoto = (event: React.MouseEvent) => {
@@ -26,15 +36,31 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
     }
   };
   const addToCart = (productItem: IProductData) => {
+    setIsInTheCart(true);
     dispatch(setCartProducts(productItem));
+    dispatch(calculateTotalQuantity());
     dispatch(calculatePrice());
   };
+  const removeItemFromCart = (productItem: IProductData) => {
+    setIsInTheCart(false);
+    dispatch(removeCartProduct(productItem));
+  };
+
+  const changeCurrentItemInCart = (productItem: IProductData) => {
+    if (isInTheCart) removeItemFromCart(productItem);
+    else addToCart(productItem);
+  };
+  useEffect(() => {
+    console.log('item>>', item);
+    console.log('isInTheCart>>', isInTheCart);
+    productsInCart.forEach((x) => console.table(x));
+  });
 
   return (
     <>
       <div className='breadcrumbs'>
-        <span>
-          <NavLink to={RoutesEnum.Home}>store</NavLink>
+        <span role='presentation' onClick={() => navigate('/')}>
+          store
         </span>
         <div className='arrow-right' />
         <span>{item.category}</span>
@@ -76,9 +102,9 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
             <button
               className='item-information__cartBtn btn'
               type='button'
-              onClick={() => addToCart(item)}
+              onClick={() => changeCurrentItemInCart(item)}
             >
-              {true ? 'Add to cart' : 'Added to cart'}
+              {isInTheCart ? 'Remove from cart' : 'Add to cart'}
             </button>
             <button
               className='item-information__buyNow btn'

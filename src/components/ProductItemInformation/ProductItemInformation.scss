@@ -21,6 +21,12 @@
   background-color: $color_standart-grey;
   font-size: 0.7rem;
   font-family: $font-jomolhari;
+  & span {
+    cursor: pointer;
+    &:hover {
+      border-bottom: 1px solid $color_secondary;
+    }
+  }
   @media (max-width: 900px) {
     padding: 0 5%;
   }
