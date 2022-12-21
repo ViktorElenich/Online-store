@@ -56,6 +56,8 @@ const cartSlice = createSlice({
         (item) => item.product.id !== action.payload.id,
       );
       state.products = newCartItem;
+      state.cartTotalQuantity -= newCartItem[0].productQuantity;
+      state.cartTotalAmount -= (newCartItem[0].product.price * newCartItem[0].productQuantity);
       toast.success(`${action.payload.title} remove from cart`, {
         position: 'top-left',
       });

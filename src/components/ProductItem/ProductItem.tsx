@@ -4,12 +4,13 @@ import ItemRating from './ProductItemRating';
 import './ProductItem.scss';
 import cartIconFull from '../../assets/cart-icon_full.png';
 import cartIconEmpty from '../../assets/cart-icon_empty.png';
-import IProductItemProp from '../../interfaces/index';
+import IProductItemProp, { IProductData } from '../../interfaces/index';
 import { RoutesEnum } from '../../enums';
 import { useAppDispatch } from '../../hooks';
 import {
   calculatePrice,
   calculateTotalQuantity,
+  removeCartProduct,
   setCartProducts,
 } from '../../redux/slices/cartSlice';
 
@@ -20,6 +21,21 @@ const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
   const changeInCart = (): void =>
     inCart ? setInCart(false) : setInCart(true);
 
+  const addProductToCard = (i: IProductData) => {
+    setInCart(true);
+    dispatch(setCartProducts(i));
+    dispatch(calculateTotalQuantity());
+    dispatch(calculatePrice());
+  };
+  const removeProductFromCart = (i: IProductData) => {
+    setInCart(false);
+    dispatch(removeCartProduct(i));
+  };
+  const changeCartContentFromCard = (i: IProductData) => {
+    if (inCart) removeProductFromCart(i);
+    else addProductToCard(i);
+  };
+
   const openProductDetails = (event: React.MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLImageElement;
     const btn = target.closest('.block-card__cart');
@@ -27,12 +43,10 @@ const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
       const { id } = event.currentTarget;
       navigate(`${RoutesEnum.Products}/${id}`);
     } else {
-      changeInCart();
-      dispatch(setCartProducts(item));
-      dispatch(calculateTotalQuantity());
-      dispatch(calculatePrice());
+      changeCartContentFromCard(item);
     }
   };
+
   return (
     <div
       role='presentation'
