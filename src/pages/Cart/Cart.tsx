@@ -39,17 +39,8 @@ const Cart = () => {
     dispatch(removeCartProduct(cart));
   };
   const changeShowItems = (event: ChangeEvent<HTMLInputElement>) => {
-    //  event.preventDefault();
-    console.log(event);
     event.stopPropagation();
-
-    let { value } = event.target as HTMLInputElement;
-    if (value.length === 0) {
-      value = `0`;
-      setProductPerPage(productsPerPage);
-    }
-
-    console.log('value', value);
+    const { value } = event.target as HTMLInputElement;
 
     if (!value) {
       setProductPerPage(productsPerPage);
@@ -63,9 +54,7 @@ const Cart = () => {
     indexOfFirstProduct,
     indexOfLastProduct,
   );
-  /*   console.log('indexOfFirstProduct', indexOfFirstProduct);
-  console.log('indexOfLastProduct', indexOfLastProduct);
-  console.log('cartItems', cartItems.length); */
+
   const clearCartAction = () => {
     dispatch(clearCart());
   };
@@ -162,7 +151,7 @@ const Cart = () => {
             <Pagination
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
-              productsPerPage={productsPerPage}
+              productsPerPage={productsPerPage || 3}
               totalProducts={cartItems.length}
             />
             <div className='cart__summary'>
