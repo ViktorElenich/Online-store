@@ -12,6 +12,7 @@
   height: calc(100vh - 128px);
   padding: 1rem;
   width: 70%;
+  padding-bottom: 100px;
   @media (max-width: 640px) {
     width: 100%;
   }
@@ -34,8 +35,9 @@
   }
 
   &__table {
-    max-height: calc(100vh - 31.6rem);
+    max-height: calc(100vh - 25rem);
     overflow-x: hidden;
+
     &::-webkit-scrollbar {
       width: 5px;
       height: 10px;
@@ -50,17 +52,19 @@
     table {
       border-collapse: collapse;
       width: 100%;
-      font-size: 1.1rem;
+      font-size: 1rem;
+      font-family: $font-jomolhari;
       thead {
         border-top: 2px solid $color_darker-grey;
         border-bottom: 2px solid $color_darker-grey;
+        font-family: $font-inter;
       }
       th {
         border: 1px solid $color_secondary;
       }
       th,
       td {
-        vertical-align: top;
+        vertical-align: middle;
         text-align: left;
         padding: 4px;
         &.table__icons {
@@ -70,10 +74,18 @@
           }
         }
         .cart__img {
-          width: 7rem;
-          height: 7rem;
+          width: 50px;
+          height: auto;
           object-fit: cover;
+          margin: 7px;
         }
+      }
+      td:nth-of-type(2) {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 8px;
       }
 
       tr {
