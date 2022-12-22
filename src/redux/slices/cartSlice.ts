@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { ICart, ICartProduct } from '../../interfaces';
+import { ICart } from '../../interfaces';
 import { getLocalStorage, setLocalStorage } from '../../utils';
 
 const initialState: ICart = {
@@ -30,6 +30,7 @@ const cartSlice = createSlice({
         productIndex[0].productQuantity += 1;
         state.cartTotalQuantity += 1;
       }
+      state.cartTotalAmount += action.payload.price;
       setLocalStorage('cartItems', JSON.stringify(state.products));
     },
     calculateTotalQuantity: (state) => {
@@ -58,19 +59,23 @@ const cartSlice = createSlice({
       const newCartItem = state.products.filter(
         (item) => item.product.id !== action.payload.id,
       );
+      console.log("inside cartSlice >> newCartItem", newCartItem);
+
+      state.products = newCartItem;
 
       if (newCartItem.length === 0) return;
-      state.products = newCartItem;
+
       state.cartTotalQuantity -= newCartItem[0].productQuantity;
       state.cartTotalAmount -= (newCartItem[0].product.price * newCartItem[0].productQuantity);
       toast.success(`${action.payload.title} remove from cart`, {
         position: 'top-left',
       });
-      if (state.products.length === 0) {
-        state.products = [] as ICartProduct[];
-        state.cartTotalAmount = 0;
-        state.cartTotalQuantity = 0;
-      }
+      console.log("inside cartSlice >> state.products.length", state.products.length);
+      /*       if (state.products.length === 0) {
+              state.products = [] as ICartProduct[];
+              state.cartTotalAmount = 0;
+              state.cartTotalQuantity = 0;
+            } */
 
       setLocalStorage('cartItems', JSON.stringify(state.products));
     },
@@ -91,14 +96,16 @@ const cartSlice = createSlice({
         toast.success(`${action.payload.title} remove from cart`, {
           position: 'top-left',
         });
+        state.cartTotalAmount -= action.payload.price
         setLocalStorage('cartItems', JSON.stringify(state.products));
       }
     },
     clearCart: (state) => {
-      state.products = [] as ICartProduct[];
+      state.products = [];
       state.cartTotalAmount = 0;
       state.cartTotalQuantity = 0;
     }
+
   },
 });
 

@@ -18,15 +18,10 @@ import { TH } from '../../constants';
 import { RoutesEnum } from '../../enums';
 import Pagination from '../../components/Pagination/Pagination';
 import OrderSummary from './OrderSummary';
-import Loader from '../../components/Loader/Loader';
 
 const Cart = () => {
   const cartProducts = useAppSelector((state) => state.cart);
-  const {
-    products: cartItems,
-    cartTotalQuantity,
-    cartTotalAmount,
-  } = cartProducts;
+  const { products: cartItems, cartTotalAmount } = cartProducts;
 
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState(1);
@@ -68,9 +63,12 @@ const Cart = () => {
     indexOfFirstProduct,
     indexOfLastProduct,
   );
-  console.log('indexOfFirstProduct', indexOfFirstProduct);
+  /*   console.log('indexOfFirstProduct', indexOfFirstProduct);
   console.log('indexOfLastProduct', indexOfLastProduct);
-  console.log('cartItems', cartItems.length);
+  console.log('cartItems', cartItems.length); */
+  const clearCartAction = () => {
+    dispatch(clearCart());
+  };
 
   useEffect(() => {
     dispatch(calculatePrice());
@@ -171,9 +169,7 @@ const Cart = () => {
               <button
                 className='btn btn__clear'
                 type='button'
-                onClick={() => {
-                  clearCart();
-                }}
+                onClick={clearCartAction}
               >
                 Clear Cart
               </button>
@@ -181,11 +177,7 @@ const Cart = () => {
           </>
         )}
       </div>
-      {cartTotalAmount > 0 ? (
-        <OrderSummary cartProducts={cartProducts} />
-      ) : (
-        <Loader />
-      )}
+      {cartTotalAmount > 0 ? <OrderSummary cartProducts={cartProducts} /> : ''}
     </div>
   );
 };

@@ -11,6 +11,8 @@ import amExpressIcon from '../../assets/amexpress-icon.png';
 import otherCardIcon from '../../assets/othercard-icon.png';
 import ProcessingModal from './ProcessingModal';
 import { IOpenHideModal } from '../../interfaces';
+import { useAppDispatch } from '../../hooks';
+import { clearCart } from '../../redux/slices/cartSlice';
 
 const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
   const {
@@ -20,6 +22,8 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
     clearErrors,
     formState: { errors },
   } = useForm();
+
+  const dispatch = useAppDispatch();
 
   const [openRedirect, setOpenRedirect] = useState(false);
 
@@ -60,6 +64,7 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
   const onSubmit = () => {
     resetAllFields();
     setOpenRedirect(true);
+    dispatch(clearCart());
     handleClose();
   };
 
