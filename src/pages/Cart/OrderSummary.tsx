@@ -91,14 +91,6 @@ const OrderSummary: FC<ICartProp> = ({ cartProducts }) => {
       ) : (
         ''
       )}
-      {/*   {openRedirect ? (
-        <ProcessingModal
-          handleClose={() => setOpenRedirect(false)}
-          show={openRedirect}
-        />
-      ) : (
-        ''
-      )} */}
       <div className='continue-shopping'>
         <Link to={RoutesEnum.Home}>&larr; Continue shopping</Link>
       </div>

@@ -14,10 +14,11 @@ import {
   clearCart,
 } from '../../redux/slices/cartSlice';
 import { IProductData } from '../../interfaces';
-import { TH } from '../../constants';
+import { PRODUCTS_PER_PAGE, TH } from '../../constants';
 import { RoutesEnum } from '../../enums';
 import Pagination from '../../components/Pagination/Pagination';
 import OrderSummary from './OrderSummary';
+import { getLocalStorage, setLocalStorage } from '../../utils';
 
 const Cart = () => {
   const cartProducts = useAppSelector((state) => state.cart);
@@ -25,7 +26,9 @@ const Cart = () => {
 
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductPerPage] = useState(3);
+  const [productsPerPage, setProductPerPage] = useState(
+    getLocalStorage(PRODUCTS_PER_PAGE) || 3,
+  );
 
   const increaseCountProduct = (cart: IProductData) => {
     dispatch(setCartProducts(cart));
@@ -40,12 +43,16 @@ const Cart = () => {
   };
   const changeShowItems = (event: ChangeEvent<HTMLInputElement>) => {
     event.stopPropagation();
-    const { value } = event.target as HTMLInputElement;
+    let { value } = event.target as HTMLInputElement;
 
     if (!value) {
       setProductPerPage(productsPerPage);
     }
+    if (Number.isNaN(Number(value))) {
+      value = `${productsPerPage}`;
+    }
     setProductPerPage(Number(value));
+    setLocalStorage(PRODUCTS_PER_PAGE, value);
   };
 
   const indexOfLastProduct = currentPage * productsPerPage;
