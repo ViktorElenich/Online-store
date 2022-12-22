@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { ICart } from '../../interfaces';
+import { ICart, ICartProduct } from '../../interfaces';
 import { getLocalStorage, setLocalStorage } from '../../utils';
 
 const initialState: ICart = {
@@ -53,15 +53,25 @@ const cartSlice = createSlice({
       state.cartTotalAmount = totalAmount;
     },
     removeCartProduct: (state, action) => {
+
+
       const newCartItem = state.products.filter(
         (item) => item.product.id !== action.payload.id,
       );
+
+      if (newCartItem.length === 0) return;
       state.products = newCartItem;
       state.cartTotalQuantity -= newCartItem[0].productQuantity;
       state.cartTotalAmount -= (newCartItem[0].product.price * newCartItem[0].productQuantity);
       toast.success(`${action.payload.title} remove from cart`, {
         position: 'top-left',
       });
+      if (state.products.length === 0) {
+        state.products = [] as ICartProduct[];
+        state.cartTotalAmount = 0;
+        state.cartTotalQuantity = 0;
+      }
+
       setLocalStorage('cartItems', JSON.stringify(state.products));
     },
     decreaseCartProduct: (state, action) => {
@@ -84,6 +94,11 @@ const cartSlice = createSlice({
         setLocalStorage('cartItems', JSON.stringify(state.products));
       }
     },
+    clearCart: (state) => {
+      state.products = [] as ICartProduct[];
+      state.cartTotalAmount = 0;
+      state.cartTotalQuantity = 0;
+    }
   },
 });
 
@@ -93,5 +108,6 @@ export const {
   calculatePrice,
   removeCartProduct,
   decreaseCartProduct,
+  clearCart
 } = cartSlice.actions;
 export default cartSlice.reducer;

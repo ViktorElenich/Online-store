@@ -58,16 +58,18 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
   };
 
   const onSubmit = () => {
-    handleClose();
-    setOpenRedirect(true);
     resetAllFields();
+    setOpenRedirect(true);
+    handleClose();
   };
 
   return (
     <>
       {openRedirect ? (
         <ProcessingModal
-          handleClose={() => setOpenRedirect(false)}
+          handleClose={() => {
+            setOpenRedirect(false);
+          }}
           show={openRedirect}
         />
       ) : (

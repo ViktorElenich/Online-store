@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -50,11 +50,6 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
     if (isInTheCart) removeItemFromCart(productItem);
     else addToCart(productItem);
   };
-  useEffect(() => {
-    console.log('item>>', item);
-    console.log('isInTheCart>>', isInTheCart);
-    productsInCart.forEach((x) => console.table(x));
-  });
 
   return (
     <>
