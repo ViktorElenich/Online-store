@@ -26,9 +26,9 @@ const Header = () => {
           <div className='bar btmBar' />
         </div>
       </div>
-      <div className='header__logo'>
+      <NavLink to='/' className='header__logo'>
         <h1>Online-Store</h1>
-      </div>
+      </NavLink>
       <nav className='header__navigation'>
         <ul className='navigation_menu'>
           <li className='menu__item'>

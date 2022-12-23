@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useLayoutEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ModalPurchasePage from '../../components/ModalPurchase/ModalPurchasePage';
 
 import { RoutesEnum } from '../../enums';
@@ -13,7 +13,6 @@ type ICartProp = { cartProducts: ICart };
 const OrderSummary: FC<ICartProp> = ({ cartProducts }) => {
   const { cartTotalQuantity, cartTotalAmount } = cartProducts;
   const [RSSdiscount, EPMdiscount] = [0.1, 0.2];
-  const navigate = useNavigate();
 
   const [discRSS, setDiscRSS] = useState({ found: false, applied: false });
   const [discEPM, setDiscEPM] = useState({ found: false, applied: false });
@@ -84,7 +83,6 @@ const OrderSummary: FC<ICartProp> = ({ cartProducts }) => {
         <ModalPurchasePage
           handleClose={() => {
             setOpenBuyNow(false);
-            navigate('/');
           }}
           show={openBuyNow}
         />
