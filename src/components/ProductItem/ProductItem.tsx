@@ -42,8 +42,8 @@ const ItemBlockCard: FC<IProductItemProp> = ({ item, isInTheCart }) => {
   const openProductDetails = (event: React.MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLImageElement;
     const btn = target.closest('.block-card__cart');
+    const { id } = event.currentTarget;
     if (!btn) {
-      const { id } = event.currentTarget;
       navigate(`${RoutesEnum.Products}/${id}`);
     } else {
       changeCartContentFromCard(item);
