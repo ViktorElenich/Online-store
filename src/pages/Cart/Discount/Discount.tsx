@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import crossIcon from '../../assets/plus-icon.png';
+import crossIcon from '../../../assets/plus-icon.png';
 
 const Discount = (prop: {
   message: string;

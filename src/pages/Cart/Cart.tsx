@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,7 +16,7 @@ import { IProductData } from '../../interfaces';
 import { PRODUCTS_PER_PAGE, TH } from '../../constants';
 import { RoutesEnum } from '../../enums';
 import Pagination from '../../components/Pagination/Pagination';
-import OrderSummary from './OrderSummary';
+import OrderSummary from './Oredrsummary/OrderSummary';
 import { getLocalStorage, setLocalStorage } from '../../utils';
 
 const Cart = () => {
