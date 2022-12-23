@@ -47,13 +47,16 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
     if (target.name === 'phoneNum') {
       const phoneValue = target.value
         .replace(/\D/g, '')
-        .match(/(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/) as string | null;
+        .match(/(\d?)(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/) as string | null;
       if (phoneValue != null) {
         target.value = !phoneValue[2]
           ? phoneValue[1]
-          : `+7(${phoneValue[1]})-${phoneValue[2]}${`${
-            phoneValue[3] ? `-${phoneValue[3]}` : ''
-          }`}${`${phoneValue[4] ? `-${phoneValue[4]}` : ''}`}`;
+          : `+${phoneValue[1]}(${phoneValue[2]})${`${
+              phoneValue[3] ? `${phoneValue[3]}` : ''
+            }`}${`${phoneValue[4] ? `-${phoneValue[4]}` : ''}`}${`${
+              phoneValue[5] ? `-${phoneValue[5]}` : ''
+            }`}`;
+        target.value.replace(/(\D)/g, '');
       }
     }
   };
@@ -227,12 +230,12 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
                   id='phoneNumber-input'
                   placeholder='Enter phone number'
                   minLength={9}
-                  maxLength={15}
+                  maxLength={16}
                   {...register('phoneNum', {
                     required: true,
                     pattern: /^[0-9+-]+$/,
                     minLength: 9,
-                    maxLength: 15,
+                    maxLength: 16,
                     onChange: (e) => validateNumericField(e),
                   })}
                   aria-invalid={errors.phoneNum ? 'true' : 'false'}
