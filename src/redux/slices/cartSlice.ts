@@ -15,7 +15,6 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-
     setCartProducts: (state, action) => {
       const productIndex = state.products.filter(
         (item) => item.product.id === action.payload.id,
@@ -54,29 +53,18 @@ const cartSlice = createSlice({
       state.cartTotalAmount = totalAmount;
     },
     removeCartProduct: (state, action) => {
-
-
       const newCartItem = state.products.filter(
         (item) => item.product.id !== action.payload.id,
       );
-      console.log("inside cartSlice >> newCartItem", newCartItem);
-
+      console.log('inside cartSlice >> newCartItem', newCartItem);
       state.products = newCartItem;
-
       if (newCartItem.length === 0) return;
-
       state.cartTotalQuantity -= newCartItem[0].productQuantity;
-      state.cartTotalAmount -= (newCartItem[0].product.price * newCartItem[0].productQuantity);
+      state.cartTotalAmount -=
+        newCartItem[0].product.price * newCartItem[0].productQuantity;
       toast.success(`${action.payload.title} remove from cart`, {
         position: 'top-left',
       });
-      console.log("inside cartSlice >> state.products.length", state.products.length);
-      /*       if (state.products.length === 0) {
-              state.products = [] as ICartProduct[];
-              state.cartTotalAmount = 0;
-              state.cartTotalQuantity = 0;
-            } */
-
       setLocalStorage('cartItems', JSON.stringify(state.products));
     },
     decreaseCartProduct: (state, action) => {
@@ -96,7 +84,7 @@ const cartSlice = createSlice({
         toast.success(`${action.payload.title} remove from cart`, {
           position: 'top-left',
         });
-        state.cartTotalAmount -= action.payload.price
+        state.cartTotalAmount -= action.payload.price;
         setLocalStorage('cartItems', JSON.stringify(state.products));
       }
     },
@@ -104,8 +92,8 @@ const cartSlice = createSlice({
       state.products = [];
       state.cartTotalAmount = 0;
       state.cartTotalQuantity = 0;
-    }
-
+      setLocalStorage('cartItems', JSON.stringify(state.products));
+    },
   },
 });
 
@@ -115,6 +103,6 @@ export const {
   calculatePrice,
   removeCartProduct,
   decreaseCartProduct,
-  clearCart
+  clearCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;

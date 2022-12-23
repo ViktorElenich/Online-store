@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ChangeEvent, FC, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import './ModalPurchasePage.scss';
@@ -9,10 +5,8 @@ import visaIcon from '../../assets/visa-icon.png';
 import masterCardIcon from '../../assets/mastercard-icon.png';
 import amExpressIcon from '../../assets/amexpress-icon.png';
 import otherCardIcon from '../../assets/othercard-icon.png';
-import ProcessingModal from './ProcessingModal';
+import ProcessingModal from './ProcessingModal/ProcessingModal';
 import { IOpenHideModal } from '../../interfaces';
-import { useAppDispatch } from '../../hooks';
-import { clearCart } from '../../redux/slices/cartSlice';
 
 const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
   const {
@@ -22,13 +16,8 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
     clearErrors,
     formState: { errors },
   } = useForm();
-
-  const dispatch = useAppDispatch();
-
   const [openRedirect, setOpenRedirect] = useState(false);
-
   const modalClassName = show ? 'modal-darkbg modal-show' : 'modal-darkbg';
-
   const creditCardRef = useRef<HTMLDivElement | null>(null);
 
   const validateNumericField = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +44,21 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
         target.value = '12';
       }
     }
+    if (target.name === 'phoneNum') {
+      const phoneValue = target.value
+        .replace(/\D/g, '')
+        .match(/(\d?)(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/) as string | null;
+      if (phoneValue != null) {
+        target.value = !phoneValue[2]
+          ? phoneValue[1]
+          : `+${phoneValue[1]}(${phoneValue[2]})${`${
+              phoneValue[3] ? `${phoneValue[3]}` : ''
+            }`}${`${phoneValue[4] ? `-${phoneValue[4]}` : ''}`}${`${
+              phoneValue[5] ? `-${phoneValue[5]}` : ''
+            }`}`;
+        target.value.replace(/(\D)/g, '');
+      }
+    }
   };
   const resetAllFields = () => {
     reset();
@@ -64,7 +68,6 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
   const onSubmit = () => {
     resetAllFields();
     setOpenRedirect(true);
-    dispatch(clearCart());
     handleClose();
   };
 
@@ -81,6 +84,7 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
         ''
       )}
       <div
+        role='presentation'
         className={modalClassName}
         onClick={(e) => {
           e.stopPropagation();
@@ -222,13 +226,16 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
                   <p role='alert'>Must be 8 digits and start with + </p>
                 )}
                 <input
-                  type='phone'
+                  type='tel'
                   id='phoneNumber-input'
                   placeholder='Enter phone number'
-                  maxLength={9}
+                  minLength={9}
+                  maxLength={16}
                   {...register('phoneNum', {
                     required: true,
-                    pattern: /^\+([0-9]{8})$/,
+                    pattern: /^[0-9+-]+$/,
+                    minLength: 9,
+                    maxLength: 16,
                     onChange: (e) => validateNumericField(e),
                   })}
                   aria-invalid={errors.phoneNum ? 'true' : 'false'}

@@ -1,10 +1,10 @@
-import { ChangeEvent, FC, useLayoutEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import ModalPurchasePage from '../../components/ModalPurchase/ModalPurchasePage';
+import ModalPurchasePage from '../../../components/ModalPurchase/ModalPurchasePage';
 
-import { RoutesEnum } from '../../enums';
-import { ICart } from '../../interfaces';
-import Discount from './Discount';
+import { RoutesEnum } from '../../../enums';
+import { ICart } from '../../../interfaces';
+import Discount from '../Discount/Discount';
 
 import './OrderSummary.scss';
 
@@ -58,7 +58,7 @@ const OrderSummary: FC<ICartProp> = ({ cartProducts }) => {
     }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!discEPM.applied && !discRSS.applied) {
       setTotalPayment(cartTotalAmount);
     } else if (discEPM.applied && discRSS.applied) {
@@ -79,16 +79,12 @@ const OrderSummary: FC<ICartProp> = ({ cartProducts }) => {
 
   return (
     <>
-      {openBuyNow ? (
-        <ModalPurchasePage
-          handleClose={() => {
-            setOpenBuyNow(false);
-          }}
-          show={openBuyNow}
-        />
-      ) : (
-        ''
-      )}
+      <ModalPurchasePage
+        handleClose={() => {
+          setOpenBuyNow(false);
+        }}
+        show={openBuyNow}
+      />
       <div className='continue-shopping'>
         <Link to={RoutesEnum.Home}>&larr; Continue shopping</Link>
       </div>
