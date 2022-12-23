@@ -21,6 +21,12 @@
   background-color: $color_standart-grey;
   font-size: 0.7rem;
   font-family: $font-jomolhari;
+  & span {
+    cursor: pointer;
+    &:hover {
+      border-bottom: 1px solid $color_secondary;
+    }
+  }
   @media (max-width: 900px) {
     padding: 0 5%;
   }
@@ -190,7 +196,7 @@
       font-size: 1.25rem;
       position: relative;
       z-index: 3;
-      margin-bottom: 55px;
+      margin-bottom: 65px;
       align-self: center;
       @media (max-width: 850px) {
         margin-bottom: 25px;

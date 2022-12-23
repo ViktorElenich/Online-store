@@ -11,3 +11,7 @@ export const MIN_STOCK = 'MIN_STOCK';
 export const MAX_STOCK = 'MAX_STOCK';
 export const MIN_PRICE = 'MIN_PRICE';
 export const MAX_PRICE = 'MAX_PRICE';
+
+export const PRODUCTS_PER_PAGE = 'PRODUCTS_PER_PAGE';
+
+export const TH = ['№', 'Product', 'Price', 'Quantity', 'Total', 'Action'];

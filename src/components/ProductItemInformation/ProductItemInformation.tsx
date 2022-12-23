@@ -14,10 +14,6 @@ const ProductItemInformation: FC = () => {
   const dispatch = useAppDispatch();
   const product = useAppSelector((state) => state.products.product);
 
-  setTimeout(() => {
-    setShowInfo(true);
-  }, 2000);
-
   useEffect(() => {
     dispatch(
       setStoreProduct({
@@ -25,6 +21,10 @@ const ProductItemInformation: FC = () => {
       }),
     );
   }, [dispatch, data]);
+
+  useEffect(() => {
+    if (data.length > 0) setShowInfo(true);
+  }, [data]);
 
   return !showInfo ? (
     <Loader />

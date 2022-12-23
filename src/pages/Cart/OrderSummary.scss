@@ -1,0 +1,143 @@
+@import '../../styles/vars';
+@import '../../styles/mixins';
+
+.continue-shopping {
+  position: absolute;
+  top: 20px;
+  right: 2rem;
+  z-index: 3;
+  & a {
+    font-size: 1rem;
+    font-family: $font-inter;
+    color: $color_darker-grey;
+    &:hover {
+      color: $color_primary;
+    }
+  }
+  @media (max-width: 640px) {
+    left: 2rem;
+    right: auto;
+  }
+}
+.order-summary-wrapper {
+  width: 30%;
+  padding: 120px 1rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4%;
+  background-color: $color_standart-grey;
+  position: relative;
+  z-index: 0;
+  & p {
+    font-size: 1.2rem;
+    font-family: $font-inter;
+    color: $color_darker-grey;
+  }
+  & .order-summary__label {
+    width: 50%;
+    font-family: $font-jomolhari;
+    color: $color_darker-grey;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+
+    & #order-summary__input {
+      align-self: center;
+      margin-top: 5px;
+      width: 100%;
+      height: 2.2rem;
+      padding: 5px;
+      font-size: 1rem;
+      font-family: $font-jomolhari;
+      color: $color_primary;
+      background-color: $color_middle-grey;
+
+      outline: none;
+      border: none;
+      &:focus {
+        background-color: $color_secondary;
+      }
+      &::placeholder {
+        color: $color_secondary;
+        font-style: italic;
+        font-size: 0.8rem;
+      }
+    }
+  }
+  .order-summary__quantity,
+  .order-summary__total {
+    & span {
+      font-size: 1.3rem;
+      color: $color_primary;
+    }
+  }
+  .order-summary__btn {
+    width: 80%;
+    position: relative;
+    align-self: center;
+
+    &::before {
+      content: 'Codes for test: RSS, EPM';
+      display: inline-block;
+      width: 100%;
+      position: absolute;
+      font-family: $font-jomolhari;
+      color: $color_middle-grey;
+      line-height: 1;
+      text-transform: none;
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  .order-summary__found-codes,
+  .order-summary__applied-codes {
+    margin-bottom: 20px;
+    font-size: 0.8rem;
+    font-family: $font-jomolhari;
+    color: $color_darker-grey;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  @media (max-width: 640px) {
+    width: 100%;
+    gap: 20px;
+    padding-top: 60px;
+  }
+}
+.discount-message {
+  position: relative;
+  font-family: $font-inter;
+  font-size: 1.2rem;
+  color: $color_primary;
+  cursor: pointer;
+}
+.discount-message__btn {
+  background: transparent;
+
+  border: none;
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+
+  transition: 0.3s;
+  position: absolute;
+  top: -2px;
+  left: -30px;
+}
+.remove-discount {
+  transform: rotate(135deg);
+}
+.order-summary__total-cancelled {
+  text-decoration: line-through;
+}
+
+.hidden-block {
+  display: none;
+}

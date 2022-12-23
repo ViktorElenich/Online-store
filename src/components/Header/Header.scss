@@ -12,6 +12,8 @@
   font-weight: 400;
   font-size: 1.2rem;
   box-shadow: 0px 2px 12px 0px rgba(34, 60, 80, 0.2);
+  position: relative;
+  z-index: 2;
 
   &__burger {
     display: none;
@@ -104,11 +106,26 @@
     align-items: center;
     &__cart {
       display: flex;
+      position: relative;
       a {
         background: url('../../assets/cart.png') no-repeat;
         background-size: contain;
         width: 1.5rem;
         height: 1.5rem;
+      }
+      span {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 17px;
+        height: 17px;
+        top: -8px;
+        left: 5px;
+        background-color: red;
+        color: #fff;
+        border-radius: 50%;
+        font-size: 12px;
       }
     }
 
