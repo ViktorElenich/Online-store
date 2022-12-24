@@ -2,7 +2,7 @@ import React, { FC, useRef, useState } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { IProductData, IPropItem } from '../../../interfaces';
 import ModalPurchasePage from '../../ModalPurchase/ModalPurchasePage';
 import ItemRating from '../../ProductItem/ProductItemRating';
@@ -64,6 +64,9 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
         <div className='arrow-right' />
         <span>{item.title}</span>
       </div>
+      <NavLink to='/' className='backLink'>
+        Back
+      </NavLink>
       <div className='item-information'>
         <div className='item-information__main'>
           <h2 className='item-information__title'>{item.title}</h2>
