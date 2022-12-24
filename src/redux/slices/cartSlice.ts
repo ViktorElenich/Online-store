@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+import { CART_ITEMS } from '../../constants';
 import { ICart } from '../../interfaces';
 import { getLocalStorage, setLocalStorage } from '../../utils';
 
 const initialState: ICart = {
-  products: getLocalStorage('cartItems')
-    ? JSON.parse(getLocalStorage('cartItems'))
+  products: getLocalStorage(CART_ITEMS)
+    ? JSON.parse(getLocalStorage(CART_ITEMS))
     : [],
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
@@ -30,7 +31,7 @@ const cartSlice = createSlice({
         state.cartTotalQuantity += 1;
       }
       state.cartTotalAmount += action.payload.price;
-      setLocalStorage('cartItems', JSON.stringify(state.products));
+      setLocalStorage(CART_ITEMS, JSON.stringify(state.products));
     },
     calculateTotalQuantity: (state) => {
       const res: number[] = [];
@@ -56,7 +57,7 @@ const cartSlice = createSlice({
       const newCartItem = state.products.filter(
         (item) => item.product.id !== action.payload.id,
       );
-      console.log('inside cartSlice >> newCartItem', newCartItem);
+
       state.products = newCartItem;
       if (newCartItem.length === 0) return;
       state.cartTotalQuantity -= newCartItem[0].productQuantity;
@@ -65,7 +66,7 @@ const cartSlice = createSlice({
       toast.success(`${action.payload.title} remove from cart`, {
         position: 'top-left',
       });
-      setLocalStorage('cartItems', JSON.stringify(state.products));
+      setLocalStorage(CART_ITEMS, JSON.stringify(state.products));
     },
     decreaseCartProduct: (state, action) => {
       const productIndex = state.products.filter(
@@ -85,14 +86,14 @@ const cartSlice = createSlice({
           position: 'top-left',
         });
         state.cartTotalAmount -= action.payload.price;
-        setLocalStorage('cartItems', JSON.stringify(state.products));
+        setLocalStorage(CART_ITEMS, JSON.stringify(state.products));
       }
     },
     clearCart: (state) => {
       state.products = [];
       state.cartTotalAmount = 0;
       state.cartTotalQuantity = 0;
-      setLocalStorage('cartItems', JSON.stringify(state.products));
+      setLocalStorage(CART_ITEMS, JSON.stringify(state.products));
     },
   },
 });

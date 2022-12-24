@@ -87,8 +87,12 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
       setBrandFilter(brandFilter.filter((x) => x !== id));
       setBrandsShowAllChecked(false);
     }
-    if (brandFilter.length === 0) setBrandsShowAllChecked(false);
-    setSearchQuery({ brands: brandFilter });
+    if (brandFilter.length === 0) {
+      setBrandsShowAllChecked(false);
+    }
+    if (brandFilter.length === brandsChecked.length)
+      setSearchQuery({ brands: ['all'] });
+    else setSearchQuery({ brands: brandFilter });
   };
   const handleCategoryFilter = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
@@ -99,7 +103,9 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
       setCategoryFilter(categoryFilter.filter((x) => x !== id));
       setCategoryShowAllChecked(false);
     }
-    if (categoryFilter.length === 0) setCategoryShowAllChecked(false);
+    if (categoryFilter.length === 0) {
+      setCategoryShowAllChecked(false);
+    }
     setSearchQuery({ categories: categoryFilter }, 'pushIn');
   };
   const isChecked = (arr: string[], name: string) => arr.includes(name);
@@ -114,7 +120,6 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     } else {
       setCategoryShowAllChecked(false);
       setCategoryFilter([]);
-      setSearchQuery({ categories: [] }, 'pushIn');
     }
   };
   const handleShowAllBrands = (e: ChangeEvent<HTMLInputElement>) => {
@@ -127,7 +132,6 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     } else {
       setBrandsShowAllChecked(false);
       setBrandFilter([]);
-      setSearchQuery({ brands: [] }, 'pushIn');
     }
   };
 
@@ -207,10 +211,34 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
       brands: brandFilter,
       categories: categoryFilter,
     });
-    if (brandFilter.length === brandsChecked.length)
+    if (brandFilter.length === 0) {
+      setSearchQuery(
+        {
+          brands: null,
+        },
+        'replaceIn',
+      );
+    }
+    if (categoryFilter.length === 0) {
+      setSearchQuery(
+        {
+          categories: null,
+        },
+        'replaceIn',
+      );
+    }
+    if (brandFilter.length === brandsChecked.length) {
       setBrandsShowAllChecked(true);
-    if (categoryFilter.length === categoriesChecked.length)
+      setSearchQuery({
+        brands: ['All'],
+      });
+    }
+    if (categoryFilter.length === categoriesChecked.length) {
       setCategoryShowAllChecked(true);
+      setSearchQuery({
+        categories: ['All'],
+      });
+    }
   }, [searchQuery, brandFilter, categoryFilter]);
 
   return (
@@ -224,10 +252,10 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
             step={1}
             tooltips
             format={{
-              to: (value) => value,
-              from: (value) => value as number,
+              to: (value) => Math.ceil(value),
+              from: (value) => Math.floor(value as number),
             }}
-            onUpdate={changeStockRange}
+            onChange={changeStockRange}
           />
         </div>
         <div className='price'>
@@ -238,10 +266,10 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
             step={10}
             tooltips
             format={{
-              to: (value) => value,
-              from: (value) => value as number,
+              to: (value) => Math.ceil(value),
+              from: (value) => Math.floor(value as number),
             }}
-            onUpdate={changePriceRange}
+            onChange={changePriceRange}
           />
         </div>
       </div>

@@ -38,6 +38,11 @@ const Products: FC<IProductsProps> = ({ products }) => {
   } else {
     gridStatus = true;
   }
+  const minStockInit = 2;
+  const maxStockInit = 150;
+  const minPriceInit = 10.0;
+  const maxPriceInit = 1749.0;
+
   const [grid, setGrid] = useState<boolean>(gridStatus || false);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(8);
@@ -58,17 +63,18 @@ const Products: FC<IProductsProps> = ({ products }) => {
     minPrice: NumberParam,
     maxPrice: NumberParam,
   });
+
   const [minStockQuantity, setMinStockQuantity] = useState(
-    JSON.parse(getLocalStorage(MIN_STOCK)) || 2,
+    JSON.parse(getLocalStorage(MIN_STOCK)) || minStockInit,
   );
   const [maxStockQuantity, setMaxStockQuantity] = useState(
-    JSON.parse(getLocalStorage(MAX_STOCK)) || 150,
+    JSON.parse(getLocalStorage(MAX_STOCK)) || maxStockInit,
   );
   const [minPriceQuantity, setMinPriceQuantity] = useState(
-    JSON.parse(getLocalStorage(MIN_PRICE)) || 10.00,
+    JSON.parse(getLocalStorage(MIN_PRICE)) || minPriceInit,
   );
   const [maxPriceQuantity, setMaxPriceQuantity] = useState(
-    JSON.parse(getLocalStorage(MAX_PRICE)) || 1749.00,
+    JSON.parse(getLocalStorage(MAX_PRICE)) || maxPriceInit,
   );
   const dispatch = useAppDispatch();
   const categoriesChecked = Array.from(
@@ -99,7 +105,7 @@ const Products: FC<IProductsProps> = ({ products }) => {
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filterProducts.slice(
     indexOfFirstProduct,
-    indexOfLastProduct
+    indexOfLastProduct,
   );
 
   useEffect(() => {
@@ -143,6 +149,24 @@ const Products: FC<IProductsProps> = ({ products }) => {
       minPrice: minPriceQuantity,
       maxPrice: maxPriceQuantity,
     });
+    if (searchInput.length === 0) {
+      setSearchQuery({ search: undefined }, 'replaceIn');
+    }
+    if (sortSelect.length === 0) {
+      setSearchQuery({ sort: undefined }, 'replaceIn');
+    }
+    if (minStockQuantity === minStockInit) {
+      setSearchQuery({ minStock: undefined }, 'replaceIn');
+    }
+    if (maxStockQuantity === maxStockInit) {
+      setSearchQuery({ maxStock: undefined }, 'replaceIn');
+    }
+    if (minPriceQuantity === minPriceInit) {
+      setSearchQuery({ minPrice: undefined }, 'replaceIn');
+    }
+    if (maxPriceQuantity === maxPriceInit) {
+      setSearchQuery({ maxPrice: undefined }, 'replaceIn');
+    }
   }, [
     searchQuery,
     searchInput,

@@ -18,9 +18,10 @@
   justify-content: space-around;
   align-items: center;
   text-transform: uppercase;
-  background-color: $color_standart-grey;
+
   font-size: 0.7rem;
-  font-family: $font-jomolhari;
+  font-family: $font-inter;
+  color: $color_darker-grey;
   & span {
     cursor: pointer;
     &:hover {
@@ -37,16 +38,16 @@
     font-size: 0.5rem;
   }
   .arrow-right {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     padding: 3px;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     background-image: url('../../assets/arrow-right-icon.png');
     @media (max-width: 850px) {
-      width: 30px;
-      height: 30px;
+      width: 27px;
+      height: 27px;
     }
     @media (max-width: 650px) {
       width: 20px;
@@ -56,6 +57,41 @@
       width: 10px;
       height: 10px;
     }
+  }
+}
+.backLink {
+  align-self: flex-start;
+  padding: 7px;
+  margin-left: 5%;
+  position: relative;
+  top: 30px;
+  font-family: $font-inter;
+  font-size: 1.2rem;
+  color: $color_darker-grey;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: url('../../assets/arrow-right-icon.png') no-repeat center;
+    background-size: contain;
+    transform: rotate(180deg);
+    position: absolute;
+    top: 1px;
+    left: -25px;
+    filter: sepia(18%) saturate(0%) hue-rotate(183deg) brightness(20%)
+      contrast(87%);
+  }
+  &:hover {
+    color: $color_primary;
+    &::before {
+      filter: sepia(18%) saturate(0%) hue-rotate(183deg) brightness(0%)
+        contrast(87%);
+    }
+  }
+  &:active {
+    transform: scale(0.94);
   }
 }
 
