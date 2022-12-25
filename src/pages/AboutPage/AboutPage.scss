@@ -1,0 +1,106 @@
+@import "../../styles/mixins";
+
+.about__page {
+  height: calc(100vh - 128px);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .member__card {
+    display: block;
+    position: relative;
+    width: 75%;
+    margin: 0 auto;
+    height: 23rem;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: all 0.4s;
+    box-shadow: 0px 0px 120px -25px rgba(0, 0, 0, 0.5);
+    @include _768 {
+      width: 100%;
+    }
+
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0px 0px 80px -25px rgba(0, 0, 0, 0.5);
+      transition: all 0.4s;
+    }
+    .info__section {
+      width: 60%;
+      height: 100%;
+      padding: 15px;
+      display: flex;
+      position: relative;
+      z-index: 2;
+      flex-direction: column;
+      justify-content: space-between;
+      background-blend-mode: multiply;
+      background: linear-gradient(to right, #e5e6e6 50%, transparent 100%);
+      @include _540 {
+        width: 100%;
+        background: linear-gradient(to right, #e5e6e6 15%, transparent 100%);
+      }
+      &-member__team {
+        font-size: 1.8rem;
+        text-align: center;
+        @include _1000 {
+          font-size: 1.4rem;
+        }
+        h1 {
+          font-size: 2.28rem;
+          margin-bottom: 15px;
+          @include _1000 {
+            font-size: 2rem;
+          }
+        }
+      }
+      &-text__about {
+        .text {
+          @include _1000 {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+          }
+          @include h540 {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+          }
+        }
+      }
+      &-social {
+        li {
+          cursor: pointer;
+          a {
+            text-decoration: none;
+            color: black;
+          }
+          svg {
+            transition: all 0.2s ease-in-out;
+            &:hover {
+              fill: #424242;
+            }
+          }
+        }
+      }
+    }
+    .member__photo {
+      position: absolute;
+      top: 0;
+      z-index: 1;
+      height: 100%;
+      right: 0;
+      border-radius: 11px;
+    }
+    .photo {
+      background: url("../../assets/photo_members/viktor.jpg") no-repeat right;
+      background-size: cover;
+      width: 100%;
+    }
+  }
+}
