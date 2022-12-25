@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Header.scss';
 import { RoutesEnum } from '../../enums';
@@ -12,6 +12,11 @@ const Header = () => {
   const totalAmount = useAppSelector((state) => state.cart.cartTotalAmount);
   const totalQuantity = useAppSelector((state) => state.cart.cartTotalQuantity);
   const dispatch = useAppDispatch();
+  const [isShowBurgerMenu, setIsShowBurgerMenu] = useState(false);
+
+  const toggleBurgerMenu = () => {
+    setIsShowBurgerMenu(!isShowBurgerMenu);
+  };
 
   useEffect(() => {
     dispatch(calculateTotalQuantity());
@@ -21,16 +26,17 @@ const Header = () => {
   return (
     <header className='header'>
       <div className='header__burger'>
-        <div id='burger'>
-          <div className='bar topBar' />
-          <div className='bar btmBar' />
-        </div>
+        <button className={isShowBurgerMenu ? 'burger' : 'burger active'} type='button' onClick={toggleBurgerMenu}>
+          <span />
+          <span />
+          <span />
+        </button>
       </div>
       <NavLink to='/' className='header__logo'>
         <h1>Online-Store</h1>
       </NavLink>
       <nav className='header__navigation'>
-        <ul className='navigation_menu'>
+        <ul className={isShowBurgerMenu ? 'navigation_menu' : 'navigation_menu active'}>
           <li className='menu__item'>
             <NavLink to={RoutesEnum.Home}>Home</NavLink>
           </li>
@@ -46,14 +52,14 @@ const Header = () => {
             {totalQuantity ? <span>{totalQuantity}</span> : null}
           </NavLink>
         </div>
-        <div className='header-user__login'>
+        {/* <div className='header-user__login'>
           <div className='header-user'>
             <div className='header-user__login'>
               Login
               <NavLink to={RoutesEnum.Login} />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </header>
   );
