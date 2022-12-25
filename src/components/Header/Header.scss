@@ -16,6 +16,7 @@
   z-index: 4;
 
   &__burger {
+    display: none;
     @include _540 {
       display: inline-block;
     }
