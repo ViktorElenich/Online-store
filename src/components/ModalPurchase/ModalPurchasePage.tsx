@@ -229,12 +229,11 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
                   type='tel'
                   id='phoneNumber-input'
                   placeholder='Enter phone number'
-                  minLength={9}
+                  minLength={8}
                   maxLength={16}
                   {...register('phoneNum', {
                     required: true,
-                    pattern: /^[0-9+-]+$/,
-                    minLength: 9,
+                    pattern: /(\d?)(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/,
                     maxLength: 16,
                     onChange: (e) => validateNumericField(e),
                   })}

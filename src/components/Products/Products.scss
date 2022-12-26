@@ -3,6 +3,9 @@
 
 .container-products {
   min-height: calc(100vh - 128px);
+  @include _540 {
+    min-height: calc(100vh - 112px);
+  }
 }
 
 .products {
@@ -11,12 +14,34 @@
   gap: 25px;
   height: calc(100vh - 128px);
 
+  .filters__burger {
+    display: none;
+    transition: all 0.3s ease-in-out;
+    @include _960 {
+      display: block;
+      cursor: pointer;
+      position: relative;
+      z-index: 3;
+    }
+  }
+
   &-filter {
     min-width: 13.6rem;
     width: 20%;
     background: $color_standart-grey;
     position: relative;
     padding: 1rem 1.5rem 1rem 1rem;
+    @include _960 {
+      position: absolute;
+      width: 30%;
+      height: calc(100vh - 153px);
+      z-index: 2;
+      left: -100%;
+      transition: left 0.5s ease-in-out;
+    }
+    &.active {
+      left: 0;
+    }
 
     &::before {
       content: '';
@@ -43,10 +68,19 @@
     display: flex;
     flex-direction: column;
     width: 80%;
+    @include _960 {
+      width: 95%;
+      float: right;
+    }
 
     &__sortSearch {
       display: flex;
       justify-content: space-between;
+      @include _540 {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
     }
   }
   &-items {
@@ -59,6 +93,12 @@
       margin-top: 15px;
       overflow-x: hidden;
       position: relative;
+      @include _895 {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+      @include _540 {
+        max-height: calc(100vh - 320px);
+      }
       &::-webkit-scrollbar {
         width: 5px;
         height: 10px;
