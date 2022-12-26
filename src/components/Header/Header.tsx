@@ -26,7 +26,7 @@ const Header = () => {
   return (
     <header className='header'>
       <div className='header__burger'>
-        <button className={isShowBurgerMenu ? 'burger' : 'burger active'} type='button' onClick={toggleBurgerMenu}>
+        <button className={!isShowBurgerMenu ? 'burger' : 'burger active'} type='button' onClick={toggleBurgerMenu}>
           <span />
           <span />
           <span />
@@ -36,7 +36,7 @@ const Header = () => {
         <h1>Online-Store</h1>
       </NavLink>
       <nav className='header__navigation'>
-        <ul className={isShowBurgerMenu ? 'navigation_menu' : 'navigation_menu active'}>
+        <ul className={!isShowBurgerMenu ? 'navigation_menu' : 'navigation_menu active'}>
           <li className='menu__item'>
             <NavLink to={RoutesEnum.Home}>Home</NavLink>
           </li>

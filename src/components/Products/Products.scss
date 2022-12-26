@@ -3,6 +3,9 @@
 
 .container-products {
   min-height: calc(100vh - 128px);
+  @include _540 {
+    min-height: calc(100vh - 112px);
+  }
 }
 
 .products {
@@ -73,6 +76,11 @@
     &__sortSearch {
       display: flex;
       justify-content: space-between;
+      @include _540 {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
     }
   }
   &-items {
@@ -85,6 +93,12 @@
       margin-top: 15px;
       overflow-x: hidden;
       position: relative;
+      @include _895 {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+      @include _540 {
+        max-height: calc(100vh - 320px);
+      }
       &::-webkit-scrollbar {
         width: 5px;
         height: 10px;

@@ -7,7 +7,7 @@ import {
   useQueryParams,
   NumberParam,
 } from 'use-query-params';
-import { FaBars } from 'react-icons/fa';
+import { MdSettingsSuggest } from 'react-icons/md';
 import { BsXLg } from 'react-icons/bs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import ProductItem from '../ProductItem/ProductItem';
@@ -191,7 +191,7 @@ const Products: FC<IProductsProps> = ({ products }) => {
         role='presentation'
         onClick={toggleBurgerMenu}
       >
-        {!showFilters ? (<FaBars size={22}/>) : (<BsXLg size={22} />)}
+        {!showFilters ? (<MdSettingsSuggest size={24}/>) : (<BsXLg size={22} />)}
       </div>
       <aside className={ !showFilters ? 'products-filter' : 'products-filter active'}>
         {isLoading ? (

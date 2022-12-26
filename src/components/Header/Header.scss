@@ -14,6 +14,9 @@
   box-shadow: 0px 2px 12px 0px rgba(34, 60, 80, 0.2);
   position: relative;
   z-index: 4;
+  @include _540 {
+    height: 2.5rem;
+  }
 
   &__burger {
     display: none;
@@ -60,12 +63,18 @@
   }
 
   &__logo {
+    @include _540 {
+      margin-left: 4.8rem;
+    }
     h1 {
       text-indent: -1234rem;
       background: url('../../assets/logo.png') no-repeat;
       background-size: contain;
       width: 8rem;
       height: 3.5rem;
+      @include _540 {
+        width: 6rem;
+      }
     }
   }
   .navigation_menu {
