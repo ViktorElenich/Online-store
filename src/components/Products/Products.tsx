@@ -191,9 +191,11 @@ const Products: FC<IProductsProps> = ({ products }) => {
         role='presentation'
         onClick={toggleBurgerMenu}
       >
-        {!showFilters ? (<MdSettingsSuggest size={24}/>) : (<BsXLg size={22} />)}
+        {!showFilters ? <MdSettingsSuggest size={24} /> : <BsXLg size={22} />}
       </div>
-      <aside className={ !showFilters ? 'products-filter' : 'products-filter active'}>
+      <aside
+        className={!showFilters ? 'products-filter' : 'products-filter active'}
+      >
         {isLoading ? (
           <Loader />
         ) : (

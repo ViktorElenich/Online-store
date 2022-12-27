@@ -1,5 +1,6 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
 import ModalPurchasePage from '../../../components/ModalPurchase/ModalPurchasePage';
 
 import { RoutesEnum } from '../../../enums';
@@ -13,6 +14,9 @@ type ICartProp = { cartProducts: ICart };
 const OrderSummary: FC<ICartProp> = ({ cartProducts }) => {
   const { cartTotalQuantity, cartTotalAmount } = cartProducts;
   const [RSSdiscount, EPMdiscount] = [0.1, 0.2];
+
+  const [slideUp, setSlideUp] = useState(false);
+  const [slideDown, setSlideDown] = useState(false);
 
   const [discRSS, setDiscRSS] = useState({ found: false, applied: false });
   const [discEPM, setDiscEPM] = useState({ found: false, applied: false });
@@ -34,25 +38,38 @@ const OrderSummary: FC<ICartProp> = ({ cartProducts }) => {
   };
   const applyRSSDicsount = () => {
     if (!discRSS.applied) {
-      setDiscRSS({ ...discRSS, applied: true });
-      setTotalPayment(totalPayment - cartTotalAmount * RSSdiscount);
+      setSlideUp(true);
+      setTimeout(() => {
+        setDiscRSS({ ...discRSS, applied: true });
+        setTotalPayment(totalPayment - cartTotalAmount * RSSdiscount);
+        setSlideUp(false);
+      }, 200);
     } else {
-      setDiscRSS({ found: true, applied: false });
-      setTotalPayment(totalPayment + cartTotalAmount * RSSdiscount);
-
+      setSlideDown(true);
+      setTimeout(() => {
+        setDiscRSS({ found: true, applied: false });
+        setTotalPayment(totalPayment + cartTotalAmount * RSSdiscount);
+        setSlideDown(false);
+      }, 200);
       if (discEPM.found && !discEPM.applied)
         setDiscEPM({ ...discEPM, found: false });
     }
   };
   const applyEPMDicsount = () => {
     if (!discEPM.applied) {
-      setDiscEPM({ ...discEPM, applied: true });
-
-      setTotalPayment(totalPayment - cartTotalAmount * EPMdiscount);
+      setSlideUp(true);
+      setTimeout(() => {
+        setDiscEPM({ ...discEPM, applied: true });
+        setTotalPayment(totalPayment - cartTotalAmount * EPMdiscount);
+        setSlideUp(false);
+      }, 200);
     } else {
-      setDiscEPM({ found: true, applied: false });
-      setTotalPayment(totalPayment + cartTotalAmount * EPMdiscount);
-
+      setSlideDown(true);
+      setTimeout(() => {
+        setDiscEPM({ found: true, applied: false });
+        setTotalPayment(totalPayment + cartTotalAmount * EPMdiscount);
+        setSlideDown(false);
+      }, 200);
       if (discRSS.found && !discRSS.applied)
         setDiscEPM({ ...discRSS, found: false });
     }
@@ -117,22 +134,30 @@ const OrderSummary: FC<ICartProp> = ({ cartProducts }) => {
 
         <div className='order-summary__applied-codes'>
           {discEPM.applied || discRSS.applied ? 'Applied codes:' : ''}
-          {discRSS.applied && (
-            <Discount
-              message='Rolling Scopes School'
-              quantity={RSSdiscount * 100}
-              applied={discRSS.applied}
-              handleApply={applyRSSDicsount}
-            />
-          )}
-          {discEPM.applied && (
-            <Discount
-              message='EPAM Systems'
-              quantity={EPMdiscount * 100}
-              applied={discEPM.applied}
-              handleApply={applyEPMDicsount}
-            />
-          )}
+          <CSSTransition in={slideDown} timeout={200} classNames='rss-goDown'>
+            <span className='rss-goDown'>
+              {discRSS.applied && (
+                <Discount
+                  message='Rolling Scopes School'
+                  quantity={RSSdiscount * 100}
+                  applied={discRSS.applied}
+                  handleApply={applyRSSDicsount}
+                />
+              )}
+            </span>
+          </CSSTransition>
+          <CSSTransition in={slideDown} timeout={200} classNames='rss-goDown'>
+            <span className='rss-goDown'>
+              {discEPM.applied && (
+                <Discount
+                  message='EPAM Systems'
+                  quantity={EPMdiscount * 100}
+                  applied={discEPM.applied}
+                  handleApply={applyEPMDicsount}
+                />
+              )}
+            </span>
+          </CSSTransition>
         </div>
         <label htmlFor='order-summary__input' className='order-summary__label'>
           Promo code
@@ -145,22 +170,30 @@ const OrderSummary: FC<ICartProp> = ({ cartProducts }) => {
         </label>
 
         <div className='order-summary__found-codes'>
-          {discRSS.found && !discRSS.applied && (
-            <Discount
-              message='Rolling Scopes School'
-              quantity={RSSdiscount * 100}
-              applied={discRSS.applied}
-              handleApply={applyRSSDicsount}
-            />
-          )}
-          {discEPM.found && !discEPM.applied && (
-            <Discount
-              message='EPAM Systems'
-              quantity={EPMdiscount * 100}
-              applied={discEPM.applied}
-              handleApply={applyEPMDicsount}
-            />
-          )}
+          <CSSTransition in={slideUp} timeout={200} classNames='rss-goUp'>
+            <span className='rss-goUp'>
+              {discRSS.found && !discRSS.applied && (
+                <Discount
+                  message='Rolling Scopes School'
+                  quantity={RSSdiscount * 100}
+                  applied={discRSS.applied}
+                  handleApply={applyRSSDicsount}
+                />
+              )}
+            </span>
+          </CSSTransition>
+          <CSSTransition in={slideUp} timeout={200} classNames='rss-goUp'>
+            <span className='rss-goUp'>
+              {discEPM.found && !discEPM.applied && (
+                <Discount
+                  message='EPAM Systems'
+                  quantity={EPMdiscount * 100}
+                  applied={discEPM.applied}
+                  handleApply={applyEPMDicsount}
+                />
+              )}
+            </span>
+          </CSSTransition>
         </div>
 
         <button

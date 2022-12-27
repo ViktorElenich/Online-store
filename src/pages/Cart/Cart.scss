@@ -54,6 +54,15 @@
       width: 100%;
       font-size: 1rem;
       font-family: $font-jomolhari;
+      @media (max-width: 680px) {
+        font-size: 0.9rem;
+      }
+      @media (max-width: 580px) {
+        font-size: 0.8rem;
+      }
+      @media (max-width: 500px) {
+        font-size: 0.7rem;
+      }
       thead {
         border-top: 2px solid $color_darker-grey;
         border-bottom: 2px solid $color_darker-grey;
@@ -67,6 +76,7 @@
         vertical-align: middle;
         text-align: left;
         padding: 4px;
+
         &.table__icons {
           > * {
             margin-right: 5px;
@@ -78,6 +88,12 @@
           height: auto;
           object-fit: cover;
           margin: 7px;
+          @media (max-width: 550px) {
+            width: 30px;
+          }
+          @media (max-width: 450px) {
+            display: none;
+          }
         }
       }
       td:nth-of-type(2) {
@@ -106,6 +122,12 @@
         }
         p {
           font-size: 1.3rem;
+          @media (max-width: 620px) {
+            font-size: 1.1rem;
+          }
+          @media (max-width: 520px) {
+            font-size: 0.9rem;
+          }
         }
         .cart__btn {
           border: 1px solid $color_primary;

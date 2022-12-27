@@ -13,6 +13,9 @@
   display: flex;
   gap: 25px;
   height: calc(100vh - 128px);
+  @media (max-width: 530px) {
+    gap: 0;
+  }
 
   .filters__burger {
     display: none;
@@ -21,7 +24,7 @@
       display: block;
       cursor: pointer;
       position: relative;
-      z-index: 3;
+      z-index: 5;
     }
   }
 
@@ -31,11 +34,13 @@
     background: $color_standart-grey;
     position: relative;
     padding: 1rem 1.5rem 1rem 1rem;
+
     @include _960 {
       position: absolute;
       width: 30%;
       height: calc(100vh - 153px);
-      z-index: 2;
+
+      z-index: 4;
       left: -100%;
       transition: left 0.5s ease-in-out;
     }
@@ -49,6 +54,7 @@
       top: -1.5rem;
       left: -1rem;
       background: $color_standart-grey;
+      border-right: 2px solid $color_middle-grey;
       width: calc(100% + 1.5rem);
       height: 100%;
       z-index: -1;
@@ -59,6 +65,7 @@
       top: 0;
       left: -1rem;
       background: $color_standart-grey;
+      border-right: 2px solid $color_middle-grey;
       width: calc(100% + 1.5rem);
       height: 100%;
       z-index: -1;
