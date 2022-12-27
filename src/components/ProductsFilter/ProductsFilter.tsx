@@ -15,16 +15,15 @@ import {
   BRAND_FILTERS,
   CATEGORY_ALL_FILTERS,
   CATEGORY_FILTERS,
-  MAX_PRICE,
-  MAX_STOCK,
-  MIN_PRICE,
-  MIN_STOCK,
   SHOW_BRANDS,
   SHOW_CATEGORIES,
 } from '../../constants';
 import { getLocalStorage, setLocalStorage } from '../../utils';
+import { filtersProducts } from '../../redux/slices/filterSlice';
+import { useAppDispatch } from '../../hooks';
 
-const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
+const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
+  const dispatch = useAppDispatch();
   const [searchQuery, setSearchQuery] = useQueryParams({
     search: StringParam,
     sort: StringParam,
@@ -32,7 +31,14 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     categories: DelimitedArrayParam,
     minStock: NumberParam,
     maxStock: NumberParam,
+    minPrice: NumberParam,
+    maxPrice: NumberParam,
   });
+  const { products, searchInput, sortSelect } = filters;
+  const minStockInit = 2;
+  const maxStockInit = 150;
+  const minPriceInit = 10.0;
+  const maxPriceInit = 1749.0;
   const [copied, setCopied] = useState(false);
   const [showMenuButton1, setShowMenuButton1] = useState(
     getLocalStorage(SHOW_CATEGORIES)
@@ -42,23 +48,33 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
   const [showMenuButton2, setShowMenuButton2] = useState(
     getLocalStorage(SHOW_BRANDS) ? getLocalStorage(SHOW_BRANDS) === '1' : false,
   );
+  const [minStockQuantity, setMinStockQuantity] = useState(
+    searchQuery.minStock || minStockInit,
+  );
+  const [maxStockQuantity, setMaxStockQuantity] = useState(
+    searchQuery.maxStock || maxStockInit,
+  );
+  const [minPriceQuantity, setMinPriceQuantity] = useState(
+    searchQuery.minPrice || minPriceInit,
+  );
+  const [maxPriceQuantity, setMaxPriceQuantity] = useState(
+    searchQuery.maxPrice || maxPriceInit,
+  );
+  const categoriesChecked = Array.from(
+    new Set(products.map((item) => item.category)),
+  ).sort();
+  const brandsChecked = Array.from(
+    new Set(products.map((item) => item.brand)),
+  ).sort();
 
-  const {
-    brandFilter,
-    categoryFilter,
-    categoriesChecked,
-    brandsChecked,
-    minStockQuantity,
-    maxStockQuantity,
-    minPriceQuantity,
-    maxPriceQuantity,
-    setMinStockQuantity,
-    setMaxStockQuantity,
-    setMinPriceQuantity,
-    setMaxPriceQuantity,
-    setBrandFilter,
-    setCategoryFilter,
-  } = searchSort;
+  const searchQueryBrand = searchQuery.brands as string[];
+  const searchQueryCategory = searchQuery.brands as string[];
+  const [brandFilter, setBrandFilter] = useState(
+    searchQueryBrand.includes('All') ? brandsChecked : searchQuery.brands,
+  );
+  const [categoryFilter, setCategoryFilter] = useState(
+    searchQueryCategory.includes('All') ? categoriesChecked : searchQuery.categories,
+  );
 
   const [categoryShowAllChecked, setCategoryShowAllChecked] = useState(
     getLocalStorage(CATEGORY_ALL_FILTERS)
@@ -82,15 +98,15 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     const target = e.target as HTMLInputElement;
     const { id, checked } = target;
     if (checked) {
-      setBrandFilter([...brandFilter, id]);
+      setBrandFilter([...(brandFilter as string[]), id]);
     } else {
-      setBrandFilter(brandFilter.filter((x) => x !== id));
+      setBrandFilter((brandFilter as string[]).filter((x) => x !== id));
       setBrandsShowAllChecked(false);
     }
-    if (brandFilter.length === 0) {
+    if ((brandFilter as string[]).length === 0) {
       setBrandsShowAllChecked(false);
     }
-    if (brandFilter.length === brandsChecked.length)
+    if ((brandFilter as string[]).length === brandsChecked.length)
       setSearchQuery({ brands: ['all'] });
     else setSearchQuery({ brands: brandFilter });
   };
@@ -98,12 +114,12 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     const target = e.target as HTMLInputElement;
     const { id, checked } = target;
     if (checked) {
-      setCategoryFilter([...categoryFilter, id]);
+      setCategoryFilter([...(categoryFilter as string[]), id]);
     } else {
-      setCategoryFilter(categoryFilter.filter((x) => x !== id));
+      setCategoryFilter((categoryFilter as string[]).filter((x) => x !== id));
       setCategoryShowAllChecked(false);
     }
-    if (categoryFilter.length === 0) {
+    if ((categoryFilter as string[]).length === 0) {
       setCategoryShowAllChecked(false);
     }
     setSearchQuery({ categories: categoryFilter }, 'pushIn');
@@ -137,15 +153,11 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
 
   const changeStockRange = (event: Array<number>) => {
     setMinStockQuantity(event[0]);
-    setLocalStorage(MIN_STOCK, JSON.stringify(event[0]));
     setMaxStockQuantity(event[1]);
-    setLocalStorage(MAX_STOCK, JSON.stringify(event[1]));
   };
   const changePriceRange = (event: Array<number>) => {
     setMinPriceQuantity(event[0]);
-    setLocalStorage(MIN_PRICE, JSON.stringify(event[0]));
     setMaxPriceQuantity(event[1]);
-    setLocalStorage(MAX_PRICE, JSON.stringify(event[1]));
   };
 
   const handleResetFilters = () => {
@@ -210,8 +222,12 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     setSearchQuery({
       brands: brandFilter,
       categories: categoryFilter,
+      minStock: minStockQuantity,
+      maxStock: maxStockQuantity,
+      minPrice: minPriceQuantity,
+      maxPrice: maxPriceQuantity,
     });
-    if (brandFilter.length === 0) {
+    if ((brandFilter as string[]).length === 0) {
       setSearchQuery(
         {
           brands: null,
@@ -219,7 +235,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
         'replaceIn',
       );
     }
-    if (categoryFilter.length === 0) {
+    if ((categoryFilter as string[]).length === 0) {
       setSearchQuery(
         {
           categories: null,
@@ -227,19 +243,66 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
         'replaceIn',
       );
     }
-    if (brandFilter.length === brandsChecked.length) {
+    if ((brandFilter as string[]).length === brandsChecked.length) {
       setBrandsShowAllChecked(true);
       setSearchQuery({
         brands: ['All'],
       });
     }
-    if (categoryFilter.length === categoriesChecked.length) {
+    if ((categoryFilter as string[]).length === categoriesChecked.length) {
       setCategoryShowAllChecked(true);
       setSearchQuery({
         categories: ['All'],
       });
     }
-  }, [searchQuery, brandFilter, categoryFilter]);
+    if (minStockQuantity === minStockInit) {
+      setSearchQuery({ minStock: undefined }, 'replaceIn');
+    }
+    if (maxStockQuantity === maxStockInit) {
+      setSearchQuery({ maxStock: undefined }, 'replaceIn');
+    }
+    if (minPriceQuantity === minPriceInit) {
+      setSearchQuery({ minPrice: undefined }, 'replaceIn');
+    }
+    if (maxPriceQuantity === maxPriceInit) {
+      setSearchQuery({ maxPrice: undefined }, 'replaceIn');
+    }
+  }, [
+    searchQuery,
+    brandFilter,
+    categoryFilter,
+    minStockQuantity,
+    maxStockQuantity,
+    minPriceQuantity,
+    maxPriceQuantity,
+  ]);
+
+  useEffect(() => {
+    dispatch(
+      filtersProducts({
+        products,
+        search: searchInput,
+        sort: sortSelect,
+        brands: brandFilter,
+        categories: categoryFilter,
+        minStock: minStockQuantity,
+        maxStock: maxStockQuantity,
+        minPrice: minPriceQuantity,
+        maxPrice: maxPriceQuantity,
+      }),
+    );
+  }, [
+    dispatch,
+    products,
+    searchInput,
+    sortSelect,
+    brandFilter,
+    categoryFilter,
+    minStockQuantity,
+    maxStockQuantity,
+    minPriceQuantity,
+    maxPriceQuantity,
+  ]);
 
   return (
     <>
@@ -308,7 +371,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
                   id={cat}
                   type='checkbox'
                   checked={
-                    categoryShowAllChecked || isChecked(categoryFilter, cat)
+                    categoryShowAllChecked || isChecked((categoryFilter as string[]), cat)
                   }
                   onChange={handleCategoryFilter}
                 />
@@ -349,7 +412,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
                   id={brand}
                   type='checkbox'
                   checked={
-                    brandsShowAllChecked || isChecked(brandFilter, brand)
+                    brandsShowAllChecked || isChecked((brandFilter as string[]), brand)
                   }
                   onChange={handleBrandFilter}
                 />

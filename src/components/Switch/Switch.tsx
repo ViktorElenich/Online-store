@@ -1,11 +1,8 @@
-
 import { FC } from 'react';
 import { BsFillGridFill } from 'react-icons/bs';
 import { FaListAlt } from 'react-icons/fa';
 import { ISwitch } from '../../interfaces';
 import './Switch.scss';
-import { setLocalStorage } from '../../utils';
-import { GRID_STYLE } from '../../constants';
 
 
 const Switch: FC<ISwitch> = ({ products, changeStyle }) => (
@@ -15,7 +12,6 @@ const Switch: FC<ISwitch> = ({ products, changeStyle }) => (
       color='#424242'
       onClick={() => {
         changeStyle(false);
-        setLocalStorage(GRID_STYLE, '0');
       }}
     />
     <FaListAlt
@@ -23,7 +19,6 @@ const Switch: FC<ISwitch> = ({ products, changeStyle }) => (
       color='#424242'
       onClick={() => {
         changeStyle(true);
-        setLocalStorage(GRID_STYLE, '1');
       }}
     />
     <p>
