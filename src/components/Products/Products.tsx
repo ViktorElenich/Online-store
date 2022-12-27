@@ -7,6 +7,8 @@ import {
   useQueryParams,
   NumberParam,
 } from 'use-query-params';
+import { MdSettingsSuggest } from 'react-icons/md';
+import { BsXLg } from 'react-icons/bs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import ProductItem from '../ProductItem/ProductItem';
 import ProductsFilter from '../ProductsFilter/ProductsFilter';
@@ -44,6 +46,7 @@ const Products: FC<IProductsProps> = ({ products }) => {
   const maxPriceInit = 1749.0;
 
   const [grid, setGrid] = useState<boolean>(gridStatus || false);
+  const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(8);
   const [searchInput, setSearchInput] = useState(
@@ -100,6 +103,10 @@ const Products: FC<IProductsProps> = ({ products }) => {
     setSortSelect(e.currentTarget.value);
     setLocalStorage(SORT_SELECT, e.currentTarget.value);
     setSearchQuery({ sort: sortSelect }, 'pushIn');
+  };
+
+  const toggleBurgerMenu = () => {
+    setShowFilters(!showFilters);
   };
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -179,7 +186,14 @@ const Products: FC<IProductsProps> = ({ products }) => {
   ]);
   return (
     <div className='products'>
-      <aside className='products-filter'>
+      <div
+        className='filters__burger'
+        role='presentation'
+        onClick={toggleBurgerMenu}
+      >
+        {!showFilters ? (<MdSettingsSuggest size={24}/>) : (<BsXLg size={22} />)}
+      </div>
+      <aside className={ !showFilters ? 'products-filter' : 'products-filter active'}>
         {isLoading ? (
           <Loader />
         ) : (

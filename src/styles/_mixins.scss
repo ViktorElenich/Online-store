@@ -3,6 +3,16 @@
     @content;
   }
 }
+@mixin _960 {
+  @media (max-width: 960px) {
+    @content;
+  }
+}
+@mixin _895 {
+  @media (max-width: 895px) {
+    @content;
+  }
+}
 @mixin _768 {
   @media (max-width: 768px) {
     @content;
