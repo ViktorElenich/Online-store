@@ -11,6 +11,7 @@ import ProductsContainer from './components/ProductsContainer/ProductsContainer'
 import ErrorPage from './pages/ErrorPage/ErrorPage';
 import ProductItemInformation from './components/ProductItemInformation/ProductItemInformation';
 import Cart from './pages/Cart/Cart';
+import AboutPage from "./pages/AboutPage/AboutPage";
 
 function App() {
   return (
@@ -24,8 +25,9 @@ function App() {
             <Route path={RoutesEnum.Products} element={<ProductItemInformation />}>
               <Route path=':id' element={<ProductItemInformation />} />
             </Route>
-            <Route path={RoutesEnum.Error404} element={<ErrorPage />} />
             <Route path={RoutesEnum.Cart} element={<Cart />} />
+            <Route path={RoutesEnum.About} element={<AboutPage />} />
+            <Route path={RoutesEnum.Error404} element={<ErrorPage />} />
           </Routes>
           <Footer />
         </div>
