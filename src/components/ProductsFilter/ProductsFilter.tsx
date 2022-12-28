@@ -10,21 +10,19 @@ import { v4 as uuidv4 } from 'uuid';
 import Nouislider from 'nouislider-react';
 import 'nouislider-react/node_modules/nouislider/distribute/nouislider.css';
 import { IFilterBrand } from '../../interfaces';
-import {
-  BRAND_ALL_FILTERS,
-  BRAND_FILTERS,
-  CATEGORY_ALL_FILTERS,
-  CATEGORY_FILTERS,
-  MAX_PRICE,
-  MAX_STOCK,
-  MIN_PRICE,
-  MIN_STOCK,
-  SHOW_BRANDS,
-  SHOW_CATEGORIES,
-} from '../../constants';
-import { getLocalStorage, setLocalStorage } from '../../utils';
+import { SHOW_BRANDS, SHOW_CATEGORIES } from '../../constants';
+import { getLocalStorage } from '../../utils';
+import { useAppDispatch } from '../../hooks';
+import { filtersProducts } from '../../redux/slices/filterSlice';
 
 const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
+  const minStockInit = 2;
+  const maxStockInit = 150;
+  const minPriceInit = 10.0;
+  const maxPriceInit = 1749.0;
+
+  const { products, sort, search } = searchSort;
+
   const [searchQuery, setSearchQuery] = useQueryParams({
     search: StringParam,
     sort: StringParam,
@@ -32,7 +30,39 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     categories: DelimitedArrayParam,
     minStock: NumberParam,
     maxStock: NumberParam,
+    minPrice: NumberParam,
+    maxPrice: NumberParam,
   });
+  const dispatch = useAppDispatch();
+
+  const categoriesChecked = Array.from(
+    new Set(products.map((item) => item.category)),
+  ).sort();
+  const brandsChecked = Array.from(
+    new Set(products.map((item) => item.brand)),
+  ).sort();
+
+  const currCategories =
+    !searchQuery.categories || searchQuery.categories[0] === 'All'
+      ? categoriesChecked
+      : searchQuery.categories;
+  const currBrands =
+    !searchQuery.brands || searchQuery.brands[0] === 'All'
+      ? brandsChecked
+      : searchQuery.brands;
+
+  const [minStockQuantity, setMinStockQuantity] = useState(
+    searchQuery.minStock || minStockInit,
+  );
+  const [maxStockQuantity, setMaxStockQuantity] = useState(
+    searchQuery.maxStock || maxStockInit,
+  );
+  const [minPriceQuantity, setMinPriceQuantity] = useState(
+    searchQuery.minPrice || minPriceInit,
+  );
+  const [maxPriceQuantity, setMaxPriceQuantity] = useState(
+    searchQuery.maxPrice || maxPriceInit,
+  );
   const [copied, setCopied] = useState(false);
   const [showMenuButton1, setShowMenuButton1] = useState(
     getLocalStorage(SHOW_CATEGORIES)
@@ -43,32 +73,19 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     getLocalStorage(SHOW_BRANDS) ? getLocalStorage(SHOW_BRANDS) === '1' : false,
   );
 
-  const {
-    brandFilter,
-    categoryFilter,
-    categoriesChecked,
-    brandsChecked,
-    minStockQuantity,
-    maxStockQuantity,
-    minPriceQuantity,
-    maxPriceQuantity,
-    setMinStockQuantity,
-    setMaxStockQuantity,
-    setMinPriceQuantity,
-    setMaxPriceQuantity,
-    setBrandFilter,
-    setCategoryFilter,
-  } = searchSort;
+  const [brandFilter, setBrandFilter] = useState<string[]>(
+    (currBrands as string[]) || brandsChecked,
+  );
+  const [categoryFilter, setCategoryFilter] = useState<string[]>(
+    (currCategories as string[]) || categoriesChecked,
+  );
 
   const [categoryShowAllChecked, setCategoryShowAllChecked] = useState(
-    getLocalStorage(CATEGORY_ALL_FILTERS)
-      ? getLocalStorage(CATEGORY_ALL_FILTERS) === '1'
-      : true,
+    !!(!searchQuery.categories || searchQuery.categories[0] === 'All'),
   );
+
   const [brandsShowAllChecked, setBrandsShowAllChecked] = useState(
-    getLocalStorage(BRAND_ALL_FILTERS)
-      ? getLocalStorage(BRAND_ALL_FILTERS) === '1'
-      : true,
+    !!(!searchQuery.brands || searchQuery.brands[0] === 'All'),
   );
 
   const toggleButton1 = () => {
@@ -137,15 +154,12 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
 
   const changeStockRange = (event: Array<number>) => {
     setMinStockQuantity(event[0]);
-    setLocalStorage(MIN_STOCK, JSON.stringify(event[0]));
     setMaxStockQuantity(event[1]);
-    setLocalStorage(MAX_STOCK, JSON.stringify(event[1]));
   };
   const changePriceRange = (event: Array<number>) => {
     setMinPriceQuantity(event[0]);
-    setLocalStorage(MIN_PRICE, JSON.stringify(event[0]));
+
     setMaxPriceQuantity(event[1]);
-    setLocalStorage(MAX_PRICE, JSON.stringify(event[1]));
   };
 
   const handleResetFilters = () => {
@@ -178,33 +192,6 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
       setCopied(false);
     }, 500);
   };
-
-  useEffect(() => {
-    setLocalStorage(CATEGORY_ALL_FILTERS, categoryShowAllChecked ? '1' : '0');
-    setLocalStorage(BRAND_ALL_FILTERS, brandsShowAllChecked ? '1' : '0');
-    setLocalStorage(
-      CATEGORY_FILTERS,
-      categoryShowAllChecked
-        ? JSON.stringify(categoriesChecked)
-        : JSON.stringify(categoryFilter),
-    );
-    setLocalStorage(
-      BRAND_FILTERS,
-      brandsShowAllChecked
-        ? JSON.stringify(brandsChecked)
-        : JSON.stringify(brandFilter),
-    );
-  }, [
-    categoryShowAllChecked,
-    brandsShowAllChecked,
-    categoryFilter,
-    brandFilter,
-  ]);
-
-  useEffect(() => {
-    setLocalStorage(SHOW_CATEGORIES, showMenuButton1 ? '1' : '0');
-    setLocalStorage(SHOW_BRANDS, showMenuButton2 ? '1' : '0');
-  }, [showMenuButton1, showMenuButton2]);
 
   useEffect(() => {
     setSearchQuery({
@@ -240,6 +227,52 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
       });
     }
   }, [searchQuery, brandFilter, categoryFilter]);
+  useEffect(() => {
+    dispatch(
+      filtersProducts({
+        products,
+        search,
+        sort,
+        brands: brandFilter,
+        categories: categoryFilter,
+        minStock: minStockQuantity,
+        maxStock: maxStockQuantity,
+        minPrice: minPriceQuantity,
+        maxPrice: maxPriceQuantity,
+      }),
+    );
+  }, [
+    dispatch,
+    products,
+    search,
+    sort,
+    brandFilter,
+    categoryFilter,
+    minStockQuantity,
+    maxStockQuantity,
+    minPriceQuantity,
+    maxPriceQuantity,
+  ]);
+  useEffect(() => {
+    setSearchQuery({
+      minStock: minStockQuantity,
+      maxStock: maxStockQuantity,
+      minPrice: minPriceQuantity,
+      maxPrice: maxPriceQuantity,
+    });
+    if (minStockQuantity === minStockInit) {
+      setSearchQuery({ minStock: undefined }, 'replaceIn');
+    }
+    if (maxStockQuantity === maxStockInit) {
+      setSearchQuery({ maxStock: undefined }, 'replaceIn');
+    }
+    if (minPriceQuantity === minPriceInit) {
+      setSearchQuery({ minPrice: undefined }, 'replaceIn');
+    }
+    if (maxPriceQuantity === maxPriceInit) {
+      setSearchQuery({ maxPrice: undefined }, 'replaceIn');
+    }
+  }, [minStockQuantity, maxStockQuantity, minPriceQuantity, maxPriceQuantity]);
 
   return (
     <>

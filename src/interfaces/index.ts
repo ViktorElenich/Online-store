@@ -47,23 +47,11 @@ export interface ISelect {
 
 export interface IFilterBrand {
   searchSort: {
-    brandFilter: string[],
-    categoryFilter: string[],
-    categoriesChecked: string[],
-    brandsChecked: string[],
-    minStockQuantity: number,
-    maxStockQuantity: number,
-    minPriceQuantity: number,
-    maxPriceQuantity: number,
-    setMinStockQuantity: Dispatch<number>;
-    setMaxStockQuantity: Dispatch<number>;
-    setMinPriceQuantity: Dispatch<number>;
-    setMaxPriceQuantity: Dispatch<number>;
-    setBrandFilter: Dispatch<string[]>;
-    setCategoryFilter: Dispatch<string[]>;
+    products: IProductData[],
+    search: string,
+    sort: string
   };
 }
-
 export interface ISwitch {
   products: IProductData[];
   changeStyle: Dispatch<boolean>;
