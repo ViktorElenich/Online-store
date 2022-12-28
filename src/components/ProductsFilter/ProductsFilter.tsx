@@ -18,7 +18,7 @@ import {
   SHOW_BRANDS,
   SHOW_CATEGORIES,
 } from '../../constants';
-import { getLocalStorage, setLocalStorage } from '../../utils';
+import {getLocalStorage, isStringArray, setLocalStorage} from '../../utils';
 import { filtersProducts } from '../../redux/slices/filterSlice';
 import { useAppDispatch } from '../../hooks';
 
@@ -67,13 +67,19 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
     new Set(products.map((item) => item.brand)),
   ).sort();
 
-  const searchQueryBrand = searchQuery.brands as string[];
-  const searchQueryCategory = searchQuery.brands as string[];
+  let searchQueryBrand: string[] = [];
+  if(isStringArray(searchQuery.brands)) {
+    searchQueryBrand = searchQuery.brands
+  }
+  let searchQueryCategory: string[] = [];
+  if(isStringArray(searchQuery.categories)) {
+    searchQueryCategory = searchQuery.categories
+  }
   const [brandFilter, setBrandFilter] = useState(
-    searchQueryBrand.includes('All') ? brandsChecked : searchQuery.brands,
+    searchQueryBrand.includes('All') ? brandsChecked : searchQueryBrand,
   );
   const [categoryFilter, setCategoryFilter] = useState(
-    searchQueryCategory.includes('All') ? categoriesChecked : searchQuery.categories,
+    searchQueryCategory.includes('All') ? categoriesChecked : searchQueryCategory,
   );
 
   const [categoryShowAllChecked, setCategoryShowAllChecked] = useState(
@@ -98,15 +104,15 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
     const target = e.target as HTMLInputElement;
     const { id, checked } = target;
     if (checked) {
-      setBrandFilter([...(brandFilter as string[]), id]);
+      setBrandFilter([...brandFilter, id]);
     } else {
-      setBrandFilter((brandFilter as string[]).filter((x) => x !== id));
+      setBrandFilter(brandFilter.filter((x) => x !== id));
       setBrandsShowAllChecked(false);
     }
-    if ((brandFilter as string[]).length === 0) {
+    if (brandFilter.length === 0) {
       setBrandsShowAllChecked(false);
     }
-    if ((brandFilter as string[]).length === brandsChecked.length)
+    if (brandFilter.length === brandsChecked.length)
       setSearchQuery({ brands: ['all'] });
     else setSearchQuery({ brands: brandFilter });
   };
@@ -114,12 +120,12 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
     const target = e.target as HTMLInputElement;
     const { id, checked } = target;
     if (checked) {
-      setCategoryFilter([...(categoryFilter as string[]), id]);
+      setCategoryFilter([...categoryFilter, id]);
     } else {
-      setCategoryFilter((categoryFilter as string[]).filter((x) => x !== id));
+      setCategoryFilter(categoryFilter.filter((x) => x !== id));
       setCategoryShowAllChecked(false);
     }
-    if ((categoryFilter as string[]).length === 0) {
+    if (categoryFilter.length === 0) {
       setCategoryShowAllChecked(false);
     }
     setSearchQuery({ categories: categoryFilter }, 'pushIn');
@@ -227,7 +233,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
       minPrice: minPriceQuantity,
       maxPrice: maxPriceQuantity,
     });
-    if ((brandFilter as string[]).length === 0) {
+    if (brandFilter.length === 0) {
       setSearchQuery(
         {
           brands: null,
@@ -235,7 +241,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
         'replaceIn',
       );
     }
-    if ((categoryFilter as string[]).length === 0) {
+    if (categoryFilter.length === 0) {
       setSearchQuery(
         {
           categories: null,
@@ -243,13 +249,13 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
         'replaceIn',
       );
     }
-    if ((brandFilter as string[]).length === brandsChecked.length) {
+    if (brandFilter.length === brandsChecked.length) {
       setBrandsShowAllChecked(true);
       setSearchQuery({
         brands: ['All'],
       });
     }
-    if ((categoryFilter as string[]).length === categoriesChecked.length) {
+    if (categoryFilter.length === categoriesChecked.length) {
       setCategoryShowAllChecked(true);
       setSearchQuery({
         categories: ['All'],
@@ -371,7 +377,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
                   id={cat}
                   type='checkbox'
                   checked={
-                    categoryShowAllChecked || isChecked((categoryFilter as string[]), cat)
+                    categoryShowAllChecked || isChecked(categoryFilter, cat)
                   }
                   onChange={handleCategoryFilter}
                 />
@@ -412,7 +418,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
                   id={brand}
                   type='checkbox'
                   checked={
-                    brandsShowAllChecked || isChecked((brandFilter as string[]), brand)
+                    brandsShowAllChecked || isChecked(brandFilter, brand)
                   }
                   onChange={handleBrandFilter}
                 />
