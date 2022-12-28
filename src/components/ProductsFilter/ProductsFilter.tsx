@@ -43,11 +43,15 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
   ).sort();
 
   const currCategories =
-    !searchQuery.categories || searchQuery.categories[0] === 'All'
+    !searchQuery.categories ||
+    searchQuery.categories.includes(null) ||
+    searchQuery.categories[0] === 'All'
       ? categoriesChecked
       : searchQuery.categories;
   const currBrands =
-    !searchQuery.brands || searchQuery.brands[0] === 'All'
+    !searchQuery.brands ||
+    searchQuery.brands.includes(null) ||
+    searchQuery.brands[0] === 'All'
       ? brandsChecked
       : searchQuery.brands;
 
@@ -73,11 +77,11 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     getLocalStorage(SHOW_BRANDS) ? getLocalStorage(SHOW_BRANDS) === '1' : false,
   );
 
-  const [brandFilter, setBrandFilter] = useState<string[]>(
-    (currBrands as string[]) || brandsChecked,
+  const [brandFilter, setBrandFilter] = useState<(string | null)[]>(
+    currBrands || brandsChecked,
   );
-  const [categoryFilter, setCategoryFilter] = useState<string[]>(
-    (currCategories as string[]) || categoriesChecked,
+  const [categoryFilter, setCategoryFilter] = useState<(string | null)[]>(
+    currCategories || categoriesChecked,
   );
 
   const [categoryShowAllChecked, setCategoryShowAllChecked] = useState(
@@ -125,7 +129,8 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     }
     setSearchQuery({ categories: categoryFilter }, 'pushIn');
   };
-  const isChecked = (arr: string[], name: string) => arr.includes(name);
+  const isChecked = (arr: (string | null)[], name: string) =>
+    arr.includes(name);
 
   const handleShowAllCategories = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
