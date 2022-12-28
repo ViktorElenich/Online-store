@@ -37,7 +37,7 @@ const Pagination: FC<IPagination> = ({
     pageNumbers.push(i);
   }
   return (
-    <ul className='pagination'>
+    totalProducts === 0 ? null : <ul className='pagination'>
       <li
         role='menuitem'
         onClick={paginatePrev}

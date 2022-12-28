@@ -85,11 +85,11 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
   );
 
   const [categoryShowAllChecked, setCategoryShowAllChecked] = useState(
-    !!(!searchQuery.categories || searchQuery.categories[0] === 'All'),
+    (!searchQuery.categories || searchQuery.categories[0] === 'All'),
   );
 
   const [brandsShowAllChecked, setBrandsShowAllChecked] = useState(
-    !!(!searchQuery.brands || searchQuery.brands[0] === 'All'),
+    (!searchQuery.brands || searchQuery.brands[0] === 'All'),
   );
 
   const toggleButton1 = () => {
