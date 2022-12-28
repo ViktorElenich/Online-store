@@ -11,8 +11,10 @@ import Search from '../Search/Search';
 import Switch from '../Switch/Switch';
 import Select from '../Select/Select';
 import { IProductsProps } from '../../interfaces';
+
 import './Products.scss';
 import Loader from '../Loader/Loader';
+
 import Pagination from '../Pagination/Pagination';
 
 const Products: FC<IProductsProps> = ({ products }) => {
@@ -28,15 +30,18 @@ const Products: FC<IProductsProps> = ({ products }) => {
   const [productsPerPage] = useState(8);
   const [searchInput, setSearchInput] = useState(searchQuery.search || '');
   const [sortSelect, setSortSelect] = useState(searchQuery.sort || '');
+
   const [isLoading, setIsLoading] = useState(true);
   const filterProducts = useAppSelector((state) => state.filter.filterProducts);
 
   const handleSearchParams = (e: FormEvent<HTMLInputElement>) => {
     setSearchInput(e.currentTarget.value);
+
     setSearchQuery({ search: searchInput }, 'pushIn');
   };
   const handleSortParams = (e: FormEvent<HTMLSelectElement>) => {
     setSortSelect(e.currentTarget.value);
+
     setSearchQuery({ sort: sortSelect }, 'pushIn');
   };
 
@@ -83,10 +88,10 @@ const Products: FC<IProductsProps> = ({ products }) => {
           <Loader />
         ) : (
           <ProductsFilter
-            filters={{
+            searchSort={{
               products,
-              searchInput,
-              sortSelect,
+              search: searchInput,
+              sort: sortSelect,
             }}
           />
         )}

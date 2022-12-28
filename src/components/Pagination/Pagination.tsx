@@ -36,7 +36,7 @@ const Pagination: FC<IPagination> = ({
   for (let i = 1; i <= Math.ceil(totalProducts / productsPerPage); i++) {
     pageNumbers.push(i);
   }
-  return (
+  return totalProducts === 0 ? null : (
     <ul className='pagination'>
       <li
         role='menuitem'
@@ -60,7 +60,7 @@ const Pagination: FC<IPagination> = ({
             </li>
           );
         }
-        return null
+        return null;
       })}
       <li
         role='menuitem'

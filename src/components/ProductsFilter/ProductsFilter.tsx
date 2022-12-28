@@ -10,20 +10,19 @@ import { v4 as uuidv4 } from 'uuid';
 import Nouislider from 'nouislider-react';
 import 'nouislider-react/node_modules/nouislider/distribute/nouislider.css';
 import { IFilterBrand } from '../../interfaces';
-import {
-  BRAND_ALL_FILTERS,
-  BRAND_FILTERS,
-  CATEGORY_ALL_FILTERS,
-  CATEGORY_FILTERS,
-  SHOW_BRANDS,
-  SHOW_CATEGORIES,
-} from '../../constants';
-import {getLocalStorage, isStringArray, setLocalStorage} from '../../utils';
-import { filtersProducts } from '../../redux/slices/filterSlice';
+import { SHOW_BRANDS, SHOW_CATEGORIES } from '../../constants';
+import { getLocalStorage, setLocalStorage } from '../../utils';
 import { useAppDispatch } from '../../hooks';
+import { filtersProducts } from '../../redux/slices/filterSlice';
 
-const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
-  const dispatch = useAppDispatch();
+const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
+  const minStockInit = 2;
+  const maxStockInit = 150;
+  const minPriceInit = 10.0;
+  const maxPriceInit = 1749.0;
+
+  const { products, sort, search } = searchSort;
+
   const [searchQuery, setSearchQuery] = useQueryParams({
     search: StringParam,
     sort: StringParam,
@@ -34,20 +33,28 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
     minPrice: NumberParam,
     maxPrice: NumberParam,
   });
-  const { products, searchInput, sortSelect } = filters;
-  const minStockInit = 2;
-  const maxStockInit = 150;
-  const minPriceInit = 10.0;
-  const maxPriceInit = 1749.0;
-  const [copied, setCopied] = useState(false);
-  const [showMenuButton1, setShowMenuButton1] = useState(
-    getLocalStorage(SHOW_CATEGORIES)
-      ? getLocalStorage(SHOW_CATEGORIES) === '1'
-      : false,
-  );
-  const [showMenuButton2, setShowMenuButton2] = useState(
-    getLocalStorage(SHOW_BRANDS) ? getLocalStorage(SHOW_BRANDS) === '1' : false,
-  );
+  const dispatch = useAppDispatch();
+
+  const categoriesChecked = Array.from(
+    new Set(products.map((item) => item.category)),
+  ).sort();
+  const brandsChecked = Array.from(
+    new Set(products.map((item) => item.brand)),
+  ).sort();
+
+  const currCategories =
+    !searchQuery.categories ||
+    searchQuery.categories.includes(null) ||
+    searchQuery.categories[0] === 'All'
+      ? categoriesChecked
+      : searchQuery.categories;
+  const currBrands =
+    !searchQuery.brands ||
+    searchQuery.brands.includes(null) ||
+    searchQuery.brands[0] === 'All'
+      ? brandsChecked
+      : searchQuery.brands;
+
   const [minStockQuantity, setMinStockQuantity] = useState(
     searchQuery.minStock || minStockInit,
   );
@@ -60,101 +67,76 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
   const [maxPriceQuantity, setMaxPriceQuantity] = useState(
     searchQuery.maxPrice || maxPriceInit,
   );
-  const categoriesChecked = Array.from(
-    new Set(products.map((item) => item.category)),
-  ).sort();
-  const brandsChecked = Array.from(
-    new Set(products.map((item) => item.brand)),
-  ).sort();
-
-  let searchQueryBrand: string[] = [];
-  if(isStringArray(searchQuery.brands)) {
-    searchQueryBrand = searchQuery.brands
-  }
-  let searchQueryCategory: string[] = [];
-  if(isStringArray(searchQuery.categories)) {
-    searchQueryCategory = searchQuery.categories
-  }
-  const [brandFilter, setBrandFilter] = useState(
-    searchQueryBrand.includes('All') ? brandsChecked : searchQueryBrand,
+  const [copied, setCopied] = useState(false);
+  const [showMenuButton1, setShowMenuButton1] = useState(
+    getLocalStorage(SHOW_CATEGORIES) &&
+      JSON.parse(getLocalStorage(SHOW_CATEGORIES)),
   );
-  const [categoryFilter, setCategoryFilter] = useState(
-    searchQueryCategory.includes('All') ? categoriesChecked : searchQueryCategory,
+  const [showMenuButton2, setShowMenuButton2] = useState(
+    getLocalStorage(SHOW_BRANDS) && JSON.parse(getLocalStorage(SHOW_BRANDS)),
   );
 
-  const [categoryShowAllChecked, setCategoryShowAllChecked] = useState(
-    getLocalStorage(CATEGORY_ALL_FILTERS)
-      ? getLocalStorage(CATEGORY_ALL_FILTERS) === '1'
-      : true,
+  const [brandFilter, setBrandFilter] = useState<(string | null)[]>(
+    currBrands || brandsChecked,
   );
-  const [brandsShowAllChecked, setBrandsShowAllChecked] = useState(
-    getLocalStorage(BRAND_ALL_FILTERS)
-      ? getLocalStorage(BRAND_ALL_FILTERS) === '1'
-      : true,
-  );
+  const [categoryFilter, setCategoryFilter] =
+    useState<(string | null)[]>(currCategories);
 
   const toggleButton1 = () => {
     setShowMenuButton1(!showMenuButton1);
+    setLocalStorage(SHOW_CATEGORIES, JSON.stringify(!showMenuButton1));
   };
   const toggleButton2 = () => {
     setShowMenuButton2(!showMenuButton2);
+    setLocalStorage(SHOW_BRANDS, JSON.stringify(!showMenuButton2));
   };
 
   const handleBrandFilter = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     const { id, checked } = target;
     if (checked) {
-      setBrandFilter([...brandFilter, id]);
+      if (brandFilter.length < brandsChecked.length)
+        setBrandFilter([...brandFilter, id]);
+      else setBrandFilter([id]);
     } else {
+      if (brandFilter.length === 0) setBrandFilter(brandsChecked);
       setBrandFilter(brandFilter.filter((x) => x !== id));
-      setBrandsShowAllChecked(false);
     }
-    if (brandFilter.length === 0) {
-      setBrandsShowAllChecked(false);
-    }
-    if (brandFilter.length === brandsChecked.length)
-      setSearchQuery({ brands: ['all'] });
-    else setSearchQuery({ brands: brandFilter });
+    setSearchQuery({ brands: brandFilter }, 'pushIn');
   };
   const handleCategoryFilter = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     const { id, checked } = target;
+
     if (checked) {
-      setCategoryFilter([...categoryFilter, id]);
+      if (categoryFilter.length < categoriesChecked.length)
+        setCategoryFilter([...categoryFilter, id]);
+      else setCategoryFilter([id]);
     } else {
+      if (categoryFilter.length === 0) setCategoryFilter(categoriesChecked);
       setCategoryFilter(categoryFilter.filter((x) => x !== id));
-      setCategoryShowAllChecked(false);
     }
-    if (categoryFilter.length === 0) {
-      setCategoryShowAllChecked(false);
-    }
+
     setSearchQuery({ categories: categoryFilter }, 'pushIn');
   };
-  const isChecked = (arr: string[], name: string) => arr.includes(name);
 
-  const handleShowAllCategories = (e: ChangeEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
-    const { checked } = target;
-    if (checked) {
-      setCategoryShowAllChecked(true);
-      setCategoryFilter(categoriesChecked);
-      setSearchQuery({ categories: categoriesChecked }, 'pushIn');
-    } else {
-      setCategoryShowAllChecked(false);
-      setCategoryFilter([]);
-    }
+  const categoryIsChecked = (name: string) => {
+    if (
+      categoryFilter.length === 0 ||
+      categoryFilter.length === categoriesChecked.length ||
+      (searchQuery.categories && searchQuery.categories[0] === 'All')
+    )
+      return false;
+    return categoryFilter.includes(name);
   };
-  const handleShowAllBrands = (e: ChangeEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
-    const { checked } = target;
-    if (checked) {
-      setBrandsShowAllChecked(true);
-      setBrandFilter(brandsChecked);
-      setSearchQuery({ brands: brandsChecked }, 'pushIn');
-    } else {
-      setBrandsShowAllChecked(false);
-      setBrandFilter([]);
-    }
+  const brandIsChecked = (name: string) => {
+    if (
+      brandFilter.length === 0 ||
+      brandFilter.length === brandsChecked.length ||
+      (searchQuery.brands && searchQuery.brands[0] === 'All')
+    )
+      return false;
+    return brandFilter.includes(name);
   };
 
   const changeStockRange = (event: Array<number>) => {
@@ -163,6 +145,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
   };
   const changePriceRange = (event: Array<number>) => {
     setMinPriceQuantity(event[0]);
+
     setMaxPriceQuantity(event[1]);
   };
 
@@ -171,8 +154,6 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
     setMaxStockQuantity(150);
     setMinPriceQuantity(10.0);
     setMaxPriceQuantity(1749.0);
-    setCategoryShowAllChecked(true);
-    setBrandsShowAllChecked(true);
     setBrandFilter(brandsChecked);
     setCategoryFilter(categoriesChecked);
     setSearchQuery(
@@ -198,33 +179,6 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
   };
 
   useEffect(() => {
-    setLocalStorage(CATEGORY_ALL_FILTERS, categoryShowAllChecked ? '1' : '0');
-    setLocalStorage(BRAND_ALL_FILTERS, brandsShowAllChecked ? '1' : '0');
-    setLocalStorage(
-      CATEGORY_FILTERS,
-      categoryShowAllChecked
-        ? JSON.stringify(categoriesChecked)
-        : JSON.stringify(categoryFilter),
-    );
-    setLocalStorage(
-      BRAND_FILTERS,
-      brandsShowAllChecked
-        ? JSON.stringify(brandsChecked)
-        : JSON.stringify(brandFilter),
-    );
-  }, [
-    categoryShowAllChecked,
-    brandsShowAllChecked,
-    categoryFilter,
-    brandFilter,
-  ]);
-
-  useEffect(() => {
-    setLocalStorage(SHOW_CATEGORIES, showMenuButton1 ? '1' : '0');
-    setLocalStorage(SHOW_BRANDS, showMenuButton2 ? '1' : '0');
-  }, [showMenuButton1, showMenuButton2]);
-
-  useEffect(() => {
     setSearchQuery({
       brands: brandFilter,
       categories: categoryFilter,
@@ -233,34 +187,55 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
       minPrice: minPriceQuantity,
       maxPrice: maxPriceQuantity,
     });
-    if (brandFilter.length === 0) {
-      setSearchQuery(
-        {
-          brands: null,
-        },
-        'replaceIn',
-      );
-    }
-    if (categoryFilter.length === 0) {
-      setSearchQuery(
-        {
-          categories: null,
-        },
-        'replaceIn',
-      );
-    }
-    if (brandFilter.length === brandsChecked.length) {
-      setBrandsShowAllChecked(true);
-      setSearchQuery({
-        brands: ['All'],
-      });
-    }
+
     if (categoryFilter.length === categoriesChecked.length) {
-      setCategoryShowAllChecked(true);
-      setSearchQuery({
-        categories: ['All'],
-      });
+      setSearchQuery({ categories: ['All'] }, 'replaceIn');
     }
+    if (categoryFilter.length === 0) setCategoryFilter(categoriesChecked);
+
+    if (brandFilter.length === brandsChecked.length) {
+      setSearchQuery(
+        {
+          brands: ['All'],
+        },
+        'replaceIn',
+      );
+    }
+    if (brandFilter.length === 0) setBrandFilter(brandsChecked);
+  }, [searchQuery, brandFilter, categoryFilter]);
+  useEffect(() => {
+    dispatch(
+      filtersProducts({
+        products,
+        search,
+        sort,
+        brands: brandFilter,
+        categories: categoryFilter,
+        minStock: minStockQuantity,
+        maxStock: maxStockQuantity,
+        minPrice: minPriceQuantity,
+        maxPrice: maxPriceQuantity,
+      }),
+    );
+  }, [
+    dispatch,
+    products,
+    search,
+    sort,
+    brandFilter,
+    categoryFilter,
+    minStockQuantity,
+    maxStockQuantity,
+    minPriceQuantity,
+    maxPriceQuantity,
+  ]);
+  useEffect(() => {
+    setSearchQuery({
+      minStock: minStockQuantity,
+      maxStock: maxStockQuantity,
+      minPrice: minPriceQuantity,
+      maxPrice: maxPriceQuantity,
+    });
     if (minStockQuantity === minStockInit) {
       setSearchQuery({ minStock: undefined }, 'replaceIn');
     }
@@ -273,42 +248,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
     if (maxPriceQuantity === maxPriceInit) {
       setSearchQuery({ maxPrice: undefined }, 'replaceIn');
     }
-  }, [
-    searchQuery,
-    brandFilter,
-    categoryFilter,
-    minStockQuantity,
-    maxStockQuantity,
-    minPriceQuantity,
-    maxPriceQuantity,
-  ]);
-
-  useEffect(() => {
-    dispatch(
-      filtersProducts({
-        products,
-        search: searchInput,
-        sort: sortSelect,
-        brands: brandFilter,
-        categories: categoryFilter,
-        minStock: minStockQuantity,
-        maxStock: maxStockQuantity,
-        minPrice: minPriceQuantity,
-        maxPrice: maxPriceQuantity,
-      }),
-    );
-  }, [
-    dispatch,
-    products,
-    searchInput,
-    sortSelect,
-    brandFilter,
-    categoryFilter,
-    minStockQuantity,
-    maxStockQuantity,
-    minPriceQuantity,
-    maxPriceQuantity,
-  ]);
+  }, [minStockQuantity, maxStockQuantity, minPriceQuantity, maxPriceQuantity]);
 
   return (
     <>
@@ -358,27 +298,13 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
               showMenuButton1 ? 'dropdown-menu show' : 'dropdown-menu hide'
             }
           >
-            <li key={uuidv4()} className='additional-checkbox'>
-              <label htmlFor='categoryShowAll'>
-                Show all
-                <input
-                  type='checkbox'
-                  id='categoryShowAll'
-                  checked={categoryShowAllChecked}
-                  onChange={handleShowAllCategories}
-                />
-              </label>
-            </li>
-
             {categoriesChecked.map((cat) => (
               <li key={uuidv4()}>
                 <label htmlFor={cat}>{cat}</label>
                 <input
                   id={cat}
                   type='checkbox'
-                  checked={
-                    categoryShowAllChecked || isChecked(categoryFilter, cat)
-                  }
+                  checked={categoryIsChecked(cat)}
                   onChange={handleCategoryFilter}
                 />
               </li>
@@ -399,27 +325,13 @@ const ProductsFilter: FC<IFilterBrand> = ({ filters }) => {
               showMenuButton2 ? 'dropdown-menu show' : 'dropdown-menu hide'
             }
           >
-            <li key={uuidv4()} className='additional-checkbox'>
-              <label htmlFor='brandsShowAll'>
-                Show all
-                <input
-                  type='checkbox'
-                  id='brandsShowAll'
-                  checked={brandsShowAllChecked}
-                  onChange={handleShowAllBrands}
-                />
-              </label>
-            </li>
-
             {brandsChecked.map((brand) => (
               <li key={uuidv4()}>
                 <label htmlFor={brand}>{brand}</label>
                 <input
                   id={brand}
                   type='checkbox'
-                  checked={
-                    brandsShowAllChecked || isChecked(brandFilter, brand)
-                  }
+                  checked={brandIsChecked(brand)}
                   onChange={handleBrandFilter}
                 />
               </li>

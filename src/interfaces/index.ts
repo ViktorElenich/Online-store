@@ -46,13 +46,12 @@ export interface ISelect {
 }
 
 export interface IFilterBrand {
-  filters: {
+  searchSort: {
     products: IProductData[],
-    searchInput: string,
-    sortSelect: string,
+    search: string,
+    sort: string
   };
 }
-
 export interface ISwitch {
   products: IProductData[];
   changeStyle: Dispatch<boolean>;
