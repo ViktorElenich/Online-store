@@ -1,107 +1,49 @@
 import { FC, FormEvent, useEffect, useState } from 'react';
 
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import {
-  StringParam,
-  BooleanParam,
-  useQueryParams,
-  NumberParam,
-} from 'use-query-params';
+import { StringParam, BooleanParam, useQueryParams } from 'use-query-params';
 import { MdSettingsSuggest } from 'react-icons/md';
 import { BsXLg } from 'react-icons/bs';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import ProductItem from '../ProductItem/ProductItem';
 import ProductsFilter from '../ProductsFilter/ProductsFilter';
 import Search from '../Search/Search';
 import Switch from '../Switch/Switch';
 import Select from '../Select/Select';
 import { IProductsProps } from '../../interfaces';
-import { getLocalStorage, setLocalStorage } from '../../utils';
-import {
-  BRAND_FILTERS,
-  CATEGORY_FILTERS,
-  GRID_STYLE,
-  MAX_PRICE,
-  MAX_STOCK,
-  MIN_PRICE,
-  MIN_STOCK,
-  SEARCH_INPUT,
-  SORT_SELECT,
-} from '../../constants';
+
 import './Products.scss';
 import Loader from '../Loader/Loader';
-import { filtersProducts } from '../../redux/slices/filterSlice';
+
 import Pagination from '../Pagination/Pagination';
 
 const Products: FC<IProductsProps> = ({ products }) => {
-  let gridStatus: string | boolean = getLocalStorage(GRID_STYLE);
-  if (gridStatus === '0') {
-    gridStatus = false;
-  } else {
-    gridStatus = true;
-  }
-  const minStockInit = 2;
-  const maxStockInit = 150;
-  const minPriceInit = 10.0;
-  const maxPriceInit = 1749.0;
+  const [searchQuery, setSearchQuery] = useQueryParams({
+    search: StringParam,
+    sort: StringParam,
+    list: BooleanParam,
+  });
+
+  const gridStatus: boolean = searchQuery.list ? searchQuery.list : true;
 
   const [grid, setGrid] = useState<boolean>(gridStatus || false);
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(8);
-  const [searchInput, setSearchInput] = useState(
-    getLocalStorage(SEARCH_INPUT) || '',
-  );
-  const [sortSelect, setSortSelect] = useState(
-    getLocalStorage(SORT_SELECT) || '',
-  );
+  const [searchInput, setSearchInput] = useState(searchQuery.search || '');
+  const [sortSelect, setSortSelect] = useState(searchQuery.sort || '');
+
   const [isLoading, setIsLoading] = useState(true);
   const filterProducts = useAppSelector((state) => state.filter.filterProducts);
-  const [searchQuery, setSearchQuery] = useQueryParams({
-    search: StringParam,
-    sort: StringParam,
-    list: BooleanParam,
-    minStock: NumberParam,
-    maxStock: NumberParam,
-    minPrice: NumberParam,
-    maxPrice: NumberParam,
-  });
-
-  const [minStockQuantity, setMinStockQuantity] = useState(
-    JSON.parse(getLocalStorage(MIN_STOCK)) || minStockInit,
-  );
-  const [maxStockQuantity, setMaxStockQuantity] = useState(
-    JSON.parse(getLocalStorage(MAX_STOCK)) || maxStockInit,
-  );
-  const [minPriceQuantity, setMinPriceQuantity] = useState(
-    JSON.parse(getLocalStorage(MIN_PRICE)) || minPriceInit,
-  );
-  const [maxPriceQuantity, setMaxPriceQuantity] = useState(
-    JSON.parse(getLocalStorage(MAX_PRICE)) || maxPriceInit,
-  );
-  const dispatch = useAppDispatch();
-  const categoriesChecked = Array.from(
-    new Set(products.map((item) => item.category)),
-  ).sort();
-  const brandsChecked = Array.from(
-    new Set(products.map((item) => item.brand)),
-  ).sort();
-
-  const [brandFilter, setBrandFilter] = useState<string[]>(
-    getLocalStorage(BRAND_FILTERS) || brandsChecked,
-  );
-  const [categoryFilter, setCategoryFilter] = useState<string[]>(
-    getLocalStorage(CATEGORY_FILTERS) || categoriesChecked,
-  );
 
   const handleSearchParams = (e: FormEvent<HTMLInputElement>) => {
     setSearchInput(e.currentTarget.value);
-    setLocalStorage(SEARCH_INPUT, e.currentTarget.value);
+
     setSearchQuery({ search: searchInput }, 'pushIn');
   };
   const handleSortParams = (e: FormEvent<HTMLSelectElement>) => {
     setSortSelect(e.currentTarget.value);
-    setLocalStorage(SORT_SELECT, e.currentTarget.value);
+
     setSearchQuery({ sort: sortSelect }, 'pushIn');
   };
 
@@ -116,33 +58,6 @@ const Products: FC<IProductsProps> = ({ products }) => {
   );
 
   useEffect(() => {
-    dispatch(
-      filtersProducts({
-        products,
-        search: searchInput,
-        sort: sortSelect,
-        brands: brandFilter,
-        categories: categoryFilter,
-        minStock: minStockQuantity,
-        maxStock: maxStockQuantity,
-        minPrice: minPriceQuantity,
-        maxPrice: maxPriceQuantity,
-      }),
-    );
-  }, [
-    dispatch,
-    products,
-    searchInput,
-    sortSelect,
-    brandFilter,
-    categoryFilter,
-    minStockQuantity,
-    maxStockQuantity,
-    minPriceQuantity,
-    maxPriceQuantity,
-  ]);
-
-  useEffect(() => {
     if (products.length > 0) setIsLoading(false);
   }, [products]);
 
@@ -151,10 +66,6 @@ const Products: FC<IProductsProps> = ({ products }) => {
       search: searchInput,
       sort: sortSelect,
       list: grid,
-      minStock: minStockQuantity,
-      maxStock: maxStockQuantity,
-      minPrice: minPriceQuantity,
-      maxPrice: maxPriceQuantity,
     });
     if (searchInput.length === 0) {
       setSearchQuery({ search: undefined }, 'replaceIn');
@@ -162,28 +73,7 @@ const Products: FC<IProductsProps> = ({ products }) => {
     if (sortSelect.length === 0) {
       setSearchQuery({ sort: undefined }, 'replaceIn');
     }
-    if (minStockQuantity === minStockInit) {
-      setSearchQuery({ minStock: undefined }, 'replaceIn');
-    }
-    if (maxStockQuantity === maxStockInit) {
-      setSearchQuery({ maxStock: undefined }, 'replaceIn');
-    }
-    if (minPriceQuantity === minPriceInit) {
-      setSearchQuery({ minPrice: undefined }, 'replaceIn');
-    }
-    if (maxPriceQuantity === maxPriceInit) {
-      setSearchQuery({ maxPrice: undefined }, 'replaceIn');
-    }
-  }, [
-    searchQuery,
-    searchInput,
-    sortSelect,
-    grid,
-    minStockQuantity,
-    maxStockQuantity,
-    minPriceQuantity,
-    maxPriceQuantity,
-  ]);
+  }, [searchQuery, searchInput, sortSelect, grid]);
   return (
     <div className='products'>
       <div
@@ -201,20 +91,9 @@ const Products: FC<IProductsProps> = ({ products }) => {
         ) : (
           <ProductsFilter
             searchSort={{
-              brandFilter,
-              categoryFilter,
-              categoriesChecked,
-              brandsChecked,
-              minStockQuantity,
-              maxStockQuantity,
-              minPriceQuantity,
-              maxPriceQuantity,
-              setMinStockQuantity,
-              setMaxStockQuantity,
-              setMinPriceQuantity,
-              setMaxPriceQuantity,
-              setBrandFilter,
-              setCategoryFilter,
+              products,
+              search: searchInput,
+              sort: sortSelect,
             }}
           />
         )}
