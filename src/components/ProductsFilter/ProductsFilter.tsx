@@ -12,7 +12,7 @@ import 'nouislider-react/node_modules/nouislider/distribute/nouislider.css';
 import { IFilterBrand } from '../../interfaces';
 import { SHOW_BRANDS, SHOW_CATEGORIES } from '../../constants';
 import { getLocalStorage, setLocalStorage } from '../../utils';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { filtersProducts } from '../../redux/slices/filterSlice';
 
 const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
@@ -34,6 +34,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     maxPrice: NumberParam,
   });
   const dispatch = useAppDispatch();
+  const filtered = useAppSelector((state) => state.filter.filterProducts);
 
   const categoriesChecked = Array.from(
     new Set(products.map((item) => item.category)),
@@ -179,6 +180,10 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
   };
 
   useEffect(() => {
+    console.log(filtered);
+  }, [filtered]);
+
+  useEffect(() => {
     setSearchQuery({
       brands: brandFilter,
       categories: categoryFilter,
@@ -301,6 +306,16 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
             {categoriesChecked.map((cat) => (
               <li key={uuidv4()}>
                 <label htmlFor={cat}>{cat}</label>
+                <span
+                  className={
+                    filtered.filter((x) => x.category === cat).length === 0
+                      ? 'menu-item-disabled'
+                      : 'menu-item-standart'
+                  }
+                >
+                  {filtered.filter((x) => x.category === cat).length}/
+                  {products.filter((x) => x.category === cat).length}
+                </span>
                 <input
                   id={cat}
                   type='checkbox'
@@ -328,6 +343,16 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
             {brandsChecked.map((brand) => (
               <li key={uuidv4()}>
                 <label htmlFor={brand}>{brand}</label>
+                <span
+                  className={
+                    filtered.filter((x) => x.brand === brand).length === 0
+                      ? 'menu-item-disabled'
+                      : 'menu-item-standart'
+                  }
+                >
+                  {filtered.filter((x) => x.brand === brand).length}/
+                  {products.filter((x) => x.brand === brand).length}
+                </span>
                 <input
                   id={brand}
                   type='checkbox'

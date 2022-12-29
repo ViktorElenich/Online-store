@@ -212,3 +212,11 @@
     }
   }
 }
+.menu-item-standart {
+  margin-right: 5px;
+  color: $color_primary;
+}
+.menu-item-disabled {
+  margin-right: 5px;
+  color: $color_darker-grey-alt;
+}
