@@ -16,12 +16,16 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { filtersProducts } from '../../redux/slices/filterSlice';
 
 const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
-  const minStockInit = 2;
-  const maxStockInit = 150;
-  const minPriceInit = 10.0;
-  const maxPriceInit = 1749.0;
-
   const { products, sort, search } = searchSort;
+
+  const minStockInit = Math.min(...products.map((x) => x.stock));
+  const maxStockInit = Math.max(...products.map((x) => x.stock));
+  const minPriceInit = Math.min(...products.map((x) => x.price));
+  const maxPriceInit = Math.max(...products.map((x) => x.price));
+  let currentMaxStock = maxStockInit;
+  let currentMinStock = minStockInit;
+  let currentMinPrice = minPriceInit;
+  let currentMaxPrice = maxPriceInit;
 
   const [searchQuery, setSearchQuery] = useQueryParams({
     search: StringParam,
@@ -68,6 +72,19 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
   const [maxPriceQuantity, setMaxPriceQuantity] = useState(
     searchQuery.maxPrice || maxPriceInit,
   );
+  const [currentMinStockQuantity, setCurrentMinStockQuantity] = useState(
+    searchQuery.minStock || minStockInit,
+  );
+  const [currentMaxStockQuantity, setCurrentMaxStockQuantity] = useState(
+    searchQuery.maxStock || maxStockInit,
+  );
+  const [currentMinPriceQuantity, setCurrentMinPriceQuantity] = useState(
+    searchQuery.minPrice || minPriceInit,
+  );
+  const [currentMaxPriceQuantity, setCurrentMaxPriceQuantity] = useState(
+    searchQuery.maxPrice || maxPriceInit,
+  );
+
   const [copied, setCopied] = useState(false);
   const [showMenuButton1, setShowMenuButton1] = useState(
     getLocalStorage(SHOW_CATEGORIES) &&
@@ -138,21 +155,28 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     return brandFilter.includes(name);
   };
 
+  const changeCurrentStockRange = (event: Array<number>) => {
+    setCurrentMinStockQuantity(event[0]);
+    setCurrentMaxStockQuantity(event[1]);
+  };
+  const changeCurrentPriceRange = (event: Array<number>) => {
+    setCurrentMinPriceQuantity(event[0]);
+    setCurrentMaxPriceQuantity(event[1]);
+  };
   const changeStockRange = (event: Array<number>) => {
     setMinStockQuantity(event[0]);
     setMaxStockQuantity(event[1]);
   };
   const changePriceRange = (event: Array<number>) => {
     setMinPriceQuantity(event[0]);
-
     setMaxPriceQuantity(event[1]);
   };
 
   const handleResetFilters = () => {
-    setMinStockQuantity(2);
-    setMaxStockQuantity(150);
-    setMinPriceQuantity(10.0);
-    setMaxPriceQuantity(1749.0);
+    setMinStockQuantity(minStockInit);
+    setMaxStockQuantity(maxStockInit);
+    setMinPriceQuantity(minPriceInit);
+    setMaxPriceQuantity(maxPriceInit);
     setBrandFilter(brandsChecked);
     setCategoryFilter(categoriesChecked);
     setSearchQuery(
@@ -249,6 +273,22 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     }
   }, [minStockQuantity, maxStockQuantity, minPriceQuantity, maxPriceQuantity]);
 
+  useEffect(() => {
+    currentMaxStock = Math.max(...filtered.map((x) => x.stock));
+    currentMinStock = Math.min(...filtered.map((x) => x.stock));
+    currentMinPrice = Math.min(...filtered.map((x) => x.price));
+    currentMaxPrice = Math.max(...filtered.map((x) => x.price));
+
+    if (currentMaxStock === -Infinity) currentMaxStock = maxStockQuantity;
+    if (currentMinStock === Infinity) currentMinStock = minStockQuantity;
+    if (currentMinPrice === Infinity) currentMinPrice = minPriceQuantity;
+    if (currentMaxPrice === -Infinity) currentMaxPrice = maxPriceQuantity;
+
+    changeCurrentPriceRange([currentMinPrice, currentMaxPrice]);
+
+    changeCurrentStockRange([currentMinStock, currentMaxStock]);
+  }, [filtered]);
+
   return (
     <>
       <div className='filter__priceStock'>
@@ -256,7 +296,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
           <span>Stock</span>
           <Nouislider
             range={{ min: 2, max: 150 }}
-            start={[minStockQuantity, maxStockQuantity]}
+            start={[currentMinStockQuantity, currentMaxStockQuantity]}
             step={1}
             tooltips
             format={{
@@ -270,7 +310,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
           <span>Price</span>
           <Nouislider
             range={{ min: 10, max: 1749 }}
-            start={[minPriceQuantity, maxPriceQuantity]}
+            start={[currentMinPriceQuantity, currentMaxPriceQuantity]}
             step={10}
             tooltips
             format={{
