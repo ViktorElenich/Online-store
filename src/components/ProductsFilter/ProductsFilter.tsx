@@ -305,12 +305,21 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
           >
             {categoriesChecked.map((cat) => (
               <li key={uuidv4()}>
-                <label htmlFor={cat}>{cat}</label>
-                <span
+                <label
+                  htmlFor={cat}
                   className={
                     filtered.filter((x) => x.category === cat).length === 0
                       ? 'menu-item-disabled'
                       : 'menu-item-standart'
+                  }
+                >
+                  {cat}
+                </label>
+                <span
+                  className={
+                    filtered.filter((x) => x.category === cat).length === 0
+                      ? 'menu-item menu-item-disabled'
+                      : 'menu-item menu-item-standart'
                   }
                 >
                   {filtered.filter((x) => x.category === cat).length}/
@@ -342,12 +351,21 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
           >
             {brandsChecked.map((brand) => (
               <li key={uuidv4()}>
-                <label htmlFor={brand}>{brand}</label>
-                <span
+                <label
+                  htmlFor={brand}
                   className={
                     filtered.filter((x) => x.brand === brand).length === 0
                       ? 'menu-item-disabled'
                       : 'menu-item-standart'
+                  }
+                >
+                  {brand}
+                </label>
+                <span
+                  className={
+                    filtered.filter((x) => x.brand === brand).length === 0
+                      ? 'menu-item menu-item-disabled'
+                      : 'menu-item menu-item-standart'
                   }
                 >
                   {filtered.filter((x) => x.brand === brand).length}/
