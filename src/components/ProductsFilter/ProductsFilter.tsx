@@ -11,8 +11,8 @@ import Nouislider from 'nouislider-react';
 import 'nouislider-react/node_modules/nouislider/distribute/nouislider.css';
 import { IFilterBrand } from '../../interfaces';
 import { SHOW_BRANDS, SHOW_CATEGORIES } from '../../constants';
-import { getLocalStorage } from '../../utils';
-import { useAppDispatch } from '../../hooks';
+import { getLocalStorage, setLocalStorage } from '../../utils';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { filtersProducts } from '../../redux/slices/filterSlice';
 
 const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
@@ -34,6 +34,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     maxPrice: NumberParam,
   });
   const dispatch = useAppDispatch();
+  const filtered = useAppSelector((state) => state.filter.filterProducts);
 
   const categoriesChecked = Array.from(
     new Set(products.map((item) => item.category)),
@@ -69,92 +70,72 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
   );
   const [copied, setCopied] = useState(false);
   const [showMenuButton1, setShowMenuButton1] = useState(
-    getLocalStorage(SHOW_CATEGORIES)
-      ? getLocalStorage(SHOW_CATEGORIES) === '1'
-      : false,
+    getLocalStorage(SHOW_CATEGORIES) &&
+      JSON.parse(getLocalStorage(SHOW_CATEGORIES)),
   );
   const [showMenuButton2, setShowMenuButton2] = useState(
-    getLocalStorage(SHOW_BRANDS) ? getLocalStorage(SHOW_BRANDS) === '1' : false,
+    getLocalStorage(SHOW_BRANDS) && JSON.parse(getLocalStorage(SHOW_BRANDS)),
   );
 
-  const [brandFilter, setBrandFilter] = useState<(string | null)[]>(
-    currBrands || brandsChecked,
-  );
-  const [categoryFilter, setCategoryFilter] = useState<(string | null)[]>(
-    currCategories || categoriesChecked,
-  );
-
-  const [categoryShowAllChecked, setCategoryShowAllChecked] = useState(
-    (!searchQuery.categories || searchQuery.categories[0] === 'All'),
-  );
-
-  const [brandsShowAllChecked, setBrandsShowAllChecked] = useState(
-    (!searchQuery.brands || searchQuery.brands[0] === 'All'),
-  );
+  const [brandFilter, setBrandFilter] = useState<(string | null)[]>(currBrands);
+  const [categoryFilter, setCategoryFilter] =
+    useState<(string | null)[]>(currCategories);
 
   const toggleButton1 = () => {
     setShowMenuButton1(!showMenuButton1);
+    setLocalStorage(SHOW_CATEGORIES, JSON.stringify(!showMenuButton1));
   };
   const toggleButton2 = () => {
     setShowMenuButton2(!showMenuButton2);
+    setLocalStorage(SHOW_BRANDS, JSON.stringify(!showMenuButton2));
   };
 
   const handleBrandFilter = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     const { id, checked } = target;
     if (checked) {
-      setBrandFilter([...brandFilter, id]);
+      if (brandFilter.length < brandsChecked.length)
+        setBrandFilter([...brandFilter, id]);
+      else setBrandFilter([id]);
     } else {
+      if (brandFilter.length === 0) setBrandFilter(brandsChecked);
       setBrandFilter(brandFilter.filter((x) => x !== id));
-      setBrandsShowAllChecked(false);
     }
-    if (brandFilter.length === 0) {
-      setBrandsShowAllChecked(false);
-    }
-    if (brandFilter.length === brandsChecked.length)
-      setSearchQuery({ brands: ['all'] });
-    else setSearchQuery({ brands: brandFilter });
+    setSearchQuery({ brands: brandFilter }, 'pushIn');
   };
   const handleCategoryFilter = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     const { id, checked } = target;
+
     if (checked) {
-      setCategoryFilter([...categoryFilter, id]);
+      if (categoryFilter.length < categoriesChecked.length)
+        setCategoryFilter([...categoryFilter, id]);
+      else setCategoryFilter([id]);
     } else {
+      if (categoryFilter.length === 0) setCategoryFilter(categoriesChecked);
       setCategoryFilter(categoryFilter.filter((x) => x !== id));
-      setCategoryShowAllChecked(false);
     }
-    if (categoryFilter.length === 0) {
-      setCategoryShowAllChecked(false);
-    }
+
     setSearchQuery({ categories: categoryFilter }, 'pushIn');
   };
-  const isChecked = (arr: (string | null)[], name: string) =>
-    arr.includes(name);
 
-  const handleShowAllCategories = (e: ChangeEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
-    const { checked } = target;
-    if (checked) {
-      setCategoryShowAllChecked(true);
-      setCategoryFilter(categoriesChecked);
-      setSearchQuery({ categories: categoriesChecked }, 'pushIn');
-    } else {
-      setCategoryShowAllChecked(false);
-      setCategoryFilter([]);
-    }
+  const categoryIsChecked = (name: string) => {
+    if (
+      categoryFilter.length === 0 ||
+      categoryFilter.length === categoriesChecked.length ||
+      (searchQuery.categories && searchQuery.categories[0] === 'All')
+    )
+      return false;
+    return categoryFilter.includes(name);
   };
-  const handleShowAllBrands = (e: ChangeEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
-    const { checked } = target;
-    if (checked) {
-      setBrandsShowAllChecked(true);
-      setBrandFilter(brandsChecked);
-      setSearchQuery({ brands: brandsChecked }, 'pushIn');
-    } else {
-      setBrandsShowAllChecked(false);
-      setBrandFilter([]);
-    }
+  const brandIsChecked = (name: string) => {
+    if (
+      brandFilter.length === 0 ||
+      brandFilter.length === brandsChecked.length ||
+      (searchQuery.brands && searchQuery.brands[0] === 'All')
+    )
+      return false;
+    return brandFilter.includes(name);
   };
 
   const changeStockRange = (event: Array<number>) => {
@@ -172,8 +153,6 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     setMaxStockQuantity(150);
     setMinPriceQuantity(10.0);
     setMaxPriceQuantity(1749.0);
-    setCategoryShowAllChecked(true);
-    setBrandsShowAllChecked(true);
     setBrandFilter(brandsChecked);
     setCategoryFilter(categoriesChecked);
     setSearchQuery(
@@ -202,35 +181,26 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     setSearchQuery({
       brands: brandFilter,
       categories: categoryFilter,
+      minStock: minStockQuantity,
+      maxStock: maxStockQuantity,
+      minPrice: minPriceQuantity,
+      maxPrice: maxPriceQuantity,
     });
-    if (brandFilter.length === 0) {
-      setSearchQuery(
-        {
-          brands: null,
-        },
-        'replaceIn',
-      );
-    }
-    if (categoryFilter.length === 0) {
-      setSearchQuery(
-        {
-          categories: null,
-        },
-        'replaceIn',
-      );
-    }
-    if (brandFilter.length === brandsChecked.length) {
-      setBrandsShowAllChecked(true);
-      setSearchQuery({
-        brands: ['All'],
-      });
-    }
+
     if (categoryFilter.length === categoriesChecked.length) {
-      setCategoryShowAllChecked(true);
-      setSearchQuery({
-        categories: ['All'],
-      });
+      setSearchQuery({ categories: ['All'] }, 'replaceIn');
     }
+    if (categoryFilter.length === 0) setCategoryFilter(categoriesChecked);
+
+    if (brandFilter.length === brandsChecked.length) {
+      setSearchQuery(
+        {
+          brands: ['All'],
+        },
+        'replaceIn',
+      );
+    }
+    if (brandFilter.length === 0) setBrandFilter(brandsChecked);
   }, [searchQuery, brandFilter, categoryFilter]);
   useEffect(() => {
     dispatch(
@@ -327,27 +297,32 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
               showMenuButton1 ? 'dropdown-menu show' : 'dropdown-menu hide'
             }
           >
-            <li key={uuidv4()} className='additional-checkbox'>
-              <label htmlFor='categoryShowAll'>
-                Show all
-                <input
-                  type='checkbox'
-                  id='categoryShowAll'
-                  checked={categoryShowAllChecked}
-                  onChange={handleShowAllCategories}
-                />
-              </label>
-            </li>
-
             {categoriesChecked.map((cat) => (
               <li key={uuidv4()}>
-                <label htmlFor={cat}>{cat}</label>
+                <label
+                  htmlFor={cat}
+                  className={
+                    filtered.filter((x) => x.category === cat).length === 0
+                      ? 'menu-item-disabled'
+                      : 'menu-item-standart'
+                  }
+                >
+                  {cat}
+                </label>
+                <span
+                  className={
+                    filtered.filter((x) => x.category === cat).length === 0
+                      ? 'menu-item menu-item-disabled'
+                      : 'menu-item menu-item-standart'
+                  }
+                >
+                  {filtered.filter((x) => x.category === cat).length}/
+                  {products.filter((x) => x.category === cat).length}
+                </span>
                 <input
                   id={cat}
                   type='checkbox'
-                  checked={
-                    categoryShowAllChecked || isChecked(categoryFilter, cat)
-                  }
+                  checked={categoryIsChecked(cat)}
                   onChange={handleCategoryFilter}
                 />
               </li>
@@ -368,27 +343,32 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
               showMenuButton2 ? 'dropdown-menu show' : 'dropdown-menu hide'
             }
           >
-            <li key={uuidv4()} className='additional-checkbox'>
-              <label htmlFor='brandsShowAll'>
-                Show all
-                <input
-                  type='checkbox'
-                  id='brandsShowAll'
-                  checked={brandsShowAllChecked}
-                  onChange={handleShowAllBrands}
-                />
-              </label>
-            </li>
-
             {brandsChecked.map((brand) => (
               <li key={uuidv4()}>
-                <label htmlFor={brand}>{brand}</label>
+                <label
+                  htmlFor={brand}
+                  className={
+                    filtered.filter((x) => x.brand === brand).length === 0
+                      ? 'menu-item-disabled'
+                      : 'menu-item-standart'
+                  }
+                >
+                  {brand}
+                </label>
+                <span
+                  className={
+                    filtered.filter((x) => x.brand === brand).length === 0
+                      ? 'menu-item menu-item-disabled'
+                      : 'menu-item menu-item-standart'
+                  }
+                >
+                  {filtered.filter((x) => x.brand === brand).length}/
+                  {products.filter((x) => x.brand === brand).length}
+                </span>
                 <input
                   id={brand}
                   type='checkbox'
-                  checked={
-                    brandsShowAllChecked || isChecked(brandFilter, brand)
-                  }
+                  checked={brandIsChecked(brand)}
                   onChange={handleBrandFilter}
                 />
               </li>

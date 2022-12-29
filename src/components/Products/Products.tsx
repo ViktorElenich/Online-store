@@ -11,10 +11,8 @@ import Search from '../Search/Search';
 import Switch from '../Switch/Switch';
 import Select from '../Select/Select';
 import { IProductsProps } from '../../interfaces';
-
 import './Products.scss';
 import Loader from '../Loader/Loader';
-
 import Pagination from '../Pagination/Pagination';
 
 const Products: FC<IProductsProps> = ({ products }) => {
@@ -24,9 +22,7 @@ const Products: FC<IProductsProps> = ({ products }) => {
     list: BooleanParam,
   });
 
-  const gridStatus: boolean = searchQuery.list ? searchQuery.list : true;
-
-  const [grid, setGrid] = useState<boolean>(gridStatus || false);
+  const [grid, setGrid] = useState(searchQuery.list || false);
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(8);
@@ -38,12 +34,10 @@ const Products: FC<IProductsProps> = ({ products }) => {
 
   const handleSearchParams = (e: FormEvent<HTMLInputElement>) => {
     setSearchInput(e.currentTarget.value);
-
     setSearchQuery({ search: searchInput }, 'pushIn');
   };
   const handleSortParams = (e: FormEvent<HTMLSelectElement>) => {
     setSortSelect(e.currentTarget.value);
-
     setSearchQuery({ sort: sortSelect }, 'pushIn');
   };
 
@@ -74,6 +68,7 @@ const Products: FC<IProductsProps> = ({ products }) => {
       setSearchQuery({ sort: undefined }, 'replaceIn');
     }
   }, [searchQuery, searchInput, sortSelect, grid]);
+
   return (
     <div className='products'>
       <div
@@ -82,7 +77,9 @@ const Products: FC<IProductsProps> = ({ products }) => {
         onClick={toggleBurgerMenu}
       >
         {!showFilters ? <MdSettingsSuggest size={24} /> : <BsXLg size={22} />}
+        {!showFilters ? <MdSettingsSuggest size={24} /> : <BsXLg size={22} />}
       </div>
+
       <aside
         className={!showFilters ? 'products-filter' : 'products-filter active'}
       >
