@@ -77,9 +77,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     getLocalStorage(SHOW_BRANDS) && JSON.parse(getLocalStorage(SHOW_BRANDS)),
   );
 
-  const [brandFilter, setBrandFilter] = useState<(string | null)[]>(
-    currBrands || brandsChecked,
-  );
+  const [brandFilter, setBrandFilter] = useState<(string | null)[]>(currBrands);
   const [categoryFilter, setCategoryFilter] =
     useState<(string | null)[]>(currCategories);
 
@@ -178,10 +176,6 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
       setCopied(false);
     }, 500);
   };
-
-  useEffect(() => {
-    console.log(filtered);
-  }, [filtered]);
 
   useEffect(() => {
     setSearchQuery({
