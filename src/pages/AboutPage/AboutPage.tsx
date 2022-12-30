@@ -1,69 +1,50 @@
-import { BsGithub } from 'react-icons/bs';
 import './AboutPage.scss';
 
 const AboutPage = () => (
-  <div className='about__page' data-testid='about__page'>
-    <div className='member__card'>
-      <div className='info__section'>
-        <div className='info__section-member__team'>
-          <h1>Viktor Elenich</h1>
-          <h2>Junior Frontend Developer</h2>
-        </div>
-        <div className='info__section-text__about'>
-          <p className='text'>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A
-            accusamus aspernatur at blanditiis cumque dolore eius, eveniet fuga
-            illum iure molestias necessitatibus placeat praesentium quia quo
-            recusandae unde, veniam? Aliquid atque commodi consequatur corporis
-            culpa cum cumque cupiditate debitis distinctio, ducimus eligendi
-            error excepturi, facere harum impedit inventore laborum libero
-            maxime obcaecati officia optio perferendis porro provident qui
-            quibusdam quidem ratione reiciendis repellendus temporibus velit
-            vero voluptas, voluptates voluptatibus. Perspiciatis.
-          </p>
-        </div>
-        <div className='info__section-social'>
-          <ul>
-            <li>
-              <a href='https://github.com/ViktorElenich' rel='noreferrer'>
-                <BsGithub size={26} />
-              </a>
-            </li>
-          </ul>
-        </div>
+  <div className='about-us' data-testid='about__page'>
+    <h1>About us</h1>
+    <div className='about-us-wrapper'>
+      <div className='about-us__textBlock about-block'>
+        <h3>Mission Statement</h3>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum vel
+          minus ex, voluptatem, explicabo natus iure cum pariatur quisquam
+          mollitia corporis tempora doloribus fugit vitae eum dignissimos unde
+          necessitatibus earum!
+        </p>
       </div>
-      <div className='member__photo photo' />
-    </div>
-    <div className='member__card'>
-      <div className='info__section'>
-        <div className='info__section-member__team'>
-          <h1>Ekaterina Ekalape</h1>
-          <h2>Junior Frontend Developer</h2>
-        </div>
-        <div className='info__section-text__about'>
-          <p className='text'>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A
-            accusamus aspernatur at blanditiis cumque dolore eius, eveniet fuga
-            illum iure molestias necessitatibus placeat praesentium quia quo
-            recusandae unde, veniam? Aliquid atque commodi consequatur corporis
-            culpa cum cumque cupiditate debitis distinctio, ducimus eligendi
-            error excepturi, facere harum impedit inventore laborum libero
-            maxime obcaecati officia optio perferendis porro provident qui
-            quibusdam quidem ratione reiciendis repellendus temporibus velit
-            vero voluptas, voluptates voluptatibus. Perspiciatis.
-          </p>
-        </div>
-        <div className='info__section-social'>
-          <ul>
-            <li>
-              <a href='https://github.com/ekalape' rel='noreferrer'>
-                <BsGithub size={26} />
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div className='about-us__textBlock about-block'>
+        <h3>Vision Statement</h3>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum vel
+          minus ex, voluptatem, explicabo natus iure cum pariatur quisquam
+          mollitia corporis tempora doloribus fugit vitae eum dignissimos unde
+          necessitatibus earum! Natus iure cum pariatur quisquam mollitia
+          corporis tempora
+        </p>
       </div>
-      <div className='member__photo photo1' />
+      <div className='about-us__img about-block' />
+      <div className='about-us__textBlock about-block'>
+        <h3>Core Values</h3>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum vel
+          minus ex, voluptatem, explicabo natus iure cum pariatur quisquam
+          mollitia corporis tempora doloribus fugit vitae eum dignissimos unde
+          necessitatibus earum! Sit amet consectetur adipisicing elit. Rerum vel
+          minus ex, voluptatem, explicabo natus iure cum pariatur quisquam
+          mollitia corporis tempora!
+        </p>
+      </div>
+      <div className='about-us__textBlock about-block'>
+        <h3>Brief Company History</h3>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum vel
+          minus ex, voluptatem, explicabo natus iure cum pariatur quisquam
+          mollitia corporis tempora doloribus fugit vitae eum dignissimos unde
+          necessitatibus earum! Natus iure cum pariatur quisquam mollitia
+          corporis tempora!
+        </p>
+      </div>
     </div>
   </div>
 );
