@@ -67,7 +67,7 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
       <NavLink to='/' className='backLink'>
         Back
       </NavLink>
-      <div className='item-information'>
+      <div className='item-information' data-testid='item'>
         <div className='item-information__main'>
           <h2 className='item-information__title'>{item.title}</h2>
           <div className='item-information__images-block'>

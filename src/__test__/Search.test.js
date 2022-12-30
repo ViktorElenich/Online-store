@@ -19,7 +19,7 @@ describe('Search', () => {
       </BrowserRouter>,
     );
     expect(getByTestId('input_search')).toBeInTheDocument();
-    fireEvent.change(getByRole('search'), { target: { value: '' } });
+    fireEvent.change(getByRole('searchbox'), { target: { value: '' } });
     expect(history.location.search).toEqual('');
   });
 });
