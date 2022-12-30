@@ -70,7 +70,13 @@
   @media (max-width: 850px) {
     grid-template-columns: 1fr;
   }
-  @media (max-width: 500px) {
+  @media (max-width: 580px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
     margin: 0 0;
     padding: 20px 0 0 0;
   }
@@ -101,10 +107,12 @@
       }
       @media (max-width: 580px) {
         flex-direction: column;
+        margin: 0;
+        width: calc(100% - 50px);
       }
 
       & .images-block__main-foto {
-        width: 100%;
+        max-width: 100%;
         padding: 10px;
         height: 100%;
         order: 2;
@@ -115,7 +123,7 @@
 
         & img {
           max-width: 100%;
-          min-width: 300px;
+          min-width: 250px;
           height: auto;
         }
 
