@@ -53,9 +53,6 @@ const Cart = () => {
     if (Number.isNaN(Number(value))) {
       value = `${productsPerPage}`;
     }
-    if (currentProducts.length === 0) {
-      console.log('current', currentPage)
-    }
     setProductPerPage(Number(value));
     setLocalStorage(PRODUCTS_PER_PAGE, value);
   };
