@@ -108,7 +108,7 @@
   @media (max-width: 640px) {
     width: 100%;
     gap: 20px;
-    padding-top: 60px;
+    padding: 60px 1rem 40px 1rem;
   }
 }
 .discount-message {
@@ -136,8 +136,36 @@
 }
 .order-summary__total-cancelled {
   text-decoration: line-through;
+  text-decoration-color: $color_heart;
+  text-decoration-thickness: 2.5px;
 }
 
 .hidden-block {
   display: none;
+}
+.rss-goUp,
+.rss-goDown {
+  margin-left: 20px;
+}
+.rss-goUp-enter {
+  transform-origin: center;
+  opacity: 1;
+  transform: scaleY(1);
+}
+.rss-goUp-enter-active {
+  transform: scaleY(0);
+  opacity: 0;
+  transition: all 0.2s;
+}
+.rss-goDown-enter {
+  transform-origin: center;
+  opacity: 1;
+  /*   transform: translateY(0); */
+  transform: scaleY(1);
+}
+.rss-goDown-enter-active {
+  /*  transform: translateY(20px); */
+  opacity: 0;
+  transform: scaleY(0);
+  transition: all 0.2s;
 }

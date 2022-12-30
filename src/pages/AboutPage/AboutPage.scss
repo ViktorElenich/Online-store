@@ -17,6 +17,7 @@
   }
   h1 {
     font-size: 2rem;
+    margin-left: 40px;
   }
   h3 {
     align-self: center;
@@ -99,9 +100,12 @@
       grid-column: 1/2;
       grid-row: 2/4;
       height: 410px;
-      background: url('../../assets/photo_members/viktor.jpg') no-repeat top
-        100% center;
+      background: url('../../assets/photo_members/store-foto.jpg') no-repeat;
+      background-position: center;
+      filter: grayscale(100%) brightness(1.2);
+      background-size: 100% auto;
       background-size: cover;
+
       @media (max-width: 640px) {
         grid-column: 1/2;
         grid-row: 2/4;

@@ -200,6 +200,9 @@
     @media (max-width: 700px) {
       font-size: 10px;
     }
+    @media (max-width: 640px) {
+      display: none;
+    }
   }
 
   .block-card__image {
@@ -235,13 +238,15 @@
     @media (max-width: 850px) {
       padding-left: 80px;
     }
-    @media (max-width: 650px) {
-      grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr;
-    }
 
     @media (max-width: 620px) {
       padding-left: 50px;
       grid-template-columns: 2fr 2fr 1fr 1fr;
+    }
+    @media (max-width: 560px) {
+      display: flex;
+      justify-content: space-between;
+      gap: 2%;
     }
 
     & .block-card__item-title {
@@ -260,6 +265,9 @@
       order: 2;
       @media (max-width: 700px) {
         font-size: 9px;
+      }
+      @media (max-width: 560px) {
+        display: none;
       }
     }
     & .block-card__price {

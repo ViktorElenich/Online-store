@@ -13,6 +13,8 @@ export const MIN_PRICE = 'T2STON_MIN_PRICE';
 export const MAX_PRICE = 'T2STON_MAX_PRICE';
 export const CART_ITEMS = 'T2STON_CART_ITEMS';
 
+
+
 export const PRODUCTS_PER_PAGE = 'PRODUCTS_PER_PAGE';
 
 export const TH = ['№', 'Product', 'Price', 'Quantity', 'Total', 'Action'];

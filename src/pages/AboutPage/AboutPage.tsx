@@ -1,7 +1,7 @@
 import './AboutPage.scss';
 
 const AboutPage = () => (
-  <div className='about-us'>
+  <div className='about-us' data-testid='about__page'>
     <h1>About us</h1>
     <div className='about-us-wrapper'>
       <div className='about-us__textBlock about-block'>
