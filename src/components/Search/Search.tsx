@@ -15,7 +15,9 @@ const Search: FC<ISearch> = ({ value, onChange }) => {
     >
       <input
         value={value}
+        role='search'
         id='input_search'
+        data-testid='input_search'
         type='text'
         onFocus={clickLabel}
         onChange={onChange}
