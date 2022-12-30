@@ -67,7 +67,7 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
       <button type='button' className='backLink' onClick={() => navigate(-1)}>
         Back
       </button>
-      <div className='item-information'>
+      <div className='item-information' data-testid='item'>
         <div className='item-information__main'>
           <h2 className='item-information__title'>{item.title}</h2>
           <div className='item-information__images-block'>
