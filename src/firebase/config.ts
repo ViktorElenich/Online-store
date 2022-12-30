@@ -18,14 +18,4 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
-/*
-try {
-  productsData.products.map((product) => {
-    setDoc(doc(productsRef, product.id.toString()), product)
-  })
-} catch (e) {
-  console.log(e)
-}
-*/
-
 export default app;

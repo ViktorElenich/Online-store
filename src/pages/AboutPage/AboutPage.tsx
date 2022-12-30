@@ -2,7 +2,7 @@ import { BsGithub } from 'react-icons/bs';
 import './AboutPage.scss';
 
 const AboutPage = () => (
-  <div className='about__page'>
+  <div className='about__page' data-testid='about__page'>
     <div className='member__card'>
       <div className='info__section'>
         <div className='info__section-member__team'>

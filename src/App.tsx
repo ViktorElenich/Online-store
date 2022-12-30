@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import { ToastContainer } from 'react-toastify';
@@ -15,9 +15,8 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 
 function App() {
   return (
-    <BrowserRouter>
       <QueryParamProvider adapter={ReactRouter6Adapter}>
-        <div className='App'>
+        <div className='App' data-testid='App'>
           <ToastContainer />
           <Header />
           <Routes>
@@ -32,7 +31,6 @@ function App() {
           <Footer />
         </div>
       </QueryParamProvider>
-    </BrowserRouter>
   );
 }
 

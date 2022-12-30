@@ -24,7 +24,7 @@ const ProductsContainer = () => {
     if (products.length > 0) setReady(true);
   }, [products]);
   return (
-    <div className='container-products'>
+    <div className='container-products' data-testid='container-products'>
       {!ready ? <Loader /> : <Products products={products} />}
     </div>
   );
