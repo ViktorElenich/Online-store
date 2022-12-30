@@ -22,6 +22,10 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
   const maxStockInit = Math.max(...products.map((x) => x.stock));
   const minPriceInit = Math.min(...products.map((x) => x.price));
   const maxPriceInit = Math.max(...products.map((x) => x.price));
+
+  const [maxPriceRange, setMaxPriceRange] = useState(maxPriceInit);
+  const [maxStockRange, setMaxStockRange] = useState(maxStockInit);
+
   let currentMaxStock = maxStockInit;
   let currentMinStock = minStockInit;
   let currentMinPrice = minPriceInit;
@@ -285,9 +289,16 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
     if (currentMaxPrice === -Infinity) currentMaxPrice = maxPriceQuantity;
 
     changeCurrentPriceRange([currentMinPrice, currentMaxPrice]);
-
     changeCurrentStockRange([currentMinStock, currentMaxStock]);
   }, [filtered]);
+  useEffect(() => {
+    if (currentMaxPrice < maxPriceInit / 2)
+      setMaxPriceRange(currentMaxPrice * 2);
+    else setMaxPriceRange(maxPriceInit);
+    if (currentMaxStock < maxStockInit / 2)
+      setMaxStockRange(currentMaxStock * 2);
+    else setMaxStockRange(maxStockInit);
+  }, [filtered, currentMaxPrice, currentMaxStock]);
 
   return (
     <>
@@ -295,7 +306,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
         <div className='stock'>
           <span>Stock</span>
           <Nouislider
-            range={{ min: 2, max: 150 }}
+            range={{ min: minStockInit, max: maxStockRange }}
             start={[currentMinStockQuantity, currentMaxStockQuantity]}
             step={1}
             tooltips
@@ -309,7 +320,7 @@ const ProductsFilter: FC<IFilterBrand> = ({ searchSort }) => {
         <div className='price'>
           <span>Price</span>
           <Nouislider
-            range={{ min: 10, max: 1749 }}
+            range={{ min: minPriceInit, max: maxPriceRange }}
             start={[currentMinPriceQuantity, currentMaxPriceQuantity]}
             step={10}
             tooltips
