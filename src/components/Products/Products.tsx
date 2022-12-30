@@ -69,6 +69,14 @@ const Products: FC<IProductsProps> = ({ products }) => {
     }
   }, [searchQuery, searchInput, sortSelect, grid]);
 
+  useEffect(() => {
+    if (currentProducts.length === 0) {
+      if (currentPage !== 1) {
+        setCurrentPage(currentPage - 1)
+      }
+    }
+  }, [currentProducts]);
+
   return (
     <div className='products'>
       <div
