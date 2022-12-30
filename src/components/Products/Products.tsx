@@ -77,7 +77,6 @@ const Products: FC<IProductsProps> = ({ products }) => {
         onClick={toggleBurgerMenu}
       >
         {!showFilters ? <MdSettingsSuggest size={24} /> : <BsXLg size={22} />}
-        {!showFilters ? <MdSettingsSuggest size={24} /> : <BsXLg size={22} />}
       </div>
 
       <aside

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import {FC, useState} from 'react';
 import { IPagination } from '../../interfaces';
 import './Pagination.scss';
 
@@ -36,6 +36,7 @@ const Pagination: FC<IPagination> = ({
   for (let i = 1; i <= Math.ceil(totalProducts / productsPerPage); i++) {
     pageNumbers.push(i);
   }
+
   return totalProducts === 0 ? null : (
     <ul className='pagination'>
       <li

@@ -79,3 +79,9 @@ export interface ICart {
   cartTotalQuantity: number,
   cartTotalAmount: number
 }
+
+export interface IPaginate {
+  itemsPerPage: number;
+  filterProducts: IProductData[];
+  setItemOffset: Dispatch<number>
+}
