@@ -10,6 +10,8 @@ footer {
   align-items: center;
   font-family: $font-jomolhari;
   font-size: 0.8rem;
+  position: relative;
+  z-index: 3;
   @media (max-width: 450px) {
     font-size: 0.7rem;
   }

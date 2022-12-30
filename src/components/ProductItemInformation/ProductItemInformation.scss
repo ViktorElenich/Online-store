@@ -59,41 +59,6 @@
     }
   }
 }
-.backLink {
-  align-self: flex-start;
-  padding: 7px;
-  margin-left: 5%;
-  position: relative;
-  top: 30px;
-  font-family: $font-inter;
-  font-size: 1.2rem;
-  color: $color_darker-grey;
-
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    background: url('../../assets/arrow-right-icon.png') no-repeat center;
-    background-size: contain;
-    transform: rotate(180deg);
-    position: absolute;
-    top: 1px;
-    left: -25px;
-    filter: sepia(18%) saturate(0%) hue-rotate(183deg) brightness(20%)
-      contrast(87%);
-  }
-  &:hover {
-    color: $color_primary;
-    &::before {
-      filter: sepia(18%) saturate(0%) hue-rotate(183deg) brightness(0%)
-        contrast(87%);
-    }
-  }
-  &:active {
-    transform: scale(0.94);
-  }
-}
 
 .item-information {
   max-width: 1440px;
@@ -274,4 +239,43 @@
 }
 .btn {
   @include btn-standart;
+}
+.backLink {
+  width: 70px;
+  align-self: flex-start;
+  padding: 7px;
+  margin-left: 7%;
+  position: relative;
+  top: 30px;
+  font-family: $font-inter;
+  font-size: 1.2rem;
+  color: $color_darker-grey;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: url('../../assets/arrow-right-icon.png') no-repeat center;
+    background-size: contain;
+    transform: rotate(180deg);
+    position: absolute;
+    top: 5px;
+    left: -25px;
+    filter: sepia(18%) saturate(0%) hue-rotate(183deg) brightness(20%)
+      contrast(87%);
+  }
+  &:hover {
+    color: $color_primary;
+    &::before {
+      filter: sepia(18%) saturate(0%) hue-rotate(183deg) brightness(0%)
+        contrast(87%);
+    }
+  }
+  &:active {
+    transform: scale(0.94);
+  }
 }
