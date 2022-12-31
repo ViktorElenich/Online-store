@@ -131,9 +131,15 @@
         }
         .cart__btn {
           border: 1px solid $color_primary;
+
           height: 25px;
           width: 25px;
           border-radius: 6px;
+        }
+        .cart__btn.disabled {
+          color: $color_middle-grey;
+          border: 1px solid $color_darker-grey-alt;
+          pointer-events: none;
         }
       }
     }
