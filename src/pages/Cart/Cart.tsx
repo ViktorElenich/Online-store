@@ -137,7 +137,11 @@ const Cart = () => {
                               <b>{productQuantity}</b>
                             </p>
                             <button
-                              className='btn cart__btn'
+                              className={
+                                item.product.stock <= item.productQuantity
+                                  ? 'btn cart__btn disabled'
+                                  : 'btn cart__btn'
+                              }
                               type='button'
                               onClick={() => increaseCountProduct(item.product)}
                             >

@@ -20,18 +20,22 @@ const cartSlice = createSlice({
       const productIndex = state.products.filter(
         (item) => item.product.id === action.payload.id,
       );
+
       if (productIndex.length === 0) {
         const tempProduct = { product: action.payload, productQuantity: 1 };
         state.products.push(tempProduct);
         toast.success(`${action.payload.title} increased by one`, {
           position: 'top-left',
         });
-      } else {
+        state.cartTotalAmount += action.payload.price;
+      } else if (productIndex[0].product.stock > productIndex[0].productQuantity) {
         productIndex[0].productQuantity += 1;
         state.cartTotalQuantity += 1;
+        state.cartTotalAmount += action.payload.price;
       }
-      state.cartTotalAmount += action.payload.price;
+
       setLocalStorage(CART_ITEMS, JSON.stringify(state.products));
+
     },
     calculateTotalQuantity: (state) => {
       const res: number[] = [];
