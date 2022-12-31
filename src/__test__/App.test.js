@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import store from "../redux/store";
+import AboutPage from "../pages/AboutPage/AboutPage";
 
 const renderWithRouter = (ui, { route = '/' } = {}) => {
   window.history.pushState({}, 'Test page', route);
@@ -39,13 +40,13 @@ describe('App', () => {
       render(
         <Provider store={store}>
           <BrowserRouter history={history}>
-            <App />
+            <AboutPage />
           </BrowserRouter>
         </Provider>
       );
     });
     const user = userEvent;
-    expect(screen.getByTestId('container-products')).toBeInTheDocument();
+    expect(screen.getByTestId('about__page')).toBeInTheDocument();
     await user.click(screen.getByText(/About Us/i));
     expect(screen.getByTestId('about__page')).toBeInTheDocument();
   });
