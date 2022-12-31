@@ -28,22 +28,25 @@ const Cart = () => {
   const [productsPerPage, setProductPerPage] = useState(
     getLocalStorage(PRODUCTS_PER_PAGE) || 3,
   );
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = cartItems.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct,
+  );
 
   const increaseCountProduct = (cart: IProductData) => {
     dispatch(setCartProducts(cart));
   };
-
   const decreaseCountProduct = (cart: IProductData) => {
     dispatch(decreaseCartProduct(cart));
   };
-
   const removeItemFromCart = (cart: IProductData) => {
     dispatch(removeCartProduct(cart));
   };
   const changeShowItems = (event: ChangeEvent<HTMLInputElement>) => {
     event.stopPropagation();
     let { value } = event.target as HTMLInputElement;
-
     if (!value) {
       setProductPerPage(productsPerPage);
     }
@@ -54,13 +57,6 @@ const Cart = () => {
     setLocalStorage(PRODUCTS_PER_PAGE, value);
   };
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = cartItems.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct,
-  );
-
   const clearCartAction = () => {
     dispatch(clearCart());
   };
@@ -69,6 +65,15 @@ const Cart = () => {
     dispatch(calculatePrice());
     dispatch(calculateTotalQuantity());
   }, [dispatch, cartItems]);
+
+  useEffect(() => {
+    if (currentProducts.length === 0) {
+      if (currentPage !== 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    }
+  }, [currentProducts]);
+
 
   return (
     <div className='cart-wrapper'>
