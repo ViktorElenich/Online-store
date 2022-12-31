@@ -148,6 +148,11 @@
     justify-content: space-between;
     gap: 20px;
     align-items: center;
+    .total-payment {
+      @include _768 {
+        font-size: 15px;
+      }
+    }
     &__cart {
       display: flex;
       position: relative;

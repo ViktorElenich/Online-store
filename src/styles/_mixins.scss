@@ -23,6 +23,11 @@
     @content;
   }
 }
+@mixin _360 {
+  @media (max-width: 360px) {
+    @content;
+  }
+}
 @mixin h540 {
   @media (max-height: 768px) {
     @content;

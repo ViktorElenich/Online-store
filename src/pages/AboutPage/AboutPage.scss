@@ -2,7 +2,7 @@
 @import '../../styles/vars';
 
 .about-us {
-  min-height: calc(100vh - 128px);
+  height: calc(100vh - 128px);
   padding: 25px;
   display: flex;
   flex-direction: column;
@@ -11,6 +11,20 @@
   flex-direction: column;
   align-items: center;
   overflow: auto;
+  @include _540 {
+    height: calc(100vh - 112px);
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $color_darker-grey;
+      border-radius: 1rem;
+    }
+  }
   h1,
   h3 {
     font-family: $font-inter;

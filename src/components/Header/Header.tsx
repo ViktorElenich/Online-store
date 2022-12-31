@@ -37,10 +37,13 @@ const Header = () => {
       </NavLink>
       <nav className='header__navigation'>
         <ul className={!isShowBurgerMenu ? 'navigation_menu' : 'navigation_menu active'}>
-          <li className='menu__item'>
+          <li className='menu__item' onClick={toggleBurgerMenu} role='menuitem'>
             <NavLink to={RoutesEnum.Home}>Home</NavLink>
           </li>
-          <li className='menu__item'>
+          <li className='menu__item' onClick={toggleBurgerMenu} role='menuitem'>
+            <NavLink to={RoutesEnum.Products}>Products</NavLink>
+          </li>
+          <li className='menu__item' onClick={toggleBurgerMenu} role='menuitem'>
             <NavLink to={RoutesEnum.About}>About Us</NavLink>
           </li>
         </ul>

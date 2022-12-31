@@ -103,7 +103,7 @@ const OrderSummary: FC<ICartProp> = ({ cartProducts }) => {
         show={openBuyNow}
       />
       <div className='continue-shopping'>
-        <Link to={RoutesEnum.Home}>&larr; Continue shopping</Link>
+        <Link to={RoutesEnum.Products}>&larr; Continue shopping</Link>
       </div>
       <div className='order-summary-wrapper'>
         <p className='order-summary__quantity'>

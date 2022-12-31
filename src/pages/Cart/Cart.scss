@@ -1,4 +1,5 @@
 @import '../../styles/vars';
+@import '../../styles/mixins';
 
 .cart-wrapper {
   display: flex;
@@ -79,8 +80,10 @@
 
         &.table__icons {
           > * {
-            margin-right: 5px;
             cursor: pointer;
+            @include _360 {
+              width: 15px;
+            }
           }
         }
         .cart__img {
@@ -116,6 +119,9 @@
         justify-content: center;
         & > * {
           margin-right: 1rem;
+          @include _360 {
+            margin-right: 0.3rem;
+          }
           &:last-child {
             margin-right: 0;
           }
@@ -131,10 +137,13 @@
         }
         .cart__btn {
           border: 1px solid $color_primary;
-
           height: 25px;
           width: 25px;
           border-radius: 6px;
+          @include _360 {
+            width: 20px;
+            height: 20px;
+          }
         }
         .cart__btn.disabled {
           color: $color_middle-grey;
