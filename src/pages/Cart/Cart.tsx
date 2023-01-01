@@ -84,7 +84,7 @@ const Cart = () => {
             <p>Your cart is currently empty.</p>
             <br />
             <div>
-              <Link to={RoutesEnum.Home}>&larr; Continue shopping</Link>
+              <Link to={RoutesEnum.Products}>&larr; Continue shopping</Link>
             </div>
           </div>
         ) : (

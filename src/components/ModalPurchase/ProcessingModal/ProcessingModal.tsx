@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../hooks';
 import { clearCart } from '../../../redux/slices/cartSlice';
 import { IOpenHideModal } from '../../../interfaces';
+import {RoutesEnum} from "../../../enums";
 
 const ProcessingModal: FC<IOpenHideModal> = ({ handleClose, show }) => {
   const [countSec, setCountSec] = useState(3);
@@ -17,7 +18,7 @@ const ProcessingModal: FC<IOpenHideModal> = ({ handleClose, show }) => {
     if (countSec === 0) {
       handleClose();
       dispatch(clearCart());
-      navigate('/');
+      navigate(`${RoutesEnum.Products}`);
     }
     return () => clearInterval(interval);
   }, [countSec]);

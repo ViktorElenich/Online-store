@@ -52,7 +52,7 @@ const HomePage = () => {
                 <h2>{item.heading}</h2>
                 <p>{item.desc}</p>
                 <hr />
-                <Link to={RoutesEnum.Products} className='btn btn-primary'>
+                <Link to={RoutesEnum.Products} className='btn__link btn-primary'>
                   Shop Now
                 </Link>
               </div>

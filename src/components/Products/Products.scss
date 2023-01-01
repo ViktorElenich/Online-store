@@ -24,7 +24,7 @@
       display: block;
       cursor: pointer;
       position: relative;
-      z-index: 5;
+      z-index: 3;
     }
   }
 
@@ -39,8 +39,7 @@
       position: absolute;
       width: 30%;
       height: calc(100vh - 153px);
-
-      z-index: 4;
+      z-index: 2;
       left: -100%;
       transition: left 0.5s ease-in-out;
     }
@@ -93,6 +92,7 @@
   &-items {
     .products-animation {
       height: calc(100vh - 250px);
+      padding: 0 0 5px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       justify-items: center;

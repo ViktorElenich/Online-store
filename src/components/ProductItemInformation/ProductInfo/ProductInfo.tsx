@@ -13,6 +13,7 @@ import {
   removeCartProduct,
   setCartProducts,
 } from '../../../redux/slices/cartSlice';
+import {RoutesEnum} from "../../../enums";
 
 const ProductInfo: FC<IPropItem> = ({ product }) => {
   const dispatch = useAppDispatch();
@@ -54,7 +55,7 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
   return (
     <>
       <div className='breadcrumbs'>
-        <span role='presentation' onClick={() => navigate('/')}>
+        <span role='presentation' onClick={() => navigate(`${RoutesEnum.Products}`)}>
           store
         </span>
         <div className='arrow-right' />

@@ -12,6 +12,7 @@ import ErrorPage from './pages/ErrorPage/ErrorPage';
 import ProductItemInformation from './components/ProductItemInformation/ProductItemInformation';
 import Cart from './pages/Cart/Cart';
 import AboutPage from "./pages/AboutPage/AboutPage";
+import HomePage from "./pages/HomePage/HomePage";
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
           <ToastContainer />
           <Header />
           <Routes>
-            <Route path={RoutesEnum.Home} element={<ProductsContainer />} />
+            <Route path={RoutesEnum.Home} element={<HomePage />} />
+            <Route path={RoutesEnum.Products} element={<ProductsContainer />} />
             <Route path={RoutesEnum.Products} element={<ProductItemInformation />}>
               <Route path=':id' element={<ProductItemInformation />} />
             </Route>
