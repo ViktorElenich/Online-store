@@ -211,7 +211,7 @@ const ModalPurchasePage: FC<IOpenHideModal> = ({ handleClose, show }) => {
                   placeholder='Enter first and last name'
                   {...register('name', {
                     required: true,
-                    pattern: /^[A-Z]{1}[a-z]{3,} [A-Z]{1}[a-z]{3,}$/,
+                    pattern: /^[A-Z]{1}[a-z]{2,} [A-Z]{1}[a-z]{2,}$/,
                   })}
                   aria-invalid={errors.name ? 'true' : 'false'}
                 />
