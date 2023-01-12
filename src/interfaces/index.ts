@@ -63,6 +63,12 @@ export interface IPagination {
   productsPerPage: number;
   totalProducts: number;
 }
+
+export interface IPaginate {
+  itemsPerPage: number;
+  filterProducts: IProductData[];
+  setItemOffset: Dispatch<number>
+}
 export interface IOpenHideModal {
   handleClose: () => void;
   show: boolean;
