@@ -13,7 +13,7 @@ import {
   removeCartProduct,
   setCartProducts,
 } from '../../../redux/slices/cartSlice';
-import {RoutesEnum} from "../../../enums";
+import { RoutesEnum } from '../../../enums';
 
 const ProductInfo: FC<IPropItem> = ({ product }) => {
   const dispatch = useAppDispatch();
@@ -55,7 +55,10 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
   return (
     <>
       <div className='breadcrumbs'>
-        <span role='presentation' onClick={() => navigate(`${RoutesEnum.Products}`)}>
+        <span
+          role='presentation'
+          onClick={() => navigate(`${RoutesEnum.Products}`)}
+        >
           store
         </span>
         <div className='arrow-right' />
@@ -108,19 +111,27 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
             <button
               className='item-information__buyNow btn'
               type='button'
-              onClick={() => setOpenPaymentModal(true)}
+              onClick={() => {
+                setOpenPaymentModal(true);
+                addToCart(item);
+                navigate(RoutesEnum.Cart, {
+                  state: {
+                    openModal: true,
+                  },
+                });
+              }}
             >
               Buy now
             </button>
-            <ModalPurchasePage
-              handleClose={() => {
-                setOpenPaymentModal(false);
-              }}
-              show={openPaymentModal}
-            />
           </div>
         </div>
       </div>
+      <ModalPurchasePage
+        handleClose={() => {
+          setOpenPaymentModal(false);
+        }}
+        show={openPaymentModal}
+      />
     </>
   );
 };

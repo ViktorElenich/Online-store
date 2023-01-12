@@ -2,8 +2,8 @@ import { createMemoryHistory } from 'history';
 import { fireEvent, render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryParamProvider } from 'use-query-params';
-import Search from '../components/Search/Search';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
+import Search from '../components/Search/Search';
 import '@testing-library/jest-dom';
 
 const onChange = jest.fn();
@@ -14,7 +14,7 @@ describe('Search', () => {
     const { getByTestId, getByRole } = render(
       <BrowserRouter history={history}>
         <QueryParamProvider adapter={ReactRouter6Adapter}>
-          <Search onChange={onChange} value={''} />
+          <Search onChange={onChange} value='' />
         </QueryParamProvider>
       </BrowserRouter>,
     );
