@@ -62,11 +62,6 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    dispatch(calculatePrice());
-    dispatch(calculateTotalQuantity());
-  }, [dispatch, cartItems]);
-
-  useEffect(() => {
     if (currentProducts.length === 0) {
       if (currentPage !== 1) {
         setCurrentPage(currentPage - 1);
@@ -74,6 +69,10 @@ const Cart = () => {
     }
   }, [currentProducts]);
 
+  useEffect(() => {
+    dispatch(calculatePrice());
+    dispatch(calculateTotalQuantity());
+  }, [dispatch, cartItems]);
 
   return (
     <div className='cart-wrapper'>
