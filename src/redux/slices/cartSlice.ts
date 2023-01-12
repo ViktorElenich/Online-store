@@ -61,15 +61,17 @@ const cartSlice = createSlice({
       const newCartItem = state.products.filter(
         (item) => item.product.id !== action.payload.id,
       );
+      const productToRemove = state.products.filter((item) => item.product.id === action.payload.id)[0]
 
       state.products = newCartItem;
-      if (newCartItem.length === 0) return;
-      state.cartTotalQuantity -= newCartItem[0].productQuantity;
+      /* if (newCartItem.length === 0) return; */
+      state.cartTotalQuantity -= productToRemove.productQuantity;
       state.cartTotalAmount -=
-        newCartItem[0].product.price * newCartItem[0].productQuantity;
+        productToRemove.product.price * productToRemove.productQuantity;
       toast.success(`${action.payload.title} remove from cart`, {
         position: 'top-left',
       });
+
       setLocalStorage(CART_ITEMS, JSON.stringify(state.products));
     },
     decreaseCartProduct: (state, action) => {
