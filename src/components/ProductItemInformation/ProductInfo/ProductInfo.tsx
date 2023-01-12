@@ -113,7 +113,11 @@ const ProductInfo: FC<IPropItem> = ({ product }) => {
               type='button'
               onClick={() => {
                 setOpenPaymentModal(true);
-                addToCart(item);
+                if (
+                  productsInCart.filter((i) => i.product.id === item.id)
+                    .length === 0
+                )
+                  addToCart(item);
                 navigate(RoutesEnum.Cart, {
                   state: {
                     openModal: true,
