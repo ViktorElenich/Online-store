@@ -66,6 +66,16 @@ const Cart = () => {
   };
 
   useEffect(() => {
+
+    if (currentProducts.length === 0) {
+      if (currentPage !== 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    }
+  }, [currentProducts]);
+
+  useEffect(() => {
+
     dispatch(calculatePrice());
     dispatch(calculateTotalQuantity());
   }, [dispatch, cartItems]);
