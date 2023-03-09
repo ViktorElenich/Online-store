@@ -1,0 +1,50 @@
+@import '../../styles/vars';
+@import '../../styles/mixins';
+
+.sort-select {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  color: #999;
+  outline: none;
+  padding: 0.1rem;
+  border-radius: 3px;
+  cursor: pointer;
+  z-index: 1;
+  &::-ms-expand {
+    display: none;
+  }
+}
+.select {
+  display: grid;
+  grid-template-areas: "select";
+  align-items: center;
+  position: relative;
+
+  select,
+  &::after {
+    grid-area: select;
+  }
+  min-width: 6rem;
+  max-width: 15.6rem;
+  width: 100%;
+  border: 1px solid $color_middle-grey;
+  border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+  font-size: 1.25rem;
+  cursor: pointer;
+  line-height: 1.1;
+  background-color: #fff;
+  background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
+  @include _895 {
+    max-width: 10rem;
+  }
+  &:not(.select--multiple)::after {
+    content: "";
+    justify-self: end;
+    width: 0.8em;
+    height: 0.5em;
+    background-color: $color_middle-grey;
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+  }
+}

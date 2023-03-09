@@ -1,0 +1,203 @@
+@import '../../styles/vars';
+@import '../../styles/mixins';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 4.5rem;
+  padding: 1rem;
+  background: $grey-color;
+  font-family: $font-jomolhari;
+  font-weight: 400;
+  font-size: 1.2rem;
+  box-shadow: 0px 2px 12px 0px rgba(34, 60, 80, 0.2);
+  position: relative;
+  z-index: 4;
+  @include _540 {
+    height: 2.5rem;
+  }
+
+  &__burger {
+    display: none;
+    @include _540 {
+      display: inline-block;
+    }
+
+    .burger {
+      display: block;
+      transform-origin: 16px 11px;
+      outline: 0;
+      border: 0;
+      padding: 12px 0;
+      background: none;
+      cursor: pointer;
+      position: relative;
+      z-index: 5;
+      span {
+        display: block;
+        border-radius: 5px;
+        width: 25px;
+        height: 3px;
+        margin-bottom: 5px;
+        background-color: $color_primary;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      }
+      &.active {
+        span:nth-of-type(1) {
+          transform: rotate(45deg) translate(6px, 7px);
+          width: 25px;
+        }
+
+        span:nth-of-type(2) {
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        span:nth-of-type(3) {
+          transform: rotate(-45deg) translate(5px, -5px);
+          width: 25px;
+        }
+      }
+    }
+  }
+
+  &__logo {
+    @include _540 {
+      margin-left: 4.8rem;
+    }
+    h1 {
+      text-indent: -1234rem;
+      background: url('../../assets/logo.png') no-repeat;
+      background-size: contain;
+      width: 8rem;
+      height: 3.5rem;
+      @include _540 {
+        width: 6rem;
+      }
+    }
+  }
+  .navigation_menu {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    @include _540 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: 100vh;
+      padding-top: 100px;
+      align-items: stretch;
+      background-color: $color_darker-grey;
+      transform: translateX(-100%);
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      &.active {
+        transform: translateX(0);
+      }
+    }
+    .menu__item {
+      @include _540 {
+        display: block;
+        text-align: center;
+        margin-bottom: 25px;
+      }
+      a {
+        position: relative;
+        color: black;
+        opacity: 0.6;
+        transition: opacity 0.3s cubic-bezier(0.51, 0.92, 0.24, 1);
+        &.active {
+          opacity: 1;
+          font-weight: bold;
+        }
+        &::after {
+          --scale: 0;
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 100%;
+          height: 3px;
+          background: linear-gradient(135deg, rgb(59, 61, 60), rgb(33, 38, 38));
+          transform: scaleX(var(--scale));
+          transform-origin: var(--x) 50%;
+          transition: transform 0.3s cubic-bezier(0.51, 0.92, 0.24, 1);
+          @include _540 {
+            background: linear-gradient(135deg, rgb(211, 215, 213), rgb(88, 91, 91));
+          }
+        }
+        &:hover {
+          opacity: 1;
+        }
+        &:hover::after {
+          --scale: 1;
+        }
+        @include _540 {
+          font-size: 2rem;
+          color: $color_secondary;
+        }
+
+      }
+    }
+  }
+  .header-user {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    .total-payment {
+      @include _768 {
+        font-size: 15px;
+      }
+    }
+    &__cart {
+      display: flex;
+      position: relative;
+      a {
+        background: url('../../assets/cart.png') no-repeat;
+        background-size: contain;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      span {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 17px;
+        height: 17px;
+        top: -8px;
+        left: 5px;
+        background-color: red;
+        color: #fff;
+        border-radius: 50%;
+        font-size: 12px;
+      }
+    }
+
+    &__login {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 5px;
+      a {
+        background: url('../../assets/logout.png') no-repeat;
+        background-size: contain;
+        width: 1.5rem;
+        height: 1.5rem;
+        position: relative;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -3.5rem;
+          width: 5rem;
+          height: 1.5rem;
+        }
+      }
+    }
+  }
+}

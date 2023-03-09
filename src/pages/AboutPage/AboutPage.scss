@@ -1,0 +1,137 @@
+@import '../../styles/mixins';
+@import '../../styles/vars';
+
+.about-us {
+  height: calc(100vh - 128px);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+  @include _540 {
+    height: calc(100vh - 112px);
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $color_darker-grey;
+      border-radius: 1rem;
+    }
+  }
+  h1,
+  h3 {
+    font-family: $font-inter;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-left: 40px;
+  }
+  h3 {
+    align-self: center;
+    font-size: 1.2rem;
+    margin: 10px;
+    margin-bottom: 20px;
+  }
+  .about-us-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 80vh;
+
+    padding: 0 5%;
+
+    gap: 10px;
+
+    & .about-block {
+      background: $color_secondary;
+      width: 100%;
+      height: 100%;
+      font-size: 0.8rem;
+      font-family: $font-jomolhari;
+      color: $color_primary;
+      padding: 5%;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 1px 1px 3px $color_darker-grey;
+
+      &:first-of-type {
+        grid-column: 1/3;
+        background: $color_stars;
+        @media (max-width: 640px) {
+          grid-column: 1/2;
+        }
+        @media (max-width: 500px) {
+          grid-column: 1/2;
+        }
+      }
+      &:nth-of-type(2) {
+        @media (max-width: 640px) {
+          grid-column: 2/3;
+        }
+        @media (max-width: 500px) {
+          grid-column: 1/2;
+        }
+      }
+
+      &:nth-last-of-type(2) {
+        grid-column: 2/4;
+        grid-row: 2/3;
+        background: $color_darker-grey;
+        color: $color_secondary;
+        @media (max-width: 640px) {
+          grid-column: 2/3;
+        }
+        @media (max-width: 500px) {
+          grid-column: 1/2;
+          grid-row: 1/2;
+        }
+      }
+      &:nth-last-of-type(1) {
+        grid-column: 2/4;
+        grid-row: 3/4;
+        background: $color_stars;
+        @media (max-width: 640px) {
+          grid-column: 2/3;
+          grid-row: 3/4;
+        }
+        @media (max-width: 500px) {
+          grid-column: 1/2;
+          grid-row: 4/5;
+        }
+      }
+    }
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 500px) {
+      grid-template-columns: 1fr;
+    }
+    .about-us__img {
+      grid-column: 1/2;
+      grid-row: 2/4;
+      height: 100%;
+      background: url('../../assets/photo_members/store-foto.jpg') no-repeat;
+      background-position: center;
+      filter: grayscale(100%) brightness(1.2);
+      background-size: 100% auto;
+      background-size: cover;
+
+      @media (max-width: 640px) {
+        grid-column: 1/2;
+        grid-row: 2/4;
+      }
+      @media (max-width: 500px) {
+        grid-column: 1/2;
+        grid-row: 3/4;
+        height: 300px;
+      }
+    }
+  }
+}

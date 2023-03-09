@@ -1,0 +1,289 @@
+@import '../../styles/vars';
+@import '../../styles/mixins';
+
+.item-information__wrapper {
+  margin: auto;
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 138px);
+}
+.breadcrumbs {
+  width: 100%;
+  height: 50px;
+  padding: 0 10%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-transform: uppercase;
+
+  font-size: 0.7rem;
+  font-family: $font-inter;
+  color: $color_darker-grey;
+  & span {
+    cursor: pointer;
+    &:hover {
+      border-bottom: 1px solid $color_secondary;
+    }
+  }
+  @media (max-width: 900px) {
+    padding: 0 5%;
+  }
+  @media (max-width: 800px) {
+    font-size: 0.6rem;
+  }
+  @media (max-width: 650px) {
+    font-size: 0.5rem;
+  }
+  .arrow-right {
+    width: 35px;
+    height: 35px;
+    padding: 3px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-image: url('../../assets/arrow-right-icon.png');
+    @media (max-width: 850px) {
+      width: 27px;
+      height: 27px;
+    }
+    @media (max-width: 650px) {
+      width: 20px;
+      height: 20px;
+    }
+    @media (max-width: 470px) {
+      width: 10px;
+      height: 10px;
+    }
+  }
+}
+
+.item-information {
+  max-width: 1440px;
+  width: calc(100% - 27px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 20px 5px;
+  padding: 20px 5px;
+  @media (max-width: 850px) {
+    grid-template-columns: 1fr;
+  }
+  @media (max-width: 580px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    margin: 0 0;
+    padding: 20px 0 0 0;
+  }
+  & .item-information__main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    @media (max-width: 850px) {
+      align-items: center;
+    }
+    & .item-information__title {
+      margin: 10px 10px 5px 0;
+      font-family: $font-inter;
+      font-size: 1.3rem;
+    }
+    & .item-information__images-block {
+      width: calc(100% - 20px);
+      margin: 10px;
+      padding: 10px;
+      display: flex;
+
+      align-items: flex-end;
+      border: 3px solid $color_darker-grey;
+
+      @media (max-width: 800px) {
+        align-items: stretch;
+      }
+      @media (max-width: 580px) {
+        flex-direction: column;
+        margin: 0;
+        width: calc(100% - 50px);
+      }
+
+      & .images-block__main-foto {
+        max-width: 100%;
+        padding: 10px;
+        height: 100%;
+        order: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 2 2 100%;
+
+        & img {
+          max-width: 100%;
+          min-width: 250px;
+          height: auto;
+        }
+
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+      & .images-block__alt-fotos {
+        margin: 10px;
+        min-width: 10%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        order: 1;
+        justify-content: space-around;
+        align-items: center;
+        gap: 10px;
+        flex: 1 1 20%;
+        @media (max-width: 580px) {
+          max-width: 100%;
+          order: 2;
+          flex-direction: row;
+        }
+
+        & * {
+          max-width: 80px;
+          max-height: auto;
+          min-width: 30px;
+          min-height: auto;
+
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  & .item-information__details {
+    background-color: $color_standart-grey;
+    position: relative;
+    padding: 13px 10px 0 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+    font-family: $font-jomolhari;
+
+    & .item-information__brand {
+      font-family: $font-inter;
+      font-size: 1.15rem;
+      padding: 10px 0;
+      @media (max-width: 850px) {
+        align-self: center;
+      }
+    }
+    & .item-information__category {
+      text-transform: capitalize;
+      font-size: 1rem;
+      padding: 10px 0;
+      @media (max-width: 850px) {
+        align-self: center;
+      }
+    }
+    & .item-information__description {
+      font-size: 0.8rem;
+      flex: 2 2 auto;
+      padding: 20px 0;
+    }
+    & .item-information__stock {
+      font-size: 0.8rem;
+      margin-bottom: 20px;
+    }
+    & .item-information__discount {
+      position: relative;
+      z-index: 3;
+      align-self: center;
+    }
+    & .item-information__price {
+      font-size: 1.25rem;
+      position: relative;
+      z-index: 3;
+      margin-bottom: 65px;
+      align-self: center;
+      @media (max-width: 850px) {
+        margin-bottom: 36px;
+      }
+    }
+    & .rating-wrapper {
+      justify-content: flex-start;
+      @media (max-width: 850px) {
+        align-self: center;
+      }
+    }
+
+    & .item-information__btns {
+      position: relative;
+      bottom: 0;
+      justify-self: flex-end;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      place-items: center;
+      align-content: center;
+      padding: 10px;
+      gap: 5%;
+      margin-bottom: 30px;
+    }
+  }
+}
+.colored-bg {
+  position: absolute;
+  bottom: 150px;
+  left: -5px;
+  width: calc(100% + 10px);
+  height: 80px;
+  border-radius: 3px;
+  background-color: $color_stars;
+  z-index: 2;
+  @media (max-width: 850px) {
+    bottom: 120px;
+  }
+}
+.btn {
+  @include btn-standart;
+}
+.backLink {
+  width: 70px;
+  align-self: flex-start;
+  padding: 7px;
+  margin-left: 7%;
+  position: relative;
+  top: 30px;
+  font-family: $font-inter;
+  font-size: 1.2rem;
+  color: $color_darker-grey;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: url('../../assets/arrow-right-icon.png') no-repeat center;
+    background-size: contain;
+    transform: rotate(180deg);
+    position: absolute;
+    top: 5px;
+    left: -25px;
+    filter: sepia(18%) saturate(0%) hue-rotate(183deg) brightness(20%)
+      contrast(87%);
+  }
+  &:hover {
+    color: $color_primary;
+    &::before {
+      filter: sepia(18%) saturate(0%) hue-rotate(183deg) brightness(0%)
+        contrast(87%);
+    }
+  }
+  &:active {
+    transform: scale(0.94);
+  }
+}

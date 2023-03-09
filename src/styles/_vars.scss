@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Jomolhari&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
+$font-jomolhari: 'Jomolhari', serif;
+$font-inter: 'Inter', sans-serif;
+$grey-color: #d9d9d9;
+$cubic: cubic-bezier(0.4, 0.01, 0.165, 0.99);
+
+/* colors */
+$color_primary: #000;
+$color_secondary: #fff;
+$color_standart-grey: #e9e9e9;
+$color_middle-grey: #c0c0c0;
+$color_darker-grey: #424242;
+$color_darker-grey-alt: #5a5a5a;
+$color_gradient: linear-gradient(160deg, #f7f9f1, #dde3e1, #c9c2bb, #b6afb5);
+
+$color_stars: #ffa92e;
+$color_heart: #db0202;
+
+/* sizes */
+$size_block-item-width: 250px;
+$size_block-item-height: 330px;
+
+$size_block-item_img-width: 250px;
+$size_block-item_img-height: 235px;
+
+$size_list-item-width: 100%;
+$size_list-item-height: 80px;
+
+$size_list-item_img-width: 80px;
+$size_list-item_img-height: 80px;
